@@ -39,6 +39,17 @@ namespace Voalaft.Data.Entidades
         public string? Usuario { get; set; }
 
         public string? Maquina { get; set; }
+
+        //***************************************
+        public string? Estado { get; set; }
+        public string? Municipio { get; set; }
+        public string? NombreMunicipio { get; set; }
+
+        public string? Localidad { get; set; }
+
+        public string? NombreLocalidad { get; set; }
+
+
     }
     
 

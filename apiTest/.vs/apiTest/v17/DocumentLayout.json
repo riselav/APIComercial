@@ -3,33 +3,11 @@
   "WorkspaceRootPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\catalmacenescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\catalmacenescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\catclientesrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\interfaces\\icatalmacenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\interfaces\\icatalmacenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\implementacion\\catalmacenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\implementacion\\catalmacenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\interfaces\\icatalmacenesrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\catalmacenesrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\db\\conexion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\catalagossatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\catalagossatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\catclientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\catclientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\inyecciondependencias.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -48,118 +26,41 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CatAlmacenesController.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatAlmacenesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CatAlmacenesController.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatAlmacenesController.cs",
-              "RelativeToolTip": "Controllers\\CatAlmacenesController.cs",
-              "ViewState": "AQIAABQAAAAAAAAAAIA1wBcAAAAdAAAA",
+              "Title": "CatClientesRepositorio.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatClientesRepositorio.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\CatClientesRepositorio.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatClientesRepositorio.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\CatClientesRepositorio.cs",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAlwG0AAABbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:22:32.47Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ICatAlmacenesServicio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Interfaces\\ICatAlmacenesServicio.cs",
-              "RelativeDocumentMoniker": "Servicios\\Interfaces\\ICatAlmacenesServicio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Interfaces\\ICatAlmacenesServicio.cs",
-              "RelativeToolTip": "Servicios\\Interfaces\\ICatAlmacenesServicio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAKAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:22:12.253Z",
+              "WhenOpened": "2025-05-06T07:26:10.646Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CatAlmacenesServicio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\CatAlmacenesServicio.cs",
-              "RelativeDocumentMoniker": "Servicios\\Implementacion\\CatAlmacenesServicio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\CatAlmacenesServicio.cs",
-              "RelativeToolTip": "Servicios\\Implementacion\\CatAlmacenesServicio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAgAAAA8AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:16:01.408Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ICatAlmacenesRepositorio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Interfaces\\ICatAlmacenesRepositorio.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Interfaces\\ICatAlmacenesRepositorio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Interfaces\\ICatAlmacenesRepositorio.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\Interfaces\\ICatAlmacenesRepositorio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAKAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:15:09.055Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CatAlmacenesRepositorio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatAlmacenesRepositorio.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\CatAlmacenesRepositorio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatAlmacenesRepositorio.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\CatAlmacenesRepositorio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:14:20.298Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-06T06:13:37.508Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Conexion.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\DB\\Conexion.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\DB\\Conexion.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\DB\\Conexion.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\DB\\Conexion.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAAAwwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T06:13:26.611Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CatalagosSATController.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatalagosSATController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CatalagosSATController.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatalagosSATController.cs",
-              "RelativeToolTip": "Controllers\\CatalagosSATController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAABDAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T19:19:34.171Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
               "Title": "InyeccionDependencias.cs",
               "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\InyeccionDependencias.cs",
               "RelativeDocumentMoniker": "Servicios\\InyeccionDependencias.cs",
               "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\InyeccionDependencias.cs",
               "RelativeToolTip": "Servicios\\InyeccionDependencias.cs",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAgwAAAAAAAAAAA",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T19:16:04.068Z"
+              "WhenOpened": "2025-05-06T07:23:59.985Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CatClientesController.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatClientesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CatClientesController.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatClientesController.cs",
+              "RelativeToolTip": "Controllers\\CatClientesController.cs",
+              "ViewState": "AQIAACYAAAAAAAAAAAAowDgAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-06T07:13:58.945Z",
+              "EditorCaption": ""
             }
           ]
         }

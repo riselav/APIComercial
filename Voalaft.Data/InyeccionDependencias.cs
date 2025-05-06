@@ -43,6 +43,7 @@ namespace Voalaft.Data
             services.AddTransient<ICatRFCRepositorio, CatRFCRepositorio>();
             services.AddTransient<ICatCorreoContactoRFCRepositorio, CatCorreoContactoRFCRepositorio>();
             services.AddTransient<ICatCajaRepositorio, CatCajaRepositorio>();
+            services.AddTransient<ICatClientesRepositorio, CatClientesRepositorio>();
         }
     }
 }

@@ -155,3 +155,4 @@ C:\Codigo\Dev\WebComercial\APIComercial\apiTest\obj\Debug\net8.0\scopedcss\bundl
 C:\Codigo\Dev\WebComercial\APIComercial\apiTest\obj\Debug\net8.0\Voalaft..DE85A52A.Up2Date
 C:\Codigo\Dev\WebComercial\APIComercial\apiTest\obj\Debug\net8.0\Voalaft.API.genruntimeconfig.cache
 C:\Codigo\Dev\WebComercial\APIComercial\apiTest\obj\Debug\net8.0\ref\Voalaft.API.dll
+C:\Codigo\Dev\WebComercial\APIComercial\apiTest\obj\Debug\net8.0\Voalaft.API.sourcelink.json
