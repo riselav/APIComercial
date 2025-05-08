@@ -1,0 +1,4 @@
+IF NOT EXISTS( SELECT 1 FROM Information_Schema.Columns WHERE TABLE_NAME = 'CAT_Usuarios' AND COLUMN_NAME='bActivo')
+	ALTER TABLE CAT_Usuarios ADD bActivo bit CONSTRAINT Usrs_Act DEFAULT 1
+GO
+UPDATE CAT_Usuarios SET bActivo=1 WHERE bActivo IS NULL
