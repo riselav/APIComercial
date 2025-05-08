@@ -68,3 +68,13 @@ IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_Sucursales_
 	ALTER TABLE [dbo].[CAT_Sucursales] ADD CONSTRAINT [FK_CAT_Sucursales_CAT_Zonas]
 	FOREIGN KEY ([nZona]) REFERENCES [dbo].[CAT_Zonas] ([nZona]) ON DELETE No Action ON UPDATE No Action
 GO
+
+IF dbo.fn_ExisteCampo('CAT_Sucursales','nAlmacenInventario')=0
+	ALTER TABLE CAT_Sucursales ADD nAlmacenInventario int
+GO
+
+
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_Sucursales_CAT_Almacenes' AND xtype = 'F')
+	ALTER TABLE [dbo].[CAT_Sucursales] ADD CONSTRAINT [FK_CAT_Sucursales_CAT_Almacenes]
+	FOREIGN KEY ([nAlmacenInventario]) REFERENCES [dbo].[CAT_Almacenes] ([nAlmacen]) ON DELETE No Action ON UPDATE No Action
+GO

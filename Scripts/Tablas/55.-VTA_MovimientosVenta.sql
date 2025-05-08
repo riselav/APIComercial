@@ -13,6 +13,7 @@ BEGIN
 		[nTipoRegistro] tinyint NOT NULL,    -- tipo de registro  1=Venta 2=Venta Suspendida 3=Cotización 4=Devolución
 		[nTipoVenta] tinyint NULL,    -- tipo de venta para cuando tipo de registro es venta (1)  los valores son  1=Contado 2=Credito
 		[nSucursal] int NOT NULL,    -- id de catálogo de sucursal
+		[nCaja] int ,    -- id de caja de sucursal
 		[nCliente] bigint NOT NULL,    -- id de catálogo de clientes
 		[nIdLista] int NULL,    -- id de catálogo de lista de precio, opcional
 		[nIDApertura] bigint NULL,    -- id de apertura al que pertenece el registro, opcional para cuando es una cotización o venta suspendida
@@ -113,5 +114,10 @@ GO
 IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_VTA_MovimientosVentaCanc_CAT_Empleados' AND xtype = 'F')
 	ALTER TABLE [VTA_MovimientosVenta] ADD CONSTRAINT [FK_VTA_MovimientosVentaCanc_CAT_Empleados]
 	FOREIGN KEY ([nEmpleadoCancela]) REFERENCES [CAT_Empleados] ([nEmpleado]) ON DELETE No Action ON UPDATE No Action
+GO
+
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_VTA_MovimientosVentaAutCanc_CAT_Cajas' AND xtype = 'F')
+	ALTER TABLE [VTA_MovimientosVenta] ADD CONSTRAINT [FK_VTA_MovimientosVentaAutCanc_CAT_Cajas]
+	FOREIGN KEY ([nCaja]) REFERENCES [CAT_Cajas] ([nCaja]) ON DELETE No Action ON UPDATE No Action
 GO
 
