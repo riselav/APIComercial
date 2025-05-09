@@ -39,6 +39,9 @@ namespace Voalaft.API.Servicios
             services.AddTransient<ICatCorreoContactoRFCServicio, CatCorreoContactoRFCServicio>();
             services.AddTransient<ICatCajaServicio, CatCajaServicio>();
             services.AddTransient<ICatClientesServicio, CatClientesServicio>();
+
+            services.AddTransient<ICatTurnoServicio, CatTurnoServicio>();
+            services.AddTransient<ICatDenominacionServicio, CatDenominacionServicio>();
         }
     }
 }
