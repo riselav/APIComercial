@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\catdenominacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\catdenominacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\catturnocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\catturnocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\implementacion\\regmovimientocajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\implementacion\\regmovimientocajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CatTurnoController.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatTurnoController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CatTurnoController.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatTurnoController.cs",
-              "RelativeToolTip": "Controllers\\CatTurnoController.cs",
-              "ViewState": "AQIAADgAAAAAAAAAAAAwwFQAAAAJAAAA",
+              "Title": "RegMovimientoCajaServicio.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
+              "RelativeDocumentMoniker": "Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
+              "RelativeToolTip": "Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABQAAABDAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T06:30:28.509Z",
+              "WhenOpened": "2025-05-11T09:04:52.202Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CatDenominacionController.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatDenominacionController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CatDenominacionController.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\CatDenominacionController.cs",
-              "RelativeToolTip": "Controllers\\CatDenominacionController.cs",
-              "ViewState": "AQIAADsAAAAAAAAAAAAwwEwAAAAgAAAA",
+              "Title": "RegistroCajaController.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RegistroCajaController.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
+              "RelativeToolTip": "Controllers\\RegistroCajaController.cs",
+              "ViewState": "AQIAAGMAAAAAAAAAAAAwwGsAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T06:30:19.335Z",
+              "WhenOpened": "2025-05-11T08:55:13.159Z",
               "EditorCaption": ""
             }
           ]

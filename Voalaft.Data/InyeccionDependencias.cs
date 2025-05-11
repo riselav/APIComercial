@@ -47,6 +47,12 @@ namespace Voalaft.Data
 
             services.AddTransient<ICatTurnoRepositorio, CatTurnoRepositorio>();
             services.AddTransient<ICatDenominacionRepositorio, CatDenominacionRepositorio>();
+
+            services.AddTransient<IRegAperturaCajaRepositorio, RegAperturaCajaRepositorio>();
+            services.AddTransient<IRegMovimientoCajaRepositorio, RegMovimientoCajaRepositorio>();
+
+            services.AddTransient<ICatFormaPagoRepositorio, CatFormaPagoRepositorio>();
+            services.AddTransient<ICatTipoRegistroCajaRepositorio, CatTipoRegistroCajaRepositorio>();
         }
     }
 }

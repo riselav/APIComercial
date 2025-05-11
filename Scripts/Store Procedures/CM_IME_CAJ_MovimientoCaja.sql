@@ -3,21 +3,21 @@ GO
 --SELECT * FROM Empleados (NOLOCK)  
   
 CREATE PROCEDURE CM_IME_CAJ_MovimientoCaja (          
- @nFolio bigint,    
- @nTipoRegistro int,  
- @nSucursal int,   
- @nIDApertura bigint,  
- @dFecha date,  
- @nConceptoCaja int=NULL,   
- @nEmpleado int,  
- @nImporte decimal(18,4),  
- @cObservaciolnes varchar(5000)=NULL,  
- @bActivo as bit,    
- @cUsuario as Varchar(50),          
- @cNombreMaquina as Varchar(50),  
- @cUsuarioAutoriza varchar(50)='',  
- @dFechaRegistro datetime=NULL,  
- @bRegistroEspecial bit=0  
+	@nFolio bigint output,    
+	@nTipoRegistro int,  
+	@nSucursal int,   
+	@nIDApertura bigint,  
+	@dFecha date,  
+	@nConceptoCaja int=NULL,   
+	@nEmpleado int,  
+	@nImporte decimal(18,4),  
+	@cObservaciones varchar(5000)=NULL,  
+	@bActivo as bit,    
+	@cUsuario as Varchar(50),          
+	@cNombreMaquina as Varchar(50),  
+	@cUsuarioAutoriza varchar(50)='',  
+	@dFechaRegistro datetime=NULL,  
+	@bRegistroEspecial bit=0  
 )          
 AS           
 BEGIN  
@@ -43,7 +43,7 @@ BEGIN
  bActivo, cUsuario_Registra, cMaquina_Registra,dFecha_Registra,cUsuarioAutoriza_Registro)  
   
  SELECT @nFolio, @nTipoRegistro, @nSucursal, @nIDApertura,@nConceptoCaja,  
- @nConsecutivoSig,@nEmpleado,@nImporte,@nEfecto,@dFecha,@cObservaciolnes,@bRegistroEspecial,  
+ @nConsecutivoSig,@nEmpleado,@nImporte,@nEfecto,@dFecha,@cObservaciones,@bRegistroEspecial,  
  @bActivo, @cUsuario, @cNombreMaquina, @dFechaRegistro,@cUsuarioAutoriza  
           
  RETURN @nConsecutivoSig          

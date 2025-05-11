@@ -4,7 +4,7 @@ GO
 --SELECT * FROM Empleados (NOLOCK)
 
 CREATE PROCEDURE CM_IME_CAJ_RegistroApertura (        
-	@nFolio bigint,  
+	@nFolio bigint output,  
 	@nSucursal int,
 	@nCaja int,
 	@nTurno int,
@@ -31,5 +31,5 @@ BEGIN
 	@nEmpleado,@nUsuarioAutoriza,1,
 	@bActivo, @cUsuario, @cNombreMaquina, getdate()
         
-	RETURN @nFolioSig        
+	RETURN @nFolioSig
 END
