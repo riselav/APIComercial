@@ -32,8 +32,8 @@ BEGIN
    
  IF @dFechaRegistro IS NULL SET @dFechaRegistro=(SELECT GETDATE())  
   
- If @nFolio=0  
-  SET @nFolio='1' + RIGHT('00000'+CONVERT(varchar(5),@nSucursal),5) + RIGHT('00000000'+ CONVERT(varchar(8),@nFolioSig),8)   
+ If ISNULL(@nFolio,0)=0  
+	SET @nFolio='1' + RIGHT('00000'+CONVERT(varchar(5),@nSucursal),5) + RIGHT('00000000'+ CONVERT(varchar(8),@nFolioSig),8)   
   
     DECLARE @nEfecto int=(SELECT nEfecto FROM CAT_TiposRegistroCaja(NOLOCK) WHERE nTipoRegistroCaja=@nTipoRegistro)  
  --DECLARE @dFecha as date=(SELECT dFecha FROM CAJ_RegistrosAperturaCaja (NOLOCK) WHERE nIDApertura=@nIDApertura)  

@@ -21,7 +21,7 @@ AS
 BEGIN
 	DECLARE @nFolioSig AS INT =  isnull ((SELECT MAX(CONVERT(int,RIGHT(nIDApertura,8))) FROM CAJ_RegistrosAperturaCaja (NOLOCK)),0) + 1    
 	
-	If @nFolio=0
+	If ISNULL(@nFolio,0)=0
 		SET @nFolio='1' + RIGHT('00000'+CONVERT(varchar(5),@nSucursal),5) + RIGHT('00000000'+ CONVERT(varchar(8),@nFolioSig),8)
         
 	INSERT INTO CAJ_RegistrosAperturaCaja (nIDApertura,nIDSucursal,nIDCaja,nIDTurno,dFecha,nDotacionInicial,

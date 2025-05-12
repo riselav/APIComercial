@@ -90,8 +90,8 @@ namespace Voalaft.Data.Implementaciones
                             cmdInsDetalle.Parameters.AddWithValue("@cMaquina_Registra", regMovimientoCaja.Maquina);
                             cmdInsDetalle.Parameters.AddWithValue("@dFecha_Registra", DateTime.Now);
 
-                            cmdInsDetalle.Parameters.AddWithValue("@nOrden", null);
-                            cmdInsDetalle.Parameters.AddWithValue("@nCuenta", null);
+                            cmdInsDetalle.Parameters.AddWithValue("@nOrden", 0);
+                            cmdInsDetalle.Parameters.AddWithValue("@nCuenta", 0);
                             cmdInsDetalle.Parameters.AddWithValue("@cReferencia", detalle.Referencia);
                             cmdInsDetalle.Parameters.AddWithValue("@cReferenciaCuponVale", null);
 
@@ -101,8 +101,8 @@ namespace Voalaft.Data.Implementaciones
                             cmdInsDetalle.Parameters.AddWithValue("@nCliente", detalle.Cliente == 0 ? null : detalle.Cliente);
                             cmdInsDetalle.Parameters.AddWithValue("@nEmpleado", detalle.Empleado == 0 ? null : detalle.Empleado);
                             cmdInsDetalle.Parameters.AddWithValue("@nPropina", detalle.Propina);
-                            cmdInsDetalle.Parameters.AddWithValue("@nPropina", detalle.PagaCon);
-                            cmdInsDetalle.Parameters.AddWithValue("@nPropina", detalle.Cambio);
+                            cmdInsDetalle.Parameters.AddWithValue("@nPagaCon", detalle.PagaCon);
+                            cmdInsDetalle.Parameters.AddWithValue("@nCambio", detalle.Cambio);
 
                             SqlParameter returnValue = cmdInsDetalle.Parameters.Add("@ReturnVal", SqlDbType.Int);
                             returnValue.Direction = ParameterDirection.ReturnValue;
