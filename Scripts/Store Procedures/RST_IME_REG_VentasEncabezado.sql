@@ -59,8 +59,8 @@ BEGIN
 		-- 1 + Sucursal (3) + Caja (2) + Consecutivo (9)
 		SET @nVenta = CAST('1' +
                        RIGHT('000' + CAST(@nSucursal AS VARCHAR(3)), 3) +
-                       RIGHT('00' + CAST(@nCaja AS VARCHAR(2)), 2) +
-                       RIGHT('000000000' + CAST(@NuevoConsecutivo AS VARCHAR(9)), 9)
+                       RIGHT('000' + CAST(@nCaja AS VARCHAR(3)), 3) +
+                       RIGHT('00000000' + CAST(@NuevoConsecutivo AS VARCHAR(8)), 8)
                   AS BIGINT);
 	END
 	ELSE

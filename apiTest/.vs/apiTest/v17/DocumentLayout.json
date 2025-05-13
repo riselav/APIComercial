@@ -3,35 +3,17 @@
   "WorkspaceRootPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\regmovimientoventarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\entidades\\regmovimientoventa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\implementacion\\regmovimientoventaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\implementacion\\regmovimientoventaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\registroventacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\registroventacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\regaperturacajarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\implementacion\\regaperturacajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\implementacion\\regaperturacajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\regmovimientocajarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\servicios\\implementacion\\regmovimientocajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:servicios\\implementacion\\regmovimientocajaservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\interfaces\\iregmovimientocajarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\regmovimientoventarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -41,123 +23,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 878,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "RegMovimientoVenta.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\RegMovimientoVenta.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Entidades\\RegMovimientoVenta.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\RegMovimientoVenta.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\Entidades\\RegMovimientoVenta.cs",
-              "ViewState": "AQIAACIAAAAAAAAAAAAuwDEAAABBAAAA",
+              "Title": "RegistroVentaController.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroVentaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RegistroVentaController.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroVentaController.cs",
+              "RelativeToolTip": "Controllers\\RegistroVentaController.cs",
+              "ViewState": "AQIAACEAAAAAAAAAAAAowDgAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T06:15:41.632Z",
+              "WhenOpened": "2025-05-13T06:36:12.574Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "RegMovimientoVentaServicio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoVentaServicio.cs",
-              "RelativeDocumentMoniker": "Servicios\\Implementacion\\RegMovimientoVentaServicio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoVentaServicio.cs",
-              "RelativeToolTip": "Servicios\\Implementacion\\RegMovimientoVentaServicio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T06:15:26.162Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "IRegMovimientoCajaRepositorio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Interfaces\\IRegMovimientoCajaRepositorio.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Interfaces\\IRegMovimientoCajaRepositorio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Interfaces\\IRegMovimientoCajaRepositorio.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\Interfaces\\IRegMovimientoCajaRepositorio.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T05:10:38.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "RegAperturaCajaRepositorio.cs",
               "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
               "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
               "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
               "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
-              "ViewState": "AQIAAEsAAAAAAAAAAAASwFMAAAAAAAAA",
+              "ViewState": "AQIAAEsAAAAAAAAAAAASwFcAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T06:18:26.001Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RegMovimientoCajaRepositorio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
-              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
-              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
-              "ViewState": "AQIAAKwAAAAAAAAAAAASwMAAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T05:58:11.631Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
               "Title": "RegMovimientoVentaRepositorio.cs",
               "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoVentaRepositorio.cs",
               "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoVentaRepositorio.cs",
               "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoVentaRepositorio.cs",
               "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoVentaRepositorio.cs",
-              "ViewState": "AQIAAG8AAAAAAAAAAAAowAAAAAAAAAAA",
+              "ViewState": "AQIAABQAAAAAAAAAAAAEwBsAAABaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T05:57:52.91Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RegAperturaCajaServicio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegAperturaCajaServicio.cs",
-              "RelativeDocumentMoniker": "Servicios\\Implementacion\\RegAperturaCajaServicio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegAperturaCajaServicio.cs",
-              "RelativeToolTip": "Servicios\\Implementacion\\RegAperturaCajaServicio.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAADgvyoAAAAIAAAA",
+              "DocumentIndex": 3,
+              "Title": "RegMovimientoCajaRepositorio.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\RegMovimientoCajaRepositorio.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAArwMAAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T05:53:17.73Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "RegMovimientoCajaServicio.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
-              "RelativeDocumentMoniker": "Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
-              "RelativeToolTip": "Servicios\\Implementacion\\RegMovimientoCajaServicio.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAqwBYAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T09:04:52.202Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RegistroCajaController.cs",
-              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\RegistroCajaController.cs",
-              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
-              "RelativeToolTip": "Controllers\\RegistroCajaController.cs",
-              "ViewState": "AQIAAFUAAAAAAAAAAAAhwDIAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T08:55:13.159Z",
+              "WhenOpened": "2025-05-12T05:58:11.631Z",
               "EditorCaption": ""
             }
           ]
