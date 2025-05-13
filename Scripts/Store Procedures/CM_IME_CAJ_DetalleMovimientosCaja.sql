@@ -33,15 +33,17 @@ BEGIN TRY
 
  IF @EXISTE = 0        
    BEGIN   
+	   SET @nOrden=NULLIF(@nOrden,0)
+	   SET @nCuenta=NULLIF(@nCuenta,0)
 
-   INSERT INTO [dbo].[CAJ_DetalleMovimientosCaja]
-           ([nIDRegistroCaja],[nRenglon],[nFormaPago],[nImporte],[bActivo],[cUsuario_Registra],[cMaquina_Registra],[dFecha_Registra]
-				,[nOrden],[nCuenta],[cReferencia],[cReferenciaCuponVale],[nImporteFacturado],[nImportePropina]
-           ,[nCliente],[nEmpleado],[nPropina], [nPagaCon], [nCambio])
+	   INSERT INTO [dbo].[CAJ_DetalleMovimientosCaja]
+			   ([nIDRegistroCaja],[nRenglon],[nFormaPago],[nImporte],[bActivo],[cUsuario_Registra],[cMaquina_Registra],[dFecha_Registra]
+					,[nOrden],[nCuenta],[cReferencia],[cReferenciaCuponVale],[nImporteFacturado],[nImportePropina]
+			   ,[nCliente],[nEmpleado],[nPropina], [nPagaCon], [nCambio])
 
-		  SELECT @nIDRegistroCaja,@nRenglon,@nFormaPago,@nImporte,@bActivo,@cUsuario_Registra,@cMaquina_Registra,@dFecha_Registra
-				,@nOrden,@nCuenta,@cReferencia,@cReferenciaCuponVale,@nImporteFacturado,@nImportePropina
-           ,@nCliente,@nEmpleado,@nPropina, @nPagaCon, @nCambio
+			  SELECT @nIDRegistroCaja,@nRenglon,@nFormaPago,@nImporte,@bActivo,@cUsuario_Registra,@cMaquina_Registra,@dFecha_Registra
+					,@nOrden,@nCuenta,@cReferencia,@cReferenciaCuponVale,@nImporteFacturado,@nImportePropina
+			   ,@nCliente,@nEmpleado,@nPropina, @nPagaCon, @nCambio
      END        
   
  SET NOCOUNT OFF          

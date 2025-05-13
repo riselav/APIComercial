@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Voalaft.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f6123cd8c44258fac2064aa4e7af0df8d7c5869")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60c9f6df87ad93f9a644e6889762388a012db9e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("Voalaft.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Voalaft.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

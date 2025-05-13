@@ -46,5 +46,7 @@ namespace Voalaft.Data.Entidades
         public string? Maquina { get; set; }
 
         public List<RegMovimientoVentaDetalle>? Detalle { get; set; }
+
+        public RegMovimientoCaja? regMovimientoCaja { get; set; }
     }
 }
