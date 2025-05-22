@@ -88,5 +88,47 @@ namespace Voalaft.API.Controllers
 
             return token;
         }
+
+        [HttpPost("AccesoUsuario")]
+        public async Task<ResultadoAPI> AccesoUsuario(PeticionAPI peticion)
+        {
+            //var peticion = HttpContext.Items["peticion"] as PeticionAPI;
+            UsuarioLogin user = null;
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                user = CryptographyUtils.DeserializarPeticion<UsuarioLogin>(r);
+
+                Console.WriteLine(user.usuario_id);
+                Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+                if (usuario == null)
+                {
+                    throw new Exception("Usuario no encontrado " + user.usuario_id);
+                }
+                else if (user.usuario_id.ToLower().CompareTo("admin") == 0)
+                    user.usuario_name = "Admin Portal";
+                else
+                {
+                    user.usuario_name = ConvertUtils.ToString(usuario.Nombre) + " " + ConvertUtils.ToString(usuario.ApellidoPaterno);
+                }
+                List<MenuUsuario> listMenu = await _usuario.ObtenerMenuUsuario(usuario.Folio);
+                if (listMenu != null)
+                {
+                    user.menuUsuarios = listMenu;
+                }
+                var token = GenerateToken(user);
+                user.token = token;
+                resultado = CryptographyUtils.CrearResultado(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Usuario y/o contraseña invalida");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }
