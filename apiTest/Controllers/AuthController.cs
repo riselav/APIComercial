@@ -38,8 +38,14 @@ namespace Voalaft.API.Controllers
                 user = CryptographyUtils.DeserializarPeticion<UsuarioLogin>(r);
                 
                 Console.WriteLine(user.usuario_id);
-                Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
-                if(usuario==null)
+                //Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+                
+                Usuarios usuarioLogin = new Usuarios();
+                usuarioLogin.Usuario = user.usuario_id;
+                usuarioLogin.Password = user.password;
+
+                Usuarios usuario = await _usuario.AccesoUsuario(usuarioLogin);
+                if (usuario==null)
                 {
                     throw new Exception("Usuario no encontrado "+user.usuario_id);
                 }

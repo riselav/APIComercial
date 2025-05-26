@@ -115,5 +115,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+                
+        [HttpPost("ObtenAperturaAbierta")]
+        public async Task<ResultadoAPI> ObtenAperturaAbierta(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var apertura = CryptographyUtils.DeserializarPeticion<RegAperturaCaja>(r);
+                RegAperturaCaja aperturaCajaAbierta = await _regAperturaCajaServicio.ObtenAperturaAbierta(apertura);
+                resultado = CryptographyUtils.CrearResultado(aperturaCajaAbierta);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar la lista de cat turnos");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace Voalaft.Data.Entidades
         public decimal DotacionInicial { get; set; }
         public int IDEmpleado { get; set; }
         public int? IDUsuarioAutoriza { get; set; }
-        public byte Estatus { get; set; }
+        public int Estatus { get; set; }
         public bool Activo { get; set; }
         public string? Usuario { get; set; }
         public string? Maquina { get; set; }

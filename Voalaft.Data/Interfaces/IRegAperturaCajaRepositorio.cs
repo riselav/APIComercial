@@ -10,5 +10,7 @@ namespace Voalaft.Data.Interfaces
     public interface IRegAperturaCajaRepositorio
     {
         Task<RegAperturaCaja> IME_REG_AperturaCaja(RegAperturaCaja regAperturaCaja);
+
+        Task<RegAperturaCaja> ObtenAperturaAbierta(RegAperturaCaja regAperturaCaja);
     }
 }
