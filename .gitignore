@@ -90,3 +90,6 @@ dist-ssr
 # Ignorar archivos de caché
 *.suo
 *.user
+
+**/obj/
+**/bin/
