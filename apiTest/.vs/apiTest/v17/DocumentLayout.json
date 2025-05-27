@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\users\\joelr\\documents\\apicomercial\\voalaft.data\\implementaciones\\regmovimientoventarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -52,6 +53,22 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatClientesRepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\entidades\\catclientes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\entidades\\catformapago.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\catformapagorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF4BEE0-2A6A-4C76-9EA8-EEBEFCA5F6CB}|..\\Voalaft.Data\\Voalaft.Data.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\voalaft.data\\implementaciones\\regaperturacajarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|c:\\codigo\\dev\\webcomercial\\apicomercial\\apitest\\controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDB2B2CB-2098-4D67-8A03-EF7A7B0B2C29}|Voalaft.API.csproj|solutionrelative:controllers\\registrocajacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> Dev
     }
   ],
   "DocumentGroupContainers": [
@@ -65,6 +82,7 @@
           "Children": [
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 1,
               "Title": "RegMovimientoVentaDetalle.cs",
               "DocumentMoniker": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Data\\Entidades\\RegMovimientoVentaDetalle.cs",
@@ -123,10 +141,22 @@
               "ViewState": "AgIAABUAAAAAAAAAAAAAAB8AAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T17:39:59.705Z",
+=======
+              "DocumentIndex": 0,
+              "Title": "CatClientes.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\CatClientes.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Entidades\\CatClientes.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\CatClientes.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Entidades\\CatClientes.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAAAAwAAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T04:22:09.015Z",
+>>>>>>> Dev
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 5,
               "Title": "CatArticuloVentaController.cs",
               "DocumentMoniker": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\Controllers\\CatArticuloVentaController.cs",
@@ -170,8 +200,55 @@
               "ToolTip": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\Controllers\\CatClientesController.cs",
               "RelativeToolTip": "Controllers\\CatClientesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
+=======
+              "DocumentIndex": 1,
+              "Title": "CatFormaPago.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\CatFormaPago.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Entidades\\CatFormaPago.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Entidades\\CatFormaPago.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Entidades\\CatFormaPago.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAwAAAA",
+>>>>>>> Dev
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T07:13:58.945Z",
+              "WhenOpened": "2025-05-24T21:01:59.823Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CatFormaPagoRepositorio.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatFormaPagoRepositorio.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\CatFormaPagoRepositorio.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\CatFormaPagoRepositorio.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\CatFormaPagoRepositorio.cs",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAowAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T20:58:50.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RegistroCajaController.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RegistroCajaController.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Controllers\\RegistroCajaController.cs",
+              "RelativeToolTip": "Controllers\\RegistroCajaController.cs",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAqwH4AAABSAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T04:05:01.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RegAperturaCajaRepositorio.cs",
+              "DocumentMoniker": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
+              "RelativeDocumentMoniker": "..\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
+              "ToolTip": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
+              "RelativeToolTip": "..\\Voalaft.Data\\Implementaciones\\RegAperturaCajaRepositorio.cs",
+              "ViewState": "AQIAAGgAAAAAAAAAAAAawHgAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T04:24:58.546Z",
               "EditorCaption": ""
             },
             {

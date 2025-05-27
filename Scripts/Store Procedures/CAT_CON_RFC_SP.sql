@@ -1,0 +1,11 @@
+SP_ELIMINASTORE 'CAT_CON_RFC_SP'
+GO
+CREATE procedure [dbo].[CAT_CON_RFC_SP] (
+	@cRFC varchar(50)=''
+)  
+AS   
+--CAT_CON_RFC_SP 'GACA781221D27'
+	
+SELECT nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo
+FROM CAT_Rfc (NOLOCK)
+WHERE cRFC= CASE WHEN @cRFC='' THEN cRFC ELSE @cRFC END

@@ -1,0 +1,1 @@
+alter table CAT_Unidades add cNombreCorto varchar(50) null;

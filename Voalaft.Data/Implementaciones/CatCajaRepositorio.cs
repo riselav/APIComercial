@@ -52,6 +52,7 @@ namespace Voalaft.Data.Implementaciones
                                     Caja = ConvertUtils.ToInt32(reader["nCaja"]),
                                     Sucursal = ConvertUtils.ToInt32(reader["nSucursal"]),
                                     Descripcion = ConvertUtils.ToString(reader["cDescripcion"]),
+                                    nImpresora= ConvertUtils.ToInt32(reader["nImpresora"]),
                                     Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
                                     Usuario = ConvertUtils.ToString(reader["cUsuario_Registra"]),
                                     Maquina = ConvertUtils.ToString(reader["cMaquina_Registra"])

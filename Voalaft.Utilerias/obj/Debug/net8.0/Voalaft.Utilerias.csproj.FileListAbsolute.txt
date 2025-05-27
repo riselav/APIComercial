@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.deps.json
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.dll
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.pdb
@@ -10,3 +11,29 @@ C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\refint\Voalaft.Utilerias.dll
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.pdb
 C:\Users\joelr\Documents\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\ref\Voalaft.Utilerias.dll
+=======
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.deps.json
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.pdb
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.GeneratedMSBuildEditorConfig.editorconfig
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.AssemblyInfoInputs.cache
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.AssemblyInfo.cs
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.csproj.CoreCompileInputs.cache
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.sourcelink.json
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\refint\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.pdb
+C:\Codigo\Dev\WebComercial\APPWebComercial\repos\Voalaft.Utilerias\obj\Debug\net8.0\ref\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.deps.json
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\bin\Debug\net8.0\Voalaft.Utilerias.pdb
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.GeneratedMSBuildEditorConfig.editorconfig
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.AssemblyInfoInputs.cache
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.AssemblyInfo.cs
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.csproj.CoreCompileInputs.cache
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\refint\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.pdb
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\ref\Voalaft.Utilerias.dll
+C:\Codigo\Dev\WebComercial\APIComercial\Voalaft.Utilerias\obj\Debug\net8.0\Voalaft.Utilerias.sourcelink.json
+>>>>>>> Dev
