@@ -8,6 +8,8 @@ using Voalaft.API.Servicios.Interfaces;
 using Voalaft.Data.Entidades;
 using Voalaft.Utilerias;
 using Microsoft.AspNetCore.Authorization;
+using Voalaft.Data.Entidades.Tableros;
+using Voalaft.Data.Entidades.ClasesParametros;
 
 namespace Voalaft.API.Controllers
 {
@@ -25,6 +27,28 @@ namespace Voalaft.API.Controllers
             _ProveedorServicio = ProveedorServicio;
             _logger = logger;
             _config = config;
+        }
+
+        
+        [HttpPost("ConsultaProveedores")]
+        public async Task<ResultadoAPI> ConsultaProveedores(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Proveedor = CryptographyUtils.DeserializarPeticion<ParametrosConsultaProveedores>(r);
+                List<TableroProveedores> prov = await _ProveedorServicio.ConsultaProveedores(Proveedor);
+                resultado = CryptographyUtils.CrearResultado(prov);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar las proveedores");
+            }
+            finally { }
+
+            return resultado;
         }
 
         [HttpPost("Lista")]
@@ -50,6 +74,7 @@ namespace Voalaft.API.Controllers
         [HttpPost("ObtenerProveedor")]
         public async Task<ResultadoAPI> ObtenerProveedor(PeticionAPI peticion)
         {
+            
             ResultadoAPI resultado = null;
             try
             {
@@ -68,7 +93,7 @@ namespace Voalaft.API.Controllers
             return resultado;
         }
 
-        [HttpPost("IME_CatLineas")]
+        [HttpPost("IME_CatProveedores")]
         public async Task<ResultadoAPI> IME_CatProveedores(PeticionAPI peticion)
         {
             ResultadoAPI resultado = null;
@@ -90,6 +115,95 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+        //[HttpPost("ObtenerRFC")]
+        //public async Task<ResultadoAPI> ObtenerRFC(PeticionAPI peticion)
+        //{
+        //    ResultadoAPI resultado = null;
+        //    try
+        //    {
+        //        var r = CryptographyUtils.Desencriptar(peticion.contenido);
+        //        var Proveedor = CryptographyUtils.DeserializarPeticion<CatRFC>(r);
+        //        var ProveedorResult = await _ProveedorServicio.ObtenerProveedor(Proveedor.nIDRFC);
+        //        resultado = CryptographyUtils.CrearResultado(ProveedorResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message, ex);
+        //        throw new Exception("Error al consultar el RFC");
+        //    }
+        //    finally { }
+
+        //    return resultado;
+        //}
+
+        [HttpPost("IME_CatContactoProveedores")]
+        public async Task<ResultadoAPI> IME_CatContactoProveedores(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Proveedor = CryptographyUtils.DeserializarPeticion<CatContactoProveedor>(r);
+                Proveedor.Usuario = peticion.usuario;
+                Proveedor.Maquina = peticion.maquina;
+                var proveedorResult = await _ProveedorServicio.IME_CatContactoProveedores(Proveedor);
+                resultado = CryptographyUtils.CrearResultado(proveedorResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar el proveedor");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerContactosProveedor")]
+        public async Task<ResultadoAPI> ObtenerContactosProveedor(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Proveedor = CryptographyUtils.DeserializarPeticion<CatContactoProveedor>(r);
+                Proveedor.Usuario = peticion.usuario;
+                Proveedor.Maquina = peticion.maquina;
+                var proveedorResult = await _ProveedorServicio.ObtenerContactosProveedor(Proveedor.nProveedor);
+                resultado = CryptographyUtils.CrearResultado(proveedorResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar el proveedor");
+            }
+            finally { }
+
+            return resultado;
+        }
+        [HttpPost("ObtenerContactoProveedorId")]
+        public async Task<ResultadoAPI> ObtenerContactoProveedorId(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Proveedor = CryptographyUtils.DeserializarPeticion<CatContactoProveedor>(r);
+                Proveedor.Usuario = peticion.usuario;
+                Proveedor.Maquina = peticion.maquina;
+                var proveedorResult = await _ProveedorServicio.ObtenerContactoProveedorId(Proveedor.nProveedor,Proveedor.nContactoProveedor);
+                resultado = CryptographyUtils.CrearResultado(proveedorResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar el proveedor");
+            }
+            finally { }
+
+            return resultado;
+        }
+
 
     }
 }

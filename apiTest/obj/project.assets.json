@@ -2212,43 +2212,42 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\neoja\\.nuget\\packages\\": {},
-    "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages": {}
+    "C:\\Users\\joelr\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Voalaft.API.csproj",
+      "projectUniqueName": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\Voalaft.API.csproj",
       "projectName": "Voalaft.API",
-      "projectPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\Voalaft.API.csproj",
-      "packagesPath": "C:\\Users\\neoja\\.nuget\\packages\\",
-      "outputPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\apiTest\\obj\\",
+      "projectPath": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\Voalaft.API.csproj",
+      "packagesPath": "C:\\Users\\joelr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\joelr\\Documents\\APIComercial\\apiTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\neoja\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 23.1.config",
+        "C:\\Users\\joelr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8": {},
-        "C:\\Program Files\\DevExpress 23.1\\Components\\System\\Components\\Packages": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Voalaft.Data.csproj": {
-              "projectPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Data\\Voalaft.Data.csproj"
+            "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Data\\Voalaft.Data.csproj": {
+              "projectPath": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Data\\Voalaft.Data.csproj"
             },
-            "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {
-              "projectPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj"
+            "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {
+              "projectPath": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj"
             }
           }
         }
@@ -2262,7 +2261,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -2296,24 +2296,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.10, 8.0.10]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.10, 8.0.10]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.10, 8.0.10]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.10, 8.0.10]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2322,7 +2304,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

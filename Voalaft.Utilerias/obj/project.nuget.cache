@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LsIlKTTdYXw/r5kKA079L8IrbNlgwDIX5JjQds5xppDWIT1E8Oh/CDHzIClEtiBLEVqkEoVR+QXLbVFOs6sgFw==",
+  "dgSpecHash": "2B3H3NWlgKs=",
   "success": true,
-  "projectFilePath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\neoja\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.10\\microsoft.windowsdesktop.app.ref.8.0.10.nupkg.sha512",
-    "C:\\Users\\neoja\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.10\\microsoft.netcore.app.ref.8.0.10.nupkg.sha512",
-    "C:\\Users\\neoja\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.10\\microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

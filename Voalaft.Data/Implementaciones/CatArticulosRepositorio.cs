@@ -197,6 +197,7 @@ namespace Voalaft.Data.Implementaciones
                                         Precio = ConvertUtils.ToString(readerPrecios["nPrecio"])
                                     }
                                     );
+                                articulo.PrecioGeneral = ConvertUtils.ToInt32(readerPrecios["nIdSucursal"]) == 0 ? ConvertUtils.ToDecimal(readerPrecios["nPrecio"]) : articulo.PrecioGeneral;
                             }
                         }
                         articulo.PreciosList = sucursales;                        
@@ -235,7 +236,7 @@ namespace Voalaft.Data.Implementaciones
                         CommandText = "CAT_CON_CatArticulos",
                         CommandType = CommandType.StoredProcedure,
                     };
-                    cmd.Parameters.AddWithValue("@nArticulo", 0);
+                    cmd.Parameters.AddWithValue("@nIDArticulo", 0);
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())

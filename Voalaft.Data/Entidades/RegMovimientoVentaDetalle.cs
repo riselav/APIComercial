@@ -17,10 +17,10 @@ namespace Voalaft.Data.Entidades
         public decimal nSubtotal { get; set; }
         public decimal nImpuestoIVA { get; set; }
         public int nIDImpuestoIVA { get; set; }
-        public byte nPorcentajeImpuestoIVA { get; set; }
+        public decimal nPorcentajeImpuestoIVA { get; set; }
         public decimal? nImpuestoIEPS { get; set; }
         public int? nIDImpuestoIEPS { get; set; }
-        public byte? nPorcentajeImpuestoIEPS { get; set; }
+        public decimal? nPorcentajeImpuestoIEPS { get; set; }
         public decimal? nImporteDescuento { get; set; }
         public decimal? nPorcentajeDescuento { get; set; }
         public decimal nTotal { get; set; }

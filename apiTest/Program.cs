@@ -55,12 +55,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-//app.UsePeticionApiMiddleware();
+app.UsePeticionApiMiddleware();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-
-
 
 
 app.Run();

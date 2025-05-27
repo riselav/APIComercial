@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "IQyzsSmk6iE6bIi+VXTIrssZWKJq1LE4s2RzQ3y2nmo=",
+  "Hash": "9JFoCL2EcVp4uBRgeA5oB0NeRxmUsbSLOHPhbtG+EKw=",
   "Source": "Voalaft.API",
   "BasePath": "_content/Voalaft.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

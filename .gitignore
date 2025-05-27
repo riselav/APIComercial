@@ -1,0 +1,92 @@
+#Junk Files
+*.DS_Store
+[Tt]humbs.db
+
+#Visual Studio Files
+[Oo]bj
+[Bb]in
+[Dd]ebug
+[Bb]uild
+!.vs/*
+
+apiTest/.vs/apiTest/v17
+*.user
+*.suo
+*.exe
+*.pdb
+*.aps
+*_i.c
+*_p.c
+*.ncb
+*.tlb
+*.tlh
+*.[Cc]ache
+*.bak
+*.ncb
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+ipch/ 
+*.dbmdl
+*.csproj.user
+*.cache
+*.swp
+*.vspscc
+*.vssscc
+*.bak.*
+*.bak
+
+
+#Tools
+_ReSharper.*
+_ReSharper*/
+*.resharper
+*.resharper.user
+[Nn][Dd]epend[Oo]ut*/
+Ankh.NoLoad
+
+#Other
+.svn
+
+# Include DLLs if they're in the NuGet packages directory
+!/packages/*/lib/*.dll
+!/packages/*/lib/*/*.dll
+!/*/packages/*/lib/*.dll
+!/*/packages/*/lib/*/*.dll
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorar archivos temporales de compilador
+*.tmp
+*.obj
+
+# Ignorar archivos de configuración de Visual Studio
+.vs/
+
+# Ignorar archivos de caché
+*.suo
+*.user

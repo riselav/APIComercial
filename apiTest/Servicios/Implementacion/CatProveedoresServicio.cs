@@ -1,6 +1,8 @@
 ﻿using Voalaft.API.Exceptions;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
+using Voalaft.Data.Entidades.Tableros;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
 
@@ -15,6 +17,56 @@ namespace Voalaft.API.Servicios.Implementacion
         {
             _logger = logger;
             _ProveedoresRepositorio = proveedoresRepositorio;
+        }
+
+        public async Task<List<TableroProveedores>> ConsultaProveedores(ParametrosConsultaProveedores paramProveedores)
+        {
+            try
+            {
+                return await _ProveedoresRepositorio.ConsultaProveedores(paramProveedores);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener información del proveedor")
+                {
+                    Metodo = "Lista",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        public async Task<CatContactoProveedor> IME_CatContactoProveedores(CatContactoProveedor catContactoProveedor)
+        {
+            try
+            {
+                return await _ProveedoresRepositorio.IME_CatContactoProveedores(catContactoProveedor);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo guardar la liena")
+                {
+                    Metodo = "CAT_IME_Proveedores",
+                    ErrorMessage = ex.Message,
+                };
+            }
         }
 
         public async Task<CatProveedores> IME_CatProveedores(CatProveedores objProveedor)
@@ -68,6 +120,55 @@ namespace Voalaft.API.Servicios.Implementacion
             }
         }
 
+        public async Task<CatContactoProveedor> ObtenerContactoProveedorId(int nProveedor, int nContactoProveedor)
+        {
+            try
+            {
+                return await _ProveedoresRepositorio.ObtenerContactoProveedorId(nProveedor, nContactoProveedor);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener información del proveedor")
+                {
+                    Metodo = "Lista",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        public async Task<List<CatContactoProveedor>> ObtenerContactosProveedor(int nProveedor)
+        {
+            try
+            {
+                return await _ProveedoresRepositorio.ObtenerContactosProveedor(nProveedor);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener información del proveedor")
+                {
+                    Metodo = "Lista",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
 
         public async Task<CatProveedores > ObtenerProveedor(int nProveedor)
         {

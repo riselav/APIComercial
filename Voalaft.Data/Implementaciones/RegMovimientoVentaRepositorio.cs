@@ -109,7 +109,7 @@ namespace Voalaft.Data.Implementaciones
                             cmdInsDetalle.Parameters.AddWithValue("@nPrecioOriginal", detalle.nPrecioOriginal);
                             cmdInsDetalle.Parameters.AddWithValue("@nSubtotal", detalle.nSubtotal);
                             cmdInsDetalle.Parameters.AddWithValue("@nImpuestoIVA", detalle.nImpuestoIVA);
-                            cmdInsDetalle.Parameters.AddWithValue("@nIDImpuestoIVA", detalle.nIDImpuestoIVA);
+                            cmdInsDetalle.Parameters.AddWithValue("@nIDImpuestoIVA", detalle.nIDImpuestoIVA == 0 ? null : detalle.nIDImpuestoIVA);
                             cmdInsDetalle.Parameters.AddWithValue("@nPorcentajeImpuestoIVA", detalle.nPorcentajeImpuestoIVA);
 
                             cmdInsDetalle.Parameters.AddWithValue("@nImpuestoIEPS", detalle.nImpuestoIEPS);
@@ -121,8 +121,8 @@ namespace Voalaft.Data.Implementaciones
                             cmdInsDetalle.Parameters.AddWithValue("@cComentarios", detalle.cComentarios);
                             cmdInsDetalle.Parameters.AddWithValue("@nCostoUnitario", detalle.nCostoUnitario);
     
-                            cmdInsDetalle.Parameters.AddWithValue("@cUsuario_Registra", detalle.Usuario);
-                            cmdInsDetalle.Parameters.AddWithValue("@cMaquina_Registra", detalle.Maquina);
+                            cmdInsDetalle.Parameters.AddWithValue("@cUsuario_Registra", regMovimientoVenta.Usuario);
+                            cmdInsDetalle.Parameters.AddWithValue("@cMaquina_Registra", regMovimientoVenta.Maquina);
 
                             SqlParameter returnValue = cmdInsDetalle.Parameters.Add("@ReturnVal", SqlDbType.Int);
                             returnValue.Direction = ParameterDirection.ReturnValue;

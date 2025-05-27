@@ -9,6 +9,6 @@ namespace Voalaft.Data.Interfaces
         Task<CatArticulos> ObtenerPorArticulo(int nArticulo);
         Task<CatArticulos> IME_CatArticulos(CatArticulos catArticulo);
         Task<List<ConsultaArticulo>> ConsultaTableroArticulos(ParametrosConsultaArticulo parametrosConsultaArticulo);
-        Task<List<SucursalesCombo>> ListaSucursales(); 
+        Task<List<SucursalesCombo>> ListaSucursales();
     }
 }
