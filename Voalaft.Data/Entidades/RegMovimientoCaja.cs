@@ -13,6 +13,9 @@ namespace Voalaft.Data.Entidades
         public int Sucursal { get; set; }
         public long IDApertura { get; set; }
         public int? ConceptoCaja { get; set; }
+
+        public string? Concepto { get; set; }
+
         public int? EmpleadoInvolucrado { get; set; }
         
         public int? Consecutivo { get; set; }
@@ -21,7 +24,8 @@ namespace Voalaft.Data.Entidades
         public short Efecto { get; set; }
         public DateTime Fecha { get; set; }
         public int? nFecha { get; set; }
-                
+        public string? Hora { get; set; }
+
         public string? UsuarioAutorizaRegistro { get; set; }
         public string? UsuarioAutorizaModificacion { get; set; }
         public string? UsuarioAutorizaCancelacion { get; set; }

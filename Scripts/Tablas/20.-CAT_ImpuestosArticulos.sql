@@ -33,12 +33,12 @@ END
 GO
 
 /* Create Foreign Key Constraints */
-IF NOT EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[FK_CAT_ImpuestosArticulos_CAT_Articulos]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_ImpuestosArticulos_CAT_Articulos' AND xtype = 'F')
 	ALTER TABLE [CAT_ImpuestosArticulos] ADD CONSTRAINT [FK_CAT_ImpuestosArticulos_CAT_Articulos]
 	FOREIGN KEY ([nIDArticulo]) REFERENCES [CAT_Articulos] ([nIDArticulo]) ON DELETE No Action ON UPDATE No Action
 GO
 
-IF NOT EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[FK_CAT_ImpuestosArticulos_CAT_Impuestos]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_ImpuestosArticulos_CAT_Impuestos' AND xtype = 'F')
 	ALTER TABLE [CAT_ImpuestosArticulos] ADD CONSTRAINT [FK_CAT_ImpuestosArticulos_CAT_Impuestos]
 	FOREIGN KEY ([nImpuesto]) REFERENCES [CAT_Impuestos] ([nImpuesto]) ON DELETE No Action ON UPDATE No Action
 GO
