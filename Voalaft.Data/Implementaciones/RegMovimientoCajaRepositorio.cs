@@ -209,7 +209,7 @@ namespace Voalaft.Data.Implementaciones
                         CommandType = CommandType.StoredProcedure,
                     };
                     cmd.Parameters.AddWithValue("@nSucursal", parametros.Sucursal);
-                    cmd.Parameters.AddWithValue("@nSucursal", parametros.Caja);
+                    cmd.Parameters.AddWithValue("@nCaja", parametros.Caja);
                     cmd.Parameters.AddWithValue("@nTipoRegistroCaja", parametros.TipoRegistroCaja);
 
                     using (var reader = await cmd.ExecuteReaderAsync())
