@@ -3,6 +3,7 @@ using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
 
 namespace Voalaft.API.Controllers
 {
@@ -126,6 +127,27 @@ namespace Voalaft.API.Controllers
                 var apertura = CryptographyUtils.DeserializarPeticion<RegAperturaCaja>(r);
                 RegAperturaCaja aperturaCajaAbierta = await _regAperturaCajaServicio.ObtenAperturaAbierta(apertura);
                 resultado = CryptographyUtils.CrearResultado(aperturaCajaAbierta);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar la lista de cat turnos");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenMovimientosCaja")]
+        public async Task<ResultadoAPI> ObtenMovimientosCaja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosConsultaCajas = CryptographyUtils.DeserializarPeticion<ParametrosConsultaMovimientosCaja>(r);
+                List<RegMovimientoCaja> movimientos = await _regMovimientoCajaServicio.ObtenMovimientosCaja(parametrosConsultaCajas);
+                resultado = CryptographyUtils.CrearResultado(movimientos);
             }
             catch (Exception ex)
             {

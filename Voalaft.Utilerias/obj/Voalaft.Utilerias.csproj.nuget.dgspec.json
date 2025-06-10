@@ -1,31 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {}
+    "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {}
   },
   "projects": {
-    "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {
+    "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
+        "projectUniqueName": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
         "projectName": "Voalaft.Utilerias",
-        "projectPath": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
-        "packagesPath": "C:\\Users\\joelr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joelr\\Documents\\APIComercial\\Voalaft.Utilerias\\obj\\",
+        "projectPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\Voalaft.Utilerias.csproj",
+        "packagesPath": "C:\\Users\\neoja\\.nuget\\packages\\",
+        "outputPath": "C:\\Codigo\\Dev\\WebComercial\\APIComercial\\Voalaft.Utilerias\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages"
         ],
         "configFilePaths": [
-          "C:\\Users\\joelr\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\neoja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 23.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8": {},
+          "C:\\Program Files\\DevExpress 23.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,8 +44,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -60,12 +60,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.10, 8.0.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.10, 8.0.10]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.10, 8.0.10]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
