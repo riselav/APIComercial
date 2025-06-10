@@ -49,6 +49,8 @@ namespace Voalaft.API.Servicios
             services.AddTransient<ICatFormaPagoServicio, CatFormaPagoServicio>();
             services.AddTransient<ICatTipoRegistroCajaServicio, CatTipoRegistroCajaServicio>();
 
+            services.AddTransient<ICatConceptoCajaServicio, CatConceptoCajaServicio>();
+
         }
     }
 }

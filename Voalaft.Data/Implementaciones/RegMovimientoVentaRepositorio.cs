@@ -18,11 +18,14 @@ namespace Voalaft.Data.Implementaciones
     {
         private readonly Conexion _conexion;
         private readonly ILogger<RegMovimientoVentaRepositorio> _logger;
+        private readonly IRegMovimientoCajaRepositorio _movimientoCajaRepositorio;
 
-        public RegMovimientoVentaRepositorio(ILogger<RegMovimientoVentaRepositorio> logger, Conexion conexion)
+        public RegMovimientoVentaRepositorio(ILogger<RegMovimientoVentaRepositorio> logger, Conexion conexion, 
+            IRegMovimientoCajaRepositorio movimientoCajaRepositorio)
         {
             _conexion = conexion;
             _logger = logger;
+            _movimientoCajaRepositorio = movimientoCajaRepositorio;
         }
 
         public async Task<RegMovimientoVenta> IME_REG_VentasEncabezado(RegMovimientoVenta regMovimientoVenta)
@@ -137,6 +140,21 @@ namespace Voalaft.Data.Implementaciones
                                 int folio = (int)returnValue.Value;
                             }
                         }
+
+                        if (regMovimientoVenta.nIDApertura > 0 && regMovimientoVenta.regMovimientoCaja != null)
+                        {
+                            long nIDApertura = 0;
+
+                            if (regMovimientoVenta.nIDApertura != null) 
+                                nIDApertura = (long)regMovimientoVenta.nIDApertura;
+
+                            regMovimientoVenta.regMovimientoCaja.IDApertura = nIDApertura;
+
+                            await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoVenta.regMovimientoCaja, con, transaction);
+                            //await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja); // sin pasar conexión ni transacción
+
+                        }
+
                         // Todo bien, commit
                         transaction.Commit();
                     }

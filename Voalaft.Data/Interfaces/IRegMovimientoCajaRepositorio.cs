@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
 
 namespace Voalaft.Data.Interfaces
 {
@@ -13,5 +14,7 @@ namespace Voalaft.Data.Interfaces
         Task<RegMovimientoCaja> IME_REG_MovimientoCaja(RegMovimientoCaja regMovimientoCaja,
                 SqlConnection externalConnection = null,
                 SqlTransaction externalTransaction = null);
+        Task<List<RegMovimientoCaja>> ObtenMovimientosCaja(ParametrosConsultaMovimientosCaja parametros);
+        Task<Decimal> ObtenImporteDisponibleCaja(ParametrosConsultaMovimientosCaja parametros);
     }
 }
