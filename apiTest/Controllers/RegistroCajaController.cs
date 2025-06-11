@@ -152,7 +152,28 @@ namespace Voalaft.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new Exception("Error al consultar la lista de cat turnos");
+                throw new Exception("Error al consultar la lista de movimientos de caja");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenImporteDisponibleCaja")]
+        public async Task<ResultadoAPI> ObtenImporteDisponibleCaja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosConsultaCajas = CryptographyUtils.DeserializarPeticion<ParametrosConsultaMovimientosCaja>(r);
+                Decimal disponible = await _regMovimientoCajaServicio.ObtenImporteDisponibleCaja (parametrosConsultaCajas);
+                resultado = CryptographyUtils.CrearResultado(disponible);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar el disponible de caja");
             }
             finally { }
 
