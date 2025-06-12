@@ -179,5 +179,29 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("CancelarMovimientoCaja")]
+        public async Task<ResultadoAPI> CancelarMovimientoCaja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosCancelarMovto = CryptographyUtils.DeserializarPeticion<ParametrosCancelarMovimientoCaja>(r);
+                parametrosCancelarMovto.usuarioCancela = peticion.usuario;
+                parametrosCancelarMovto.maquinaCancela = peticion.maquina;
+
+                Int32 consecutivo = await _regMovimientoCajaServicio.CancelarMovimientoCaja(parametrosCancelarMovto);
+                resultado = CryptographyUtils.CrearResultado(consecutivo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al cancelar el movimiento de caja");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

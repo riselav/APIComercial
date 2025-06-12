@@ -205,7 +205,7 @@ namespace Voalaft.Data.Implementaciones
                     SqlCommand cmd = new SqlCommand()
                     {
                         Connection = con,
-                        CommandText = "RST_CON_CJA_MovimientosCaja",
+                        CommandText = "CM_CON_CJA_MovimientosCaja",
                         CommandType = CommandType.StoredProcedure,
                     };
                     cmd.Parameters.AddWithValue("@nSucursal", parametros.Sucursal);
@@ -227,6 +227,7 @@ namespace Voalaft.Data.Implementaciones
                                     Importe = ConvertUtils.ToDecimal(reader["nImporte"]),
                                     Fecha = ConvertUtils.ToDateTime(reader["dFecha"]),
                                     Usuario = ConvertUtils.ToString(reader["cUsuario"]),
+                                    NombreEmpleado = ConvertUtils.ToString(reader["cEmpleado"]),
                                     Hora = ConvertUtils.ToString(reader["cHora"]),
                                     Observaciones = ConvertUtils.ToString(reader["cComentarios"]),
                                 }
@@ -298,6 +299,56 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return disponible;
+        }
+
+        public async Task<Int32> CancelarMovimientoCaja(ParametrosCancelarMovimientoCaja parametros)
+        {
+            Int32 consecutivo = 0;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_UP_CAJ_CancelaMovimientoCaja_SP",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nIDRegistroCaja", parametros.idRegistroCaja);
+                    cmd.Parameters.AddWithValue("@cUsuarioCancela", parametros.usuarioCancela);
+                    cmd.Parameters.AddWithValue("@cMaquinaCancela", parametros.maquinaCancela);
+                    cmd.Parameters.AddWithValue("@cUsuarioAutoriza", parametros.usuarioAutoriza);
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        //int ConceptoCajaIndex = reader.GetOrdinal("cConceptoCaja");
+
+                        while (await reader.ReadAsync())
+                        {
+                            consecutivo = ConvertUtils.ToInt32(reader["Valor"]);
+
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo cancelar el movimiento de caja")
+                {
+                    Metodo = "CancelarMovimientoCaja",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return consecutivo;
         }
     }
 }
