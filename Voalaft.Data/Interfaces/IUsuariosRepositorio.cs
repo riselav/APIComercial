@@ -10,5 +10,7 @@ namespace Voalaft.Data.Interfaces
         Task<List<MenuUsuario>> ObtenerMenuUsuario(int nUsuario);
 
         Task<Usuarios> AccesoUsuario(Usuarios usuario);
+
+        Task<Usuarios> AccesoEmpleado(Usuarios Empleado);
     }
 }

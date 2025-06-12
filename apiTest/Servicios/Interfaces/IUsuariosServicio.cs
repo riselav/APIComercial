@@ -9,5 +9,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<List<MenuUsuario>> ObtenerMenuUsuario(int nUsuario);
 
         Task<Usuarios> AccesoUsuario(Usuarios usuario);
+
+        Task<Usuarios> AccesoEmpleado(Usuarios Empleado);
     }
 }
