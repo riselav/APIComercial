@@ -36,6 +36,7 @@ namespace Voalaft.Data.Entidades
         public bool Activo { get; set; }
 
         public string? Usuario { get; set; }
+        public string? NombreEmpleado { get; set; }
         public string? Maquina { get; set; }
 
         public List<RegMovimientoCajaDetalle>? Detalle { get; set; }

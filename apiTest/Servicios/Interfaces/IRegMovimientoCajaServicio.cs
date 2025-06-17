@@ -8,6 +8,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<RegMovimientoCaja> IME_REG_MovimientoCaja(RegMovimientoCaja regMovimientoCaja);
         Task<List<RegMovimientoCaja>> ObtenMovimientosCaja(ParametrosConsultaMovimientosCaja parametros);
 
-        //Task<Decimal> ObtenImporteDisponibleCaja(ParametrosConsultaMovimientosCaja parametros);
+        Task<Decimal> ObtenImporteDisponibleCaja(ParametrosConsultaMovimientosCaja parametros);
+        Task<Int32> CancelarMovimientoCaja(ParametrosCancelarMovimientoCaja parametros);
     }
 }

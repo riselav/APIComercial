@@ -106,8 +106,14 @@ namespace Voalaft.API.Controllers
                 var r = CryptographyUtils.Desencriptar(peticion.contenido);
                 user = CryptographyUtils.DeserializarPeticion<UsuarioLogin>(r);
 
-                Console.WriteLine(user.usuario_id);
-                Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+                //Console.WriteLine(user.usuario_id);
+                //Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+                
+                Usuarios usuarioLogin = new Usuarios();
+                usuarioLogin.Usuario = user.usuario_id;
+                usuarioLogin.Password = user.password;
+
+                Usuarios usuario = await _usuario.AccesoUsuario(usuarioLogin);
                 if (usuario == null)
                 {
                     throw new Exception("Usuario no encontrado " + user.usuario_id);
@@ -118,13 +124,47 @@ namespace Voalaft.API.Controllers
                 {
                     user.usuario_name = ConvertUtils.ToString(usuario.Nombre) + " " + ConvertUtils.ToString(usuario.ApellidoPaterno);
                 }
-                List<MenuUsuario> listMenu = await _usuario.ObtenerMenuUsuario(usuario.Folio);
-                if (listMenu != null)
+                
+                resultado = CryptographyUtils.CrearResultado(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Usuario y/o contraseña invalida");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("AccesoEmpleado")]
+        public async Task<ResultadoAPI> AccesoEmpleado(PeticionAPI peticion)
+        {
+            //var peticion = HttpContext.Items["peticion"] as PeticionAPI;
+            UsuarioLogin user = null;
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                user = CryptographyUtils.DeserializarPeticion<UsuarioLogin>(r);
+
+                //Console.WriteLine(user.usuario_id);
+                //Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+
+                Usuarios usuarioLogin = new Usuarios();
+                usuarioLogin.Empleado = user.usuario_Empleado;
+                usuarioLogin.Password = user.password;
+
+                Usuarios usuario = await _usuario.AccesoEmpleado(usuarioLogin);
+                if (usuario == null)
                 {
-                    user.menuUsuarios = listMenu;
+                    throw new Exception("Usuario no encontrado " + user.usuario_id);
                 }
-                var token = GenerateToken(user);
-                user.token = token;
+                else
+                {
+                    user.usuario_name = ConvertUtils.ToString(usuario.Nombre) + " " + ConvertUtils.ToString(usuario.ApellidoPaterno);
+                }
+                
                 resultado = CryptographyUtils.CrearResultado(user);
             }
             catch (Exception ex)

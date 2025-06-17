@@ -109,8 +109,8 @@ namespace Voalaft.Data.Implementaciones
                                     Descripcion = ConvertUtils.ToString(reader["cDescripcion"]),
                                     Ingreso = ConvertUtils.ToBoolean(reader["bIngreso"]),
                                     Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
-                                    Usuario = ConvertUtils.ToString(reader["cUsuario_Registro"]),
-                                    Maquina = ConvertUtils.ToString(reader["cMaquina_Registro"])
+                                    Usuario = ConvertUtils.ToString(reader["cUsuario_Registra"]),
+                                    Maquina = ConvertUtils.ToString(reader["cMaquina_Registra"])
                                 }
                                 );
                         }

@@ -250,5 +250,75 @@ namespace Voalaft.Data.Implementaciones
             }
             return usuarioValido;
         }
+
+        public async Task<Usuarios> AccesoEmpleado(Usuarios Empleado)
+        {
+            Usuarios usuarioValido = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    var cmd = new SqlCommand("SELECT nFolio,cUsuario,cPassword,bAdministrador,nEmpleado,bActivo" +
+                        ",cNombre,cApellidoPaterno,cApellidoMaterno FROM CAT_Usuarios (NOLOCK) where nEmpleado=@Empleado", con);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add("@Empleado", SqlDbType.Int).Value = Empleado.Empleado;
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            usuarioValido =
+                                new Usuarios()
+                                {
+                                    Folio = ConvertUtils.ToInt32(reader["nFolio"]),
+                                    Usuario = ConvertUtils.ToString(reader["cUsuario"]),
+                                    Password = ConvertUtils.ToString(reader["cPassword"]),
+                                    Administrador = ConvertUtils.ToBoolean(reader["bAdministrador"]),
+                                    Empleado = ConvertUtils.ToInt32(reader["nEmpleado"]),
+                                    Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
+                                    Nombre = ConvertUtils.ToString(reader["cNombre"]),
+                                    ApellidoPaterno = ConvertUtils.ToString(reader["cApellidoPaterno"]),
+                                    ApellidoMaterno = ConvertUtils.ToString(reader["cApellidoMaterno"])
+                                };
+                            break;
+                        }
+                    }
+
+                    if (usuarioValido != null)
+                    {
+                        // Instancia de la clase de criptografía
+                        CriptografiaDAL criptografia = new CriptografiaDAL();
+
+                        // Texto encriptado previamente con el mismo algoritmo y claves
+                        string textoEncriptado = usuarioValido.Password;
+
+                        // Usar el método Desencriptar
+                        string textoDesencriptado = criptografia.DesencriptarContraseña(textoEncriptado);
+                        string textoDesencriptadoSha1 = criptografia.ObtenerSHA256(textoDesencriptado);
+
+                        bool coincide = textoDesencriptadoSha1.Equals(Empleado.Password, StringComparison.OrdinalIgnoreCase);
+                        if (!coincide)
+                        {
+                            usuarioValido = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener el usuario")
+                {
+                    Metodo = "AccesoEmpleado",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return usuarioValido;
+        }
     }
 }

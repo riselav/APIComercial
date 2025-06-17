@@ -1,13 +1,15 @@
+
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using Voalaft.API.Servicios.Implementacion;
+using Microsoft.AspNetCore.Authorization;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CatFormaPagoController : Controller
