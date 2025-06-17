@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
@@ -100,5 +101,31 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerImportesFormaPagoApertura")]
+        public async Task<ResultadoAPI> ObtenerImportesFormaPagoApertura(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                JObject json = JObject.Parse(r);
+
+                int nSucursal = json["nSucursal"].Value<int>();
+                int nCaja = json["nCaja"].Value<int>();
+
+                var articuloResult = await _catFormaPagoServicio.ObtenerImportesFormaPagoApertura(nSucursal, nCaja);
+                resultado = CryptographyUtils.CrearResultado(articuloResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar las articulos");
+            }
+            finally { }
+
+            return resultado;
+        }
+
     }
 }

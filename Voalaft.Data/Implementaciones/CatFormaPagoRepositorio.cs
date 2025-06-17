@@ -189,5 +189,62 @@ namespace Voalaft.Data.Implementaciones
 
             return formasPago;
         }
+
+        public async Task<List<ImportesFormaPagoApertura>> ObtenerImportesFormaPagoApertura(int nSucursal, int nCaja)
+        {
+            List<ImportesFormaPagoApertura> formasPago = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_ObtenImportesFormasPagoApertura_SP",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", nSucursal);
+                    cmd.Parameters.AddWithValue("@nCaja", nCaja);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // int SucursalRegistroIndex = reader.GetOrdinal("nSucursalRegistro");
+
+                        while (await reader.ReadAsync())
+                        {
+                            formasPago.Add(
+                                new ImportesFormaPagoApertura()
+                                {
+                                    FormaPago = ConvertUtils.ToInt32(reader["nFormaPago"]),
+                                    Descripcion = ConvertUtils.ToString(reader["cFormaPago"]),
+                                    ImporteSistema = ConvertUtils.ToDecimal(reader["nImporteSistema"]),
+                                    ImporteUsuario = ConvertUtils.ToDecimal(reader["nImporteUsuario"]),
+                                    Diferencia = ConvertUtils.ToDecimal(reader["nDiferencia"]),
+                                    Efectivo = ConvertUtils.ToBoolean(reader["bEfectivo"]),
+                                    
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener la lista de formas de pago por tipo de egreso")
+                {
+                    Metodo = "ObtenerImportesFormaPagoApertura",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return formasPago;
+        }
+
     }
 }

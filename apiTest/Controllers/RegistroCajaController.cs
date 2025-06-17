@@ -15,18 +15,20 @@ namespace Voalaft.API.Controllers
     {
         private readonly IRegAperturaCajaServicio _regAperturaCajaServicio;
         private readonly IRegMovimientoCajaServicio _regMovimientoCajaServicio;
+        private readonly IRegCorteCajaServicio _regCorteCajaServicio;
 
         private readonly ILogger<RegistroCajaController> _logger;
         private readonly IConfiguration _config;
 
         public RegistroCajaController(ILogger<RegistroCajaController> logger, IConfiguration config,
-                                    IRegAperturaCajaServicio regAperturaCajaServicio, IRegMovimientoCajaServicio regMovimientoCajaServicio)
+                                    IRegAperturaCajaServicio regAperturaCajaServicio, IRegMovimientoCajaServicio regMovimientoCajaServicio, IRegCorteCajaServicio regCorteCajaServicio)
         {
             _regAperturaCajaServicio = regAperturaCajaServicio;
             _regMovimientoCajaServicio = regMovimientoCajaServicio;
 
             _logger = logger;
             _config = config;
+            _regCorteCajaServicio = regCorteCajaServicio;
         }
 
         [HttpPost("IME_REG_AperturaCaja")]
@@ -46,6 +48,29 @@ namespace Voalaft.API.Controllers
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al guardar la apertura de caja");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("IME_REG_CorteCaja")]
+        public async Task<ResultadoAPI> IME_REG_CorteCaja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var regCorte = CryptographyUtils.DeserializarPeticion<RegCorteCaja>(r);
+                regCorte.Usuario = peticion.usuario;
+                regCorte.Maquina = peticion.maquina;
+                var regCorteResult = await _regCorteCajaServicio.IME_REG_CorteCaja(regCorte);
+                resultado = CryptographyUtils.CrearResultado(regCorteResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar la corte de caja");
             }
             finally { }
 

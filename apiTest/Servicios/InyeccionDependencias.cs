@@ -50,6 +50,8 @@ namespace Voalaft.API.Servicios
             services.AddTransient<ICatTipoRegistroCajaServicio, CatTipoRegistroCajaServicio>();
 
             services.AddTransient<ICatConceptoCajaServicio, CatConceptoCajaServicio>();
+            services.AddTransient<IRegCorteCajaServicio, RegCorteCajaServicio>();
+            
 
         }
     }

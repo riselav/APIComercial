@@ -8,5 +8,6 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<CatFormaPago> ObtenerPorId(long n_FormaPago);
 
         Task<List<CatFormaPago>> ObtenerPorTipoEgreso(int n_TipoEgreso);
+        Task<List<ImportesFormaPagoApertura>> ObtenerImportesFormaPagoApertura(int nSucursal, int nCaja);
     }
 }

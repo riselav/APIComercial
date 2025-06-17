@@ -28,6 +28,26 @@ namespace Voalaft.API.Controllers
 
         }
 
+        [HttpPost("getImporte")]
+        public async Task<ResultadoAPI> getImporte(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                Decimal importe = 5.82m;
+                resultado = CryptographyUtils.CrearResultado(importe);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar la lista de cat turnos");
+            }
+            finally { }
+
+            return resultado;
+        }
+
         [HttpPost("ListaDenominaciones")]
         public async Task<ResultadoAPI> ListaDenominaciones(PeticionAPI peticion)
         {
