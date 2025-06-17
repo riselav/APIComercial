@@ -19,16 +19,19 @@ namespace Voalaft.Data.Implementaciones
         private readonly Conexion _conexion;
         private readonly ILogger<RegCorteCajaRepositorio> _logger;
         private readonly IRegMovimientoCajaRepositorio _movimientoCajaRepositorio;
+        private readonly IRegAperturaCajaRepositorio _regAperturaCajaRepositorio;
 
         public RegCorteCajaRepositorio(ILogger<RegCorteCajaRepositorio> logger, Conexion conexion, 
-                                          IRegMovimientoCajaRepositorio movimientoCajaRepositorio)
+                                          IRegMovimientoCajaRepositorio movimientoCajaRepositorio,
+                                          IRegAperturaCajaRepositorio regAperturaCajaRepositorio)
         {
             _conexion = conexion;
             _logger = logger;
             _movimientoCajaRepositorio = movimientoCajaRepositorio;
+            _regAperturaCajaRepositorio = regAperturaCajaRepositorio;
         }
 
-        private RegMovimientoCaja CrearMovimientoCaja(RegCorteCaja regCorteCaja)
+        private RegMovimientoCaja CrearMovimientoCaja(RegCorteCaja regCorteCaja,RegAperturaCaja regAperturaCaja)
         {
             RegMovimientoCaja regMovimientoCaja = new RegMovimientoCaja
             {
@@ -39,7 +42,8 @@ namespace Voalaft.Data.Implementaciones
                 Importe = 0,
                 EmpleadoInvolucrado = regCorteCaja.IDUsuarioAutoriza == 0 ? null : regCorteCaja.IDUsuarioAutoriza,                
                 Usuario = regCorteCaja.Usuario,
-                Maquina = regCorteCaja.Maquina
+                Maquina = regCorteCaja.Maquina,
+                IDApertura = regAperturaCaja.IDApertura
             };
             if (regCorteCaja.listRegCorteCajaDetalle != null && regCorteCaja.listRegCorteCajaDetalle.Count > 0)
             {
@@ -88,6 +92,12 @@ namespace Voalaft.Data.Implementaciones
 
         public async Task<RegCorteCaja> IME_REG_CorteCaja(RegCorteCaja regCorteCaja)
         {
+            RegAperturaCaja paramApertura = new RegAperturaCaja
+            {
+                IDCaja = regCorteCaja.IDCaja,
+                IDSucursal = regCorteCaja.IDSucursal
+            };
+            RegAperturaCaja apertura = await _regAperturaCajaRepositorio.ObtenAperturaAbierta(paramApertura);
             using (var con = _conexion.ObtenerSqlConexion())
             {
                 await con.OpenAsync();
@@ -185,7 +195,7 @@ namespace Voalaft.Data.Implementaciones
 
                         }
 
-                        var regMovimientoCaja = CrearMovimientoCaja(regCorteCaja);
+                        var regMovimientoCaja = CrearMovimientoCaja(regCorteCaja,apertura);
                         
                         await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja, con, transaction);
                             

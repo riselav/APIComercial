@@ -12,7 +12,7 @@ CREATE PROCEDURE CM_IME_CAJ_DetalleDenominacionMovimientosCaja (
 )        
 AS         
 BEGIN
-	BEGIN TRY		
+	--BEGIN TRY		
 		INSERT INTO CAJ_DetalleDenominacionMovimientosCaja (
 		nIDRegistroCaja,nRenglon,nDenominacion,nValor,nCantidad,nImporte,
 		bActivo, cUsuario_Registra, cMaquina_Registra,dFecha_Registra)
@@ -21,8 +21,8 @@ BEGIN
 		1 as bActivo, @cUsuario,@cMaquina,GETDATE()
         
 		RETURN 1
-	END TRY
-	BEGIN CATCH
-		RETURN 0
-	END CATCH
+	--END TRY
+	--BEGIN CATCH
+	--	RETURN 0
+	--END CATCH
 END

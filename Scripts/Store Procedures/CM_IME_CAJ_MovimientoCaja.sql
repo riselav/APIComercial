@@ -9,7 +9,7 @@ CREATE PROCEDURE CM_IME_CAJ_MovimientoCaja (
 	@nIDApertura bigint,  
 	@dFecha date,  
 	@nConceptoCaja int=NULL,   
-	@nEmpleado int,  
+	@nEmpleado int = Null,  
 	@nImporte decimal(18,4),  
 	@cObservaciones varchar(5000)=NULL,  
 	@bActivo as bit,    

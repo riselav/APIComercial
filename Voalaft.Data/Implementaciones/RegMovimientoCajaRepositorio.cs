@@ -154,11 +154,11 @@ namespace Voalaft.Data.Implementaciones
                                 cmdInsDetalleDenominacion.Parameters.AddWithValue("@cUsuario", regMovimientoCaja.Usuario);
                                 cmdInsDetalleDenominacion.Parameters.AddWithValue("@cMaquina", regMovimientoCaja.Maquina);
 
-                                SqlParameter returnValueDen = cmdInsDetalleDenominacion.Parameters.Add("@ReturnVal", SqlDbType.Int);
-                                returnValue.Direction = ParameterDirection.ReturnValue;
+                                //SqlParameter returnValueDen = cmdInsDetalleDenominacion.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                                //returnValue.Direction = ParameterDirection.ReturnValue;
 
                                 await cmdInsDetalleDenominacion.ExecuteNonQueryAsync();
-                                int folioDen = (int)returnValue.Value;
+                                //int folioDen = (int)returnValue.Value;
 
                             }
                         }                                
