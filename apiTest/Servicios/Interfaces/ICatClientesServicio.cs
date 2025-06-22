@@ -1,4 +1,6 @@
 ﻿using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
+using Voalaft.Data.Entidades.Tableros;
 
 namespace Voalaft.API.Servicios.Interfaces
 {
@@ -6,5 +8,7 @@ namespace Voalaft.API.Servicios.Interfaces
     {
         Task<List<CatClientes>> Lista();
         Task<CatClientes> ObtenerPorId(long n_Cliente);
+
+        Task<List<Cliente>> ConsultaClientes(ParametrosConsultaClientes paramClientes);
     }
 }

@@ -4,13 +4,14 @@ GO
 CREATE PROCEDURE CAT_CON_CAT_Clientes (@nFolio bigint=0 )  
 AS  
 BEGIN  
- -- CAT_CON_CAT_Clientes 1001000002
+ -- CAT_CON_CAT_Clientes 0
 
- SELECT EM.nCliente,EM.cNombreCompleto as cCliente,
+ SELECT EM.nCliente,ISNULL(CR.cRazonSocial,EM.cNombreCompleto) as cCliente, --EM.cNombreCompleto as cCliente,
  EM.cColonia,EM.cCodigoPostal,EM.cCalle,EM.cNumExt,EM.cNumInt,EM.bActivo,
  CP.cEstado,CP.cMunicipio,Mn.cNombreMunicipio,CP.cLocalidad,LC.cDescripcion as cNombreLocalidad,
  EM.cTelefono,EM.cSeniasParticulares,EM.nSucursalRegistro
  FROM CAT_Clientes EM (NOLOCK)
+ LEFT JOIN CAT_RFC CR (NOLOCK) ON CR.nIDRFC=EM.nIDRFC
  LEFT JOIN CAT_Colonias CL (NOLOCK) ON CL.cColonia=Em.cColonia
 	AND CL.cCodigoPostal=EM.cCodigoPostal
  LEFT JOIN CAT_CodigosPostales CP (NOLOCK) ON CP.cCodigoPostal=EM.cCodigoPostal

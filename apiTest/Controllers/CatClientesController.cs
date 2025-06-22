@@ -3,6 +3,8 @@ using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
+using Voalaft.Data.Entidades.Tableros;
 
 namespace Voalaft.API.Controllers
 {
@@ -79,6 +81,27 @@ namespace Voalaft.API.Controllers
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al consultar el registro de cat cliente");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ConsultaClientes")]
+        public async Task<ResultadoAPI> ConsultaClientes(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Cliente = CryptographyUtils.DeserializarPeticion<ParametrosConsultaClientes>(r);
+                List<Cliente> cli = await _catClientesServicio.ConsultaClientes(Cliente);
+                resultado = CryptographyUtils.CrearResultado(cli);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar los clientes de tablero");
             }
             finally { }
 

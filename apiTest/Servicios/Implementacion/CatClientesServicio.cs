@@ -1,6 +1,8 @@
 ﻿using Voalaft.API.Exceptions;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
+using Voalaft.Data.Entidades.Tableros;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Implementaciones;
 using Voalaft.Data.Interfaces;
@@ -71,6 +73,31 @@ namespace Voalaft.API.Servicios.Implementacion
                 throw new ServiciosException("Error(srv) No se pudo obtener cliente")
                 {
                     Metodo = "ObtenerPorId",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        public async Task<List<Cliente>> ConsultaClientes(ParametrosConsultaClientes paramClientes)
+        {
+            try
+            {
+                return await _catClientesRepositorio.ConsultaClientes(paramClientes);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener información del proveedor")
+                {
+                    Metodo = "Lista",
                     ErrorMessage = ex.Message,
                 };
             }
