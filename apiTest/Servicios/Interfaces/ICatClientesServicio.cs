@@ -10,5 +10,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<CatClientes> ObtenerPorId(long n_Cliente);
 
         Task<List<Cliente>> ConsultaClientes(ParametrosConsultaClientes paramClientes);
+
+        Task<CatClientes> IME_Cliente(CatClientes cliente);
     }
 }

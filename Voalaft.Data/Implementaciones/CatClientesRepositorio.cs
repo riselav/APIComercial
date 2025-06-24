@@ -223,5 +223,83 @@ namespace Voalaft.Data.Implementaciones
 
             return clientes;
         }
+
+        public async Task<CatClientes> IME_Cliente(CatClientes cliente)
+        {
+            using (var con = _conexion.ObtenerSqlConexion())
+            {
+                await con.OpenAsync();
+
+                using (var transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand()
+                        {
+                            Connection = con,
+                            Transaction = transaction,
+                            CommandText = "CAT_IME_Clientes",
+                            CommandType = CommandType.StoredProcedure,
+                        };
+                        cmd.Parameters.AddWithValue("@nFolio", cliente.nCliente);
+                        cmd.Parameters.AddWithValue("@cRazonSocial", cliente.CatRFC.cRazonSocial);
+                        cmd.Parameters.AddWithValue("@cNombreCompleto", cliente.cNombreCompleto);
+                        cmd.Parameters.AddWithValue("@nTipoPersona", cliente.nTipoPersona);
+                        cmd.Parameters.AddWithValue("@cRFC", cliente.CatRFC.cRFC);
+                        cmd.Parameters.AddWithValue("@cRegimenFiscal", cliente.CatRFC.cRegimenFiscal);
+                        cmd.Parameters.AddWithValue("@cCalle", cliente.cCalle);
+                        cmd.Parameters.AddWithValue("@cNumExt", cliente.cNumExt);
+                        cmd.Parameters.AddWithValue("@cNumInt", cliente.cNumInt);
+                        cmd.Parameters.AddWithValue("@cCodigoPostal", cliente.cCodigoPostal);
+                        cmd.Parameters.AddWithValue("@cCveColonia", cliente.cColonia);
+
+                        cmd.Parameters.AddWithValue("@cTelefono", cliente.cTelefono);
+                        cmd.Parameters.AddWithValue("@cSeniasParticulares", cliente.cSeniasParticulares);
+                        cmd.Parameters.AddWithValue("@bActivo", cliente.Activo);
+                        cmd.Parameters.AddWithValue("@cUsuario", cliente.Usuario);
+                        cmd.Parameters.AddWithValue("@cNombreMaquina ", cliente.Maquina);
+                        cmd.Parameters.AddWithValue("@nSucursalRegistro", cliente.nSucursalRegistro);
+                        
+                        //SqlParameter outputParam = new SqlParameter("@nVenta", SqlDbType.BigInt);
+                        //outputParam.Direction = ParameterDirection.Output;
+                        //cmd.Parameters.Add(outputParam);
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+                        
+                        //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
+
+                        if(cliente.nCliente== 0) 
+                               cliente.nCliente = folioSig;                        
+
+                        // Todo bien, commit
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+
+                        string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                        string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                        int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                        _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                        throw new DataAccessException("Error(rp) al insertar/editar cliente")
+                        {
+                            Metodo = "IME_Cliente",
+                            ErrorMessage = ex.Message,
+                            ErrorCode = 1
+                        };
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+            }
+
+            return cliente;
+        }
     }
 }

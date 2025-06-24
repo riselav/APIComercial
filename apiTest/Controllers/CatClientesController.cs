@@ -5,10 +5,11 @@ using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
 using Voalaft.Data.Entidades.ClasesParametros;
 using Voalaft.Data.Entidades.Tableros;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
 
@@ -102,6 +103,29 @@ namespace Voalaft.API.Controllers
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al consultar los clientes de tablero");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("IME_Cliente")]
+        public async Task<ResultadoAPI> IME_Cliente(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var cliente = CryptographyUtils.DeserializarPeticion<CatClientes>(r);
+                cliente.Usuario = peticion.usuario;
+                cliente.Maquina = peticion.maquina;
+                var clienteResult = await _catClientesServicio.IME_Cliente(cliente);
+                resultado = CryptographyUtils.CrearResultado(clienteResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar cliente");
             }
             finally { }
 

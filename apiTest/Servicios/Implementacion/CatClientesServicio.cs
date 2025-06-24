@@ -102,5 +102,30 @@ namespace Voalaft.API.Servicios.Implementacion
                 };
             }
         }
+
+        public async Task<CatClientes> IME_Cliente(CatClientes cliente)
+        {
+            try
+            {
+                return await _catClientesRepositorio.IME_Cliente(cliente);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo guardar cliente")
+                {
+                    Metodo = "IME_Cliente",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
     }
 }

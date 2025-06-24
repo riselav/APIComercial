@@ -49,6 +49,7 @@ namespace Voalaft.Data.Entidades
 
         public string? NombreLocalidad { get; set; }
 
+        public CatRFC? CatRFC { get; set; }
 
     }
     
