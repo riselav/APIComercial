@@ -60,6 +60,7 @@ namespace Voalaft.API.Controllers
                 {
                     user.menuUsuarios = listMenu;
                 }
+                user.usuario_Empleado = usuario.Empleado;
                 var token = GenerateToken(user);
                 user.token = token;
                 resultado = CryptographyUtils.CrearResultado(user);
@@ -124,7 +125,7 @@ namespace Voalaft.API.Controllers
                 {
                     user.usuario_name = ConvertUtils.ToString(usuario.Nombre) + " " + ConvertUtils.ToString(usuario.ApellidoPaterno);
                 }
-                
+                user.usuario_Empleado = usuario.Empleado;
                 resultado = CryptographyUtils.CrearResultado(user);
             }
             catch (Exception ex)
@@ -164,7 +165,7 @@ namespace Voalaft.API.Controllers
                 {
                     user.usuario_name = ConvertUtils.ToString(usuario.Nombre) + " " + ConvertUtils.ToString(usuario.ApellidoPaterno);
                 }
-                
+                user.usuario_Empleado = usuario.Empleado;
                 resultado = CryptographyUtils.CrearResultado(user);
             }
             catch (Exception ex)

@@ -69,7 +69,7 @@ namespace Voalaft.Data.Implementaciones
                 cmd.Parameters.AddWithValue("@dFecha", regMovimientoCaja.Fecha);
                 cmd.Parameters.AddWithValue("@nConceptoCaja", regMovimientoCaja.ConceptoCaja == 0 ? null : regMovimientoCaja.ConceptoCaja);
 
-                cmd.Parameters.AddWithValue("@nEmpleado", regMovimientoCaja.EmpleadoInvolucrado);
+                cmd.Parameters.AddWithValue("@nEmpleado", regMovimientoCaja.EmpleadoInvolucrado == 0 ? null : regMovimientoCaja.EmpleadoInvolucrado);
                 cmd.Parameters.AddWithValue("@nImporte", regMovimientoCaja.Importe);
 
                 cmd.Parameters.AddWithValue("@cObservaciones", regMovimientoCaja.Observaciones == "" ? null : regMovimientoCaja.Observaciones);

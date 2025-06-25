@@ -19,13 +19,15 @@ namespace Voalaft.Data.Implementaciones
         private readonly Conexion _conexion;
         private readonly ILogger<RegMovimientoVentaRepositorio> _logger;
         private readonly IRegMovimientoCajaRepositorio _movimientoCajaRepositorio;
+        private readonly IRegAperturaCajaRepositorio _regAperturaCajaRepositorio;
 
         public RegMovimientoVentaRepositorio(ILogger<RegMovimientoVentaRepositorio> logger, Conexion conexion, 
-            IRegMovimientoCajaRepositorio movimientoCajaRepositorio)
+            IRegMovimientoCajaRepositorio movimientoCajaRepositorio, IRegAperturaCajaRepositorio regAperturaCajaRepositorio)
         {
             _conexion = conexion;
             _logger = logger;
             _movimientoCajaRepositorio = movimientoCajaRepositorio;
+            _regAperturaCajaRepositorio = regAperturaCajaRepositorio;
         }
 
         public async Task<RegMovimientoVenta> IME_REG_VentasEncabezado(RegMovimientoVenta regMovimientoVenta)
@@ -36,6 +38,12 @@ namespace Voalaft.Data.Implementaciones
 
                 using (var transaction = con.BeginTransaction())
                 {
+                    RegAperturaCaja paramApertura = new RegAperturaCaja
+                    {
+                        IDCaja = (int)regMovimientoVenta.nCaja,
+                        IDSucursal = regMovimientoVenta.nSucursal
+                    };
+                    RegAperturaCaja apertura = await _regAperturaCajaRepositorio.ObtenAperturaAbierta(paramApertura);
                     try
                     {                        
                         SqlCommand cmd = new SqlCommand()
@@ -45,6 +53,7 @@ namespace Voalaft.Data.Implementaciones
                             CommandText = "RST_IME_REG_VentasEncabezado",
                             CommandType = CommandType.StoredProcedure,
                         };
+                        regMovimientoVenta.nIDApertura = apertura.IDApertura;
                         cmd.Parameters.AddWithValue("@nTipoRegistro", regMovimientoVenta.nTipoRegistro);
                         cmd.Parameters.AddWithValue("@nTipoVenta", regMovimientoVenta.nTipoVenta == 0 ? null : regMovimientoVenta.nTipoVenta);
                         cmd.Parameters.AddWithValue("@nSucursal", regMovimientoVenta.nSucursal);
@@ -130,8 +139,8 @@ namespace Voalaft.Data.Implementaciones
                                 cmdInsDetalle.Parameters.AddWithValue("@cComentarios", detalle.cComentarios);
                                 cmdInsDetalle.Parameters.AddWithValue("@nCostoUnitario", detalle.nCostoUnitario);
 
-                                cmdInsDetalle.Parameters.AddWithValue("@cUsuario_Registra", detalle.Usuario);
-                                cmdInsDetalle.Parameters.AddWithValue("@cMaquina_Registra", detalle.Maquina);
+                                cmdInsDetalle.Parameters.AddWithValue("@cUsuario_Registra", regMovimientoVenta.Usuario);
+                                cmdInsDetalle.Parameters.AddWithValue("@cMaquina_Registra", regMovimientoVenta.Maquina);
 
                                 SqlParameter returnValue = cmdInsDetalle.Parameters.Add("@ReturnVal", SqlDbType.Int);
                                 returnValue.Direction = ParameterDirection.ReturnValue;
@@ -149,6 +158,8 @@ namespace Voalaft.Data.Implementaciones
                                 nIDApertura = (long)regMovimientoVenta.nIDApertura;
 
                             regMovimientoVenta.regMovimientoCaja.IDApertura = nIDApertura;
+                            regMovimientoVenta.regMovimientoCaja.Usuario= regMovimientoVenta.Usuario;
+                            regMovimientoVenta.regMovimientoCaja.Maquina = regMovimientoVenta.Maquina;
 
                             await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoVenta.regMovimientoCaja, con, transaction);
                             //await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja); // sin pasar conexión ni transacción
