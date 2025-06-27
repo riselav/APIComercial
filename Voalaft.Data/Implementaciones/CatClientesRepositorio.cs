@@ -259,18 +259,28 @@ namespace Voalaft.Data.Implementaciones
                         cmd.Parameters.AddWithValue("@cUsuario", cliente.Usuario);
                         cmd.Parameters.AddWithValue("@cNombreMaquina ", cliente.Maquina);
                         cmd.Parameters.AddWithValue("@nSucursalRegistro", cliente.nSucursalRegistro);
-                        
+
                         //SqlParameter outputParam = new SqlParameter("@nVenta", SqlDbType.BigInt);
                         //outputParam.Direction = ParameterDirection.Output;
                         //cmd.Parameters.Add(outputParam);
 
+                        // Agrega el parámetro de retorno
+                        var returnParameter = new SqlParameter
+                        {
+                            ParameterName = "@RETURN_VALUE",
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        cmd.Parameters.Add(returnParameter);
+
                         await cmd.ExecuteNonQueryAsync();
 
-                        int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
-                        
-                        //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
+                        //int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
 
-                        if(cliente.nCliente== 0) 
+                        //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
+                        
+                        int folioSig = (int)(returnParameter.Value ?? 0);
+
+                        if (cliente.nCliente== 0) 
                                cliente.nCliente = folioSig;                        
 
                         // Todo bien, commit

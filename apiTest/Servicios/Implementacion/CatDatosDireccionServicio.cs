@@ -15,9 +15,7 @@ namespace Voalaft.API.Servicios.Implementacion
         {
             _logger = logger;
             _datosDireccionRepositorio = datosDireccionRepositorio;
-        }
-
-        
+        }        
 
         public async Task<List<CatCodigosPostales>> ListaCodigosPostales()
         {
@@ -64,6 +62,31 @@ namespace Voalaft.API.Servicios.Implementacion
                 throw new ServiciosException("Error(srv) No se pudo obtener los Codigos postales")
                 {
                     Metodo = "ObtenerPorCP",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        public async Task<DireccionPorCodigoPostal> DireccionPorCodigoPostal(string cCodigoPostal)
+        {
+            try
+            {
+                return await _datosDireccionRepositorio.DireccionPorCodigoPostal(cCodigoPostal);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener los datos de dirección del  Codigo postal")
+                {
+                    Metodo = "DireccionPorCodigoPostal",
                     ErrorMessage = ex.Message,
                 };
             }
