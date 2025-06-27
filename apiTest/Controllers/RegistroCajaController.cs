@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
@@ -7,7 +8,7 @@ using Voalaft.Data.Entidades.ClasesParametros;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
 

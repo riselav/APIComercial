@@ -132,8 +132,10 @@ namespace Voalaft.Data.Implementaciones
 
                         await cmd.ExecuteNonQueryAsync();
 
+                        var consecutivo= (long)cmd.Parameters["@nConsecutivo"].Value;
+                        var idCorte = GenerarFolio(regCorteCaja.IDSucursal, consecutivo);
 
-                        regCorteCaja.IDCorte = (long)cmd.Parameters["@nConsecutivo"].Value;
+                      regCorteCaja.IDCorte = long.Parse(idCorte);
 
                         if (regCorteCaja.IDCorte > 0 && regCorteCaja.listRegCorteCajaDetalle != null && regCorteCaja.listRegCorteCajaDetalle.Count > 0)
                         {
@@ -198,8 +200,52 @@ namespace Voalaft.Data.Implementaciones
                         var regMovimientoCaja = CrearMovimientoCaja(regCorteCaja,apertura);
                         
                         await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja, con, transaction);
-                            
 
+
+                        int returnValue = -1;
+                        SqlCommand cmdActualizaMovimiento = new SqlCommand()
+                        {
+                            Connection = con,
+                            Transaction = transaction,
+                            CommandText = "RST_UP_ActualizaMovimientosCorteCaja",
+                            CommandType = CommandType.StoredProcedure,
+                        };
+                        cmdActualizaMovimiento.Parameters.AddWithValue("@nIDCorteCaja", regCorteCaja.IDCorte);                        
+                        cmdActualizaMovimiento.Parameters.AddWithValue("@nIDApertura", apertura.IDApertura);
+                        cmdActualizaMovimiento.Parameters.AddWithValue("@bActivo", 1);
+                        cmdActualizaMovimiento.Parameters.AddWithValue("@cUsuario", regCorteCaja.Usuario);
+                        cmdActualizaMovimiento.Parameters.AddWithValue("@cNombreMaquina", regCorteCaja.Maquina);
+
+                        SqlParameter retValueParam = new SqlParameter
+                        {
+                            ParameterName = "@ReturnValue", 
+                            Direction = ParameterDirection.ReturnValue,
+                            SqlDbType = SqlDbType.Int 
+                        };
+                        cmdActualizaMovimiento.Parameters.Add(retValueParam);
+
+                        try
+                        {
+                            await cmdActualizaMovimiento.ExecuteNonQueryAsync();
+                            if (retValueParam.Value != DBNull.Value)
+                            {
+                                returnValue = (int)retValueParam.Value;
+                            }
+                            if(returnValue<0)
+                            {
+                                throw new Exception("Ocurrio un error al actualizar movimientos de corte de caja");
+                            }
+                        }
+                        catch (SqlException ex)
+                        {
+                            Console.WriteLine($"SQL Error: {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"General Error: {ex.Message}");
+                            throw;
+                        }
+                        
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -228,6 +274,12 @@ namespace Voalaft.Data.Implementaciones
 
             return regCorteCaja;
         }
-
+        public string GenerarFolio(int nSucursal, long nConsecutivo)
+        {           
+            string sucursalPadded = nSucursal.ToString().PadLeft(5, '0');
+            string consecutivoPadded = nConsecutivo.ToString().PadLeft(8, '0');
+            string nFolio = "1" + sucursalPadded + consecutivoPadded;
+            return nFolio;
+        }
     }
 }

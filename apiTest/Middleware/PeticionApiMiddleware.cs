@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using Voalaft.Data.Entidades;
 
 namespace Voalaft.API.Middleware
 {
@@ -57,6 +58,7 @@ namespace Voalaft.API.Middleware
             }
             catch(Exception ex)
             {
+                context.Response.StatusCode = (int)400;
                 await HandleException(context, ex);
             }
             
@@ -69,7 +71,11 @@ namespace Voalaft.API.Middleware
             Console.WriteLine(message);
 
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            if(httpContext.Response.StatusCode != 400 && httpContext.Response.StatusCode != 401)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+            
 
             var result = System.Text.Json.JsonSerializer.Serialize(new
             {
