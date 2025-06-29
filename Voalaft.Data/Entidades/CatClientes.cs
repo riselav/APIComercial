@@ -30,7 +30,7 @@ namespace Voalaft.Data.Entidades
             
         public bool bManejaCredito { get; set; }
 
-        public byte? nTipoPersona { get; set; }
+        public int? nTipoPersona { get; set; }
 
         public long? nIDRFC { get; set; }
 

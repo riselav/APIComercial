@@ -11,6 +11,7 @@ using Voalaft.Data.Entidades;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
 using Voalaft.Utilerias;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Voalaft.Data.Implementaciones
 {
@@ -27,6 +28,8 @@ namespace Voalaft.Data.Implementaciones
 
         public async Task<CatRFC> ObtenerPorRFC(string c_RFC)
         {
+            if (string.IsNullOrWhiteSpace(c_RFC)) return null;
+
             CatRFC catRFC = null;
             try
             {
@@ -48,7 +51,7 @@ namespace Voalaft.Data.Implementaciones
                             catRFC =
                             new CatRFC()
                             {
-                                nIDRFC = ConvertUtils.ToInt32(reader["nIDRFC"]),
+                                nIDRFC = ConvertUtils.ToInt64(reader["nIDRFC"]),
                                 cRazonSocial = ConvertUtils.ToString(reader["cRazonSocial"]),
                                 cRFC = ConvertUtils.ToString(reader["cRFC"]),
                                 cCP = ConvertUtils.ToString(reader["cCP"]),

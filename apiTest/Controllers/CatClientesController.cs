@@ -6,6 +6,7 @@ using Voalaft.Data.Entidades;
 using Voalaft.Data.Entidades.ClasesParametros;
 using Voalaft.Data.Entidades.Tableros;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace Voalaft.API.Controllers
 {
@@ -70,13 +71,17 @@ namespace Voalaft.API.Controllers
         }
 
         [HttpPost("ObtenerClientePorId")]
-        public async Task<CatClientes> ObtenerClientePorId(long n_Cliente)
+        public async Task<ResultadoAPI> ObtenerClientePorId(PeticionAPI peticion)
         {
-            CatClientes resultado = null;
+            ResultadoAPI resultado = null;
             try
             {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                JObject json = JObject.Parse(r);
 
-                resultado = await _catClientesServicio.ObtenerPorId(n_Cliente);
+                long n_Cliente = json["nCliente"].Value<long>();
+                var ClienteResult = await _catClientesServicio.ObtenerPorId(n_Cliente);
+                resultado = CryptographyUtils.CrearResultado(ClienteResult);
             }
             catch (Exception ex)
             {

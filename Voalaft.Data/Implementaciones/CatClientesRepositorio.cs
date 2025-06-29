@@ -20,11 +20,13 @@ namespace Voalaft.Data.Implementaciones
     {
         private readonly Conexion _conexion;
         private readonly ILogger<CatClientesRepositorio> _logger;
+        private readonly ICatRFCRepositorio _catRFCRepositorio;
 
-        public CatClientesRepositorio(ILogger<CatClientesRepositorio> logger, Conexion conexion)
+        public CatClientesRepositorio(ILogger<CatClientesRepositorio> logger, Conexion conexion, ICatRFCRepositorio catRFCRepositorio)
         {
             _conexion = conexion;
             _logger = logger;
+            _catRFCRepositorio = catRFCRepositorio;
         }
 
         public async Task<CatClientes> ObtenerPorId(long n_Cliente)
@@ -45,6 +47,8 @@ namespace Voalaft.Data.Implementaciones
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         int SucursalRegistroIndex = reader.GetOrdinal("nSucursalRegistro");
+                        int TipoPersonaIndex = reader.GetOrdinal("nTipoPersona");
+                        int IdRFCIndex = reader.GetOrdinal("nIDRFC");
 
                         while (await reader.ReadAsync())
                         {
@@ -61,13 +65,20 @@ namespace Voalaft.Data.Implementaciones
                                     cTelefono = ConvertUtils.ToString(reader["cTelefono"]),
                                     cSeniasParticulares = ConvertUtils.ToString(reader["cSeniasParticulares"]),
                                     nSucursalRegistro = reader.IsDBNull(SucursalRegistroIndex) ? 0 : reader.GetInt32(SucursalRegistroIndex),
-                                    Activo= ConvertUtils.ToBoolean(reader["bActivo"]),
+                                    //nTipoPersona = reader.IsDBNull(TipoPersonaIndex) ? 0 : reader.GetInt32(TipoPersonaIndex),
+                                    nTipoPersona = reader.IsDBNull(TipoPersonaIndex) ? 0 : Convert.ToInt32(reader.GetByte(TipoPersonaIndex)),
+
+                                    nIDRFC = reader.IsDBNull(IdRFCIndex) ? 0 : reader.GetInt64(IdRFCIndex),
+
+                                    Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
 
                                     Estado = ConvertUtils.ToString(reader["cEstado"]),
                                     Municipio = ConvertUtils.ToString(reader["cMunicipio"]),
                                     NombreMunicipio = ConvertUtils.ToString(reader["cNombreMunicipio"]),
                                     Localidad = ConvertUtils.ToString(reader["cLocalidad"]),
-                                    NombreLocalidad = ConvertUtils.ToString(reader["cNombreLocalidad"])
+                                    NombreLocalidad = ConvertUtils.ToString(reader["cNombreLocalidad"]),
+                                    
+                                    CatRFC = await _catRFCRepositorio.ObtenerPorRFC(ConvertUtils.ToString(reader["cRFC"]))
                                 };
                             break;
                         }
@@ -242,11 +253,11 @@ namespace Voalaft.Data.Implementaciones
                             CommandType = CommandType.StoredProcedure,
                         };
                         cmd.Parameters.AddWithValue("@nFolio", cliente.nCliente);
-                        cmd.Parameters.AddWithValue("@cRazonSocial", cliente.CatRFC.cRazonSocial);
+                        cmd.Parameters.AddWithValue("@cRazonSocial", cliente.CatRFC?.cRazonSocial ?? "");
                         cmd.Parameters.AddWithValue("@cNombreCompleto", cliente.cNombreCompleto);
                         cmd.Parameters.AddWithValue("@nTipoPersona", cliente.nTipoPersona);
-                        cmd.Parameters.AddWithValue("@cRFC", cliente.CatRFC.cRFC);
-                        cmd.Parameters.AddWithValue("@cRegimenFiscal", cliente.CatRFC.cRegimenFiscal);
+                        cmd.Parameters.AddWithValue("@cRFC", cliente.CatRFC?.cRFC ?? "");
+                        cmd.Parameters.AddWithValue("@cRegimenFiscal", cliente.CatRFC?.cRegimenFiscal ?? "");
                         cmd.Parameters.AddWithValue("@cCalle", cliente.cCalle);
                         cmd.Parameters.AddWithValue("@cNumExt", cliente.cNumExt);
                         cmd.Parameters.AddWithValue("@cNumInt", cliente.cNumInt);
