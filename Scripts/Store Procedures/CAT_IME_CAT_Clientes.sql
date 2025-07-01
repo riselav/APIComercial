@@ -93,7 +93,7 @@ BEGIN
     FROM CAT_Clientes as R          
     WHERE nCliente = @nFolio  
     
-	IF EXISTS(SELECT 1 FROM CAT_RFC R (NOLOCK) JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC)
+	IF EXISTS(SELECT 1 FROM CAT_RFC R (NOLOCK) JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC WHERE C.nCliente=@nFolio)
 		UPDATE R SET cRazonSocial=@cRazonSocial,cRFC=@cRFC,
 					 cRegimenFiscal=@cRegimenFiscal
 		FROM CAT_RFC R (NOLOCK)
@@ -104,7 +104,7 @@ BEGIN
 		INSERT INTO CAT_RFC(nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo)
 		SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,'' as cUso_CFDI,@cRegimenFiscal,1
 
-		UPDATE CAT_Clientes SET nIDRFC=@nIDRFC WHERE nCliente=@nID
+		UPDATE CAT_Clientes SET nIDRFC=@nIDRFC WHERE nCliente=@nFolio
 	END
 
     RETURN @nFolioSig          

@@ -13,7 +13,7 @@ BEGIN
 	LC.cDescripcion as ciudad, Est.cNombreEstado as estado,
 	RF.cDescripcion as regimenFiscal,
 	CR.cRazonSocial as razonSocial,
-	CR.cRFC as rfc,
+	CR.cRFC as rfc,EM.nIDRFC,
 	EM.bActivo as activo
 	FROM CAT_Clientes EM (NOLOCK)
 	LEFT JOIN CAT_RFC CR (NOLOCK) ON CR.nIDRFC=EM.nIDRFC

@@ -331,7 +331,15 @@ namespace Voalaft.Data.Implementaciones
                             Renglon = 1;
                             foreach (ContactoCliente contacto in cliente.ContactoCliente)
                             {
-                                contacto.cliente = folioSig;
+                                if (folioSig == 1)
+                                {
+                                    contacto.cliente = folioSig;
+                                }
+                                else
+                                {
+                                    contacto.cliente = cliente.nCliente;
+                                }
+                             
                                 vdt.Rows.Add(contacto.cliente,
                                     Renglon, 
                                     contacto.nombre,
@@ -343,7 +351,7 @@ namespace Voalaft.Data.Implementaciones
                                     contacto.activo,
                                     contacto.usuario,
                                     contacto.maquina,
-                                    "1900-01-01"
+                                    DateTime.Now
                                     );
 
                                 Renglon += 1;
