@@ -32,6 +32,16 @@ BEGIN
 IF @nSucursalRegistro=0 SET @nSucursalRegistro=NULL  
   
 DECLARE @nFolioSig AS INT   
+
+DECLARE @nIDRFC bigint=(SELECT ISNULL(MAX(nIDRFC),0) FROM CAT_RFC (NOLOCK)) + 1
+
+DECLARE @cDomicilio varchar(500)=(
+	SELECT @cCalle + ' ' + @cNumExt + ' ' + @cNumInt + ' ' + Cl.cNombreAsentamiento 
+	--ANTONIO ROSALES S/N COL. NAVOLATO CENTRO
+	FROM CAT_Colonias Cl (NOLOCK)
+	JOIN CAT_CodigosPostales CP(NOLOCK)ON CP.cCodigoPostal=CL.cCodigoPostal
+	WHERE Cl.cCodigoPostal=@cCodigoPostal AND CL.cColonia=@cCveColonia
+)
   
 IF @nFolio =0           
 BEGIN          
@@ -45,16 +55,7 @@ BEGIN
   SELECT @nID, @cNombreCompleto,@cCveColonia,@cCodigoPostal,@cCalle,@cNumExt,@cNumInt,  
   @nTipoPersona,@cTelefono,@cSeniasParticulares,@nSucursalRegistro,  
   @bActivo, @cUsuario, @cNombreMaquina, getdate()  
-          
-  DECLARE @nIDRFC bigint=(SELECT ISNULL(MAX(nIDRFC),0) FROM CAT_RFC (NOLOCK)) + 1
-  DECLARE @cDomicilio varchar(500)=(
-	SELECT @cCalle + ' ' + @cNumExt + ' ' + @cNumInt + ' ' + Cl.cNombreAsentamiento 
-	--ANTONIO ROSALES S/N COL. NAVOLATO CENTRO
-	FROM CAT_Colonias Cl (NOLOCK)
-	JOIN CAT_CodigosPostales CP(NOLOCK)ON CP.cCodigoPostal=CL.cCodigoPostal
-	WHERE Cl.cCodigoPostal=@cCodigoPostal AND CL.cColonia=@cCveColonia
-  )
-  
+           
   INSERT INTO CAT_RFC(nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo)
   SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,'' as cUso_CFDI,@cRegimenFiscal,1
 
@@ -91,12 +92,20 @@ BEGIN
      dFecha_Modifica = GETDATE ()          
     FROM CAT_Clientes as R          
     WHERE nCliente = @nFolio  
-          
-	UPDATE R SET cRazonSocial=@cRazonSocial,cRFC=@cRFC,
-				 cRegimenFiscal=@cRegimenFiscal
-	FROM CAT_RFC R (NOLOCK)
-	JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC
-	WHERE C.nCliente=@nFolio
+    
+	IF EXISTS(SELECT 1 FROM CAT_RFC R (NOLOCK) JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC)
+		UPDATE R SET cRazonSocial=@cRazonSocial,cRFC=@cRFC,
+					 cRegimenFiscal=@cRegimenFiscal
+		FROM CAT_RFC R (NOLOCK)
+		JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC
+		WHERE C.nCliente=@nFolio
+	ELSE
+	BEGIN
+		INSERT INTO CAT_RFC(nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo)
+		SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,'' as cUso_CFDI,@cRegimenFiscal,1
+
+		UPDATE CAT_Clientes SET nIDRFC=@nIDRFC WHERE nCliente=@nID
+	END
 
     RETURN @nFolioSig          
   END           

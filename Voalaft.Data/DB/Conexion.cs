@@ -36,7 +36,7 @@ namespace Voalaft.Data.DB
             return schemaTable;
         }
 
-               public Boolean InsertarConBulkCopy(SqlConnection con, string tableName, DataTable dataTable)
+        public Boolean InsertarConBulkCopy(SqlConnection con, string tableName, DataTable dataTable)
         {
             try
             {
@@ -51,9 +51,27 @@ namespace Voalaft.Data.DB
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return false; // Hubo un error
+                return false;
             }
+        }
 
+        public Boolean InsertarConBulkCopy(SqlConnection con, string tableName, DataTable dataTable, SqlTransaction trans )
+        {
+            try
+            {
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(con, SqlBulkCopyOptions.Default, trans))
+                {
+                    bulkCopy.DestinationTableName = tableName;
+                    bulkCopy.WriteToServer(dataTable);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
         }
 
     }

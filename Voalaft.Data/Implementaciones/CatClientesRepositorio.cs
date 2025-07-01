@@ -80,6 +80,34 @@ namespace Voalaft.Data.Implementaciones
                                     
                                     CatRFC = await _catRFCRepositorio.ObtenerPorRFC(ConvertUtils.ToString(reader["cRFC"]))
                                 };
+
+                                if (n_Cliente > 0)
+                                {
+                                    // Mover al siguiente resultado (tabla contactos)
+                                    if (reader.NextResult())
+                                    {
+                                        catCliente.ContactoCliente = [];
+                                        int TipoContactoIndex = reader.GetOrdinal("nTipoContacto");
+                                    while (reader.Read())
+                                        {
+
+                                        catCliente?.ContactoCliente.Add(new ContactoCliente
+                                        {
+                                            cliente = Convert.ToInt64(reader["nCliente"]),
+                                            contacto = Convert.ToInt32(reader["nContacto"]),
+                                            nombre = reader["cNombre"].ToString(),
+                                            puesto = reader["cPuesto"].ToString(),
+                                            telefono = reader["cTelefono"].ToString(),
+                                            celular = reader["cCelular"].ToString(),
+                                            correoElectronico = reader["cCorreoElectronico"].ToString(),
+                                            tipoContacto = Convert.ToInt32(reader.GetByte(TipoContactoIndex)),
+                                            descripcionTipoContacto = reader["cTipoContacto"].ToString()
+                                        }
+                                         );
+                                        }
+                                    }
+                                }                                
+
                             break;
                         }
                     }
@@ -292,7 +320,37 @@ namespace Voalaft.Data.Implementaciones
                         int folioSig = (int)(returnParameter.Value ?? 0);
 
                         if (cliente.nCliente== 0) 
-                               cliente.nCliente = folioSig;                        
+                               cliente.nCliente = folioSig;
+                        
+                        int Renglon = 1;
+
+                        if (cliente.ContactoCliente != null && cliente.ContactoCliente?.Count > 0)
+                        {
+                            DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_ClientesContactos");
+
+                            Renglon = 1;
+                            foreach (ContactoCliente contacto in cliente.ContactoCliente)
+                            {
+                                contacto.cliente = folioSig;
+                                vdt.Rows.Add(contacto.cliente,
+                                    Renglon, 
+                                    contacto.nombre,
+                                    contacto.puesto,
+                                    contacto.telefono,
+                                    contacto.celular,
+                                    contacto.correoElectronico,
+                                    contacto.tipoContacto,
+                                    contacto.activo,
+                                    contacto.usuario,
+                                    contacto.maquina,
+                                    "1900-01-01"
+                                    );
+
+                                Renglon += 1;
+                            }
+
+                            Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt,transaction);
+                        }
 
                         // Todo bien, commit
                         transaction.Commit();

@@ -51,7 +51,6 @@ namespace Voalaft.Data.Entidades
 
         public CatRFC? CatRFC { get; set; }
 
+        public List<ContactoCliente>? ContactoCliente { get; set;}
     }
-    
-
-}
+ }
