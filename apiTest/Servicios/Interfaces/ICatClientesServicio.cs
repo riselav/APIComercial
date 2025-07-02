@@ -12,5 +12,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<List<Cliente>> ConsultaClientes(ParametrosConsultaClientes paramClientes);
 
         Task<CatClientes> IME_Cliente(CatClientes cliente);
+
+        Task<ContactoCliente> EliminarContactoCliente(ContactoCliente contacto);
     }
 }

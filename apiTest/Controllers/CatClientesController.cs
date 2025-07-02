@@ -136,5 +136,28 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("EliminarContactoCliente")]
+        public async Task<ResultadoAPI> EliminarContactoCliente(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var contacto = CryptographyUtils.DeserializarPeticion<ContactoCliente>(r);
+                contacto.usuario = peticion.usuario;
+                contacto.maquina = peticion.maquina;
+                var clienteResult = await _catClientesServicio.EliminarContactoCliente(contacto);
+                resultado = CryptographyUtils.CrearResultado(clienteResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al eliminar contacto de cliente");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

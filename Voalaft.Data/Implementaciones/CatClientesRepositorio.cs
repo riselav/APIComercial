@@ -16,7 +16,7 @@ using Voalaft.Utilerias;
 
 namespace Voalaft.Data.Implementaciones
 {
-    public class CatClientesRepositorio:ICatClientesRepositorio
+    public class CatClientesRepositorio : ICatClientesRepositorio
     {
         private readonly Conexion _conexion;
         private readonly ILogger<CatClientesRepositorio> _logger;
@@ -60,8 +60,8 @@ namespace Voalaft.Data.Implementaciones
                                     cCalle = ConvertUtils.ToString(reader["cCalle"]),
                                     cNumExt = ConvertUtils.ToString(reader["cNumExt"]),
                                     cNumInt = ConvertUtils.ToString(reader["cNumInt"]),
-                                    cColonia= ConvertUtils.ToString(reader["cColonia"]),
-                                    cCodigoPostal= ConvertUtils.ToString(reader["cCodigoPostal"]),
+                                    cColonia = ConvertUtils.ToString(reader["cColonia"]),
+                                    cCodigoPostal = ConvertUtils.ToString(reader["cCodigoPostal"]),
                                     cTelefono = ConvertUtils.ToString(reader["cTelefono"]),
                                     cSeniasParticulares = ConvertUtils.ToString(reader["cSeniasParticulares"]),
                                     nSucursalRegistro = reader.IsDBNull(SucursalRegistroIndex) ? 0 : reader.GetInt32(SucursalRegistroIndex),
@@ -77,19 +77,19 @@ namespace Voalaft.Data.Implementaciones
                                     NombreMunicipio = ConvertUtils.ToString(reader["cNombreMunicipio"]),
                                     Localidad = ConvertUtils.ToString(reader["cLocalidad"]),
                                     NombreLocalidad = ConvertUtils.ToString(reader["cNombreLocalidad"]),
-                                    
+
                                     CatRFC = await _catRFCRepositorio.ObtenerPorRFC(ConvertUtils.ToString(reader["cRFC"]))
                                 };
 
-                                if (n_Cliente > 0)
+                            if (n_Cliente > 0)
+                            {
+                                // Mover al siguiente resultado (tabla contactos)
+                                if (reader.NextResult())
                                 {
-                                    // Mover al siguiente resultado (tabla contactos)
-                                    if (reader.NextResult())
-                                    {
-                                        catCliente.ContactoCliente = [];
-                                        int TipoContactoIndex = reader.GetOrdinal("nTipoContacto");
+                                    catCliente.ContactoCliente = [];
+                                    int TipoContactoIndex = reader.GetOrdinal("nTipoContacto");
                                     while (reader.Read())
-                                        {
+                                    {
 
                                         catCliente?.ContactoCliente.Add(new ContactoCliente
                                         {
@@ -104,9 +104,9 @@ namespace Voalaft.Data.Implementaciones
                                             descripcionTipoContacto = reader["cTipoContacto"].ToString()
                                         }
                                          );
-                                        }
                                     }
-                                }                                
+                                }
+                            }
 
                             break;
                         }
@@ -220,7 +220,7 @@ namespace Voalaft.Data.Implementaciones
                         int RegimenIndex = reader.GetOrdinal("regimenFiscal");
                         int RazonSocialIndex = reader.GetOrdinal("razonSocial");
                         int RFCIndex = reader.GetOrdinal("rfc");
-                
+
                         while (await reader.ReadAsync())
                         {
                             clientes.Add(
@@ -238,7 +238,7 @@ namespace Voalaft.Data.Implementaciones
                                     razonSocial = reader.IsDBNull(RazonSocialIndex) ? "" : reader.GetString(RazonSocialIndex),
                                     rfc = reader.IsDBNull(RFCIndex) ? "" : reader.GetString(RFCIndex),
 
-                                    activo= ConvertUtils.ToBoolean(reader["activo"]),
+                                    activo = ConvertUtils.ToBoolean(reader["activo"]),
                                 }
                                 );
                         }
@@ -316,12 +316,12 @@ namespace Voalaft.Data.Implementaciones
                         //int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
 
                         //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
-                        
+
                         int folioSig = (int)(returnParameter.Value ?? 0);
 
-                        if (cliente.nCliente== 0) 
-                               cliente.nCliente = folioSig;
-                        
+                        if (cliente.nCliente == 0)
+                            cliente.nCliente = folioSig;
+
                         int Renglon = 1;
 
                         if (cliente.ContactoCliente != null && cliente.ContactoCliente?.Count > 0)
@@ -339,9 +339,9 @@ namespace Voalaft.Data.Implementaciones
                                 {
                                     contacto.cliente = cliente.nCliente;
                                 }
-                             
+
                                 vdt.Rows.Add(contacto.cliente,
-                                    Renglon, 
+                                    Renglon,
                                     contacto.nombre,
                                     contacto.puesto,
                                     contacto.telefono,
@@ -357,7 +357,7 @@ namespace Voalaft.Data.Implementaciones
                                 Renglon += 1;
                             }
 
-                            Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt,transaction);
+                            Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt, transaction);
                         }
 
                         // Todo bien, commit
@@ -387,6 +387,58 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return cliente;
+        }
+
+        public async Task<ContactoCliente> EliminarContactoCliente(ContactoCliente contacto)
+        {
+            ContactoCliente contactocliente = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_UP_CAT_EliminaContactoCliente_SP",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nCliente", contacto.cliente);
+                    cmd.Parameters.AddWithValue("@nContacto", contacto.contacto);
+
+                    // Agrega el parámetro de retorno
+                    var returnParameter = new SqlParameter
+                    {
+                        ParameterName = "@RETURN_VALUE",
+                        Direction = ParameterDirection.ReturnValue
+                    };
+                    cmd.Parameters.Add(returnParameter);
+
+                    await cmd.ExecuteNonQueryAsync();
+
+                    int respuesta = (int)(returnParameter.Value ?? 0);
+
+                    contactocliente = null;
+                    if (respuesta == 1) {
+                        contactocliente = contacto;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo cancelar el contacto de cliente")
+                {
+                    Metodo = "EliminarContactoCliente",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return contactocliente;
         }
     }
 }
