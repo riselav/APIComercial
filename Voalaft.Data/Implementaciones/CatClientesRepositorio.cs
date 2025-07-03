@@ -8,6 +8,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
 using Voalaft.Data.Entidades.ClasesParametros;
@@ -287,6 +288,8 @@ namespace Voalaft.Data.Implementaciones
 
         public async Task<CatClientes> IME_Cliente(CatClientes cliente)
         {
+            CatClientes cte = cliente;
+
             using (var con = _conexion.ObtenerSqlConexion())
             {
                 await con.OpenAsync();
@@ -349,74 +352,113 @@ namespace Voalaft.Data.Implementaciones
 
                         if (cliente.ContactoCliente != null && cliente.ContactoCliente?.Count > 0)
                         {
-                            DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_ClientesContactos");
+                            bool respuesta = await EliminarContactosCliente(cliente.nCliente, con, transaction);
 
-                            Renglon = 1;
-                            foreach (ContactoCliente contacto in cliente.ContactoCliente)
+                            if (respuesta)
                             {
-                                if (folioSig == 1)
+                                DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_ClientesContactos");
+
+                                Renglon = 1;
+                                foreach (ContactoCliente contacto in cliente.ContactoCliente)
                                 {
-                                    contacto.cliente = folioSig;
-                                }
-                                else
-                                {
-                                    contacto.cliente = cliente.nCliente;
+                                    if (folioSig == 1)
+                                    {
+                                        contacto.cliente = folioSig;
+                                    }
+                                    else
+                                    {
+                                        contacto.cliente = cliente.nCliente;
+                                    }
+
+                                    vdt.Rows.Add(contacto.cliente,
+                                        Renglon,
+                                        contacto.nombre,
+                                        contacto.puesto,
+                                        contacto.telefono,
+                                        contacto.celular,
+                                        contacto.correoElectronico,
+                                        contacto.tipoContacto,
+                                        true,//contacto.activo,
+                                        contacto.usuario,
+                                        contacto.maquina,
+                                        DateTime.Now
+                                        );
+
+                                    Renglon += 1;
                                 }
 
-                                vdt.Rows.Add(contacto.cliente,
-                                    Renglon,
-                                    contacto.nombre,
-                                    contacto.puesto,
-                                    contacto.telefono,
-                                    contacto.celular,
-                                    contacto.correoElectronico,
-                                    contacto.tipoContacto,
-                                    contacto.activo,
-                                    contacto.usuario,
-                                    contacto.maquina,
-                                    DateTime.Now
-                                    );
-
-                                Renglon += 1;
+                                Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt, transaction);
+                                if (!result)
+                                {
+                                    transaction.Rollback();
+                                    cte = null;
+                                }
                             }
-
-                            Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt, transaction);
+                            else
+                            {
+                                transaction.Rollback();
+                                cte = null;
+                            }
+                            
                         }
+
+                        long idRFC = await ObtenIdRFC_Cliente(cliente.nCliente);
+                        
+                        cliente.nIDRFC = idRFC;
 
                         if (cliente.CorreosCliente != null && cliente.CorreosCliente?.Count > 0)
                         {
-                            DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_CorreosContactoRFC");
+                            bool respuesta = await EliminarCorreosCliente(idRFC, con, transaction);
 
-                            Renglon = 1;
-
-                            long idRFC = await ObtenIdRFC_Cliente(cliente.nCliente);
-                            foreach (CatCorreoContactoRFC correo in cliente.CorreosCliente)
+                            if(respuesta)
                             {
-                                //cliente.CatRFC?.cUso_CFDI ?? ""
-                                correo.IDRFC = idRFC;
+                                DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_CorreosContactoRFC");
 
-                                vdt.Rows.Add(correo.IDRFC,
-                                    Renglon,
-                                    correo.CorreoElectronico,
-                                    correo.Activo ?? true,
-                                    correo.Usuario ?? cliente.Usuario,
-                                    correo.Maquina ?? cliente.Maquina,
-                                    DateTime.Now
-                                    );
+                                Renglon = 1;
 
-                                Renglon += 1;
+                               
+                                foreach (CatCorreoContactoRFC correo in cliente.CorreosCliente)
+                                {
+                                    //cliente.CatRFC?.cUso_CFDI ?? ""
+                                    correo.IDRFC = idRFC;
+
+                                    vdt.Rows.Add(correo.IDRFC,
+                                        Renglon,
+                                        correo.CorreoElectronico,
+                                        true, //correo.Activo ?? true,
+                                        correo.Usuario ?? cliente.Usuario,
+                                        correo.Maquina ?? cliente.Maquina,
+                                        DateTime.Now
+                                        );
+
+                                    Renglon += 1;
+                                }
+                                string[] Columns = { "nIDRFC", "nFolio" }; // Columnas que identifican registros únicos
+
+                                Boolean result = _conexion.UpsertConBulkCopySimple(con, vdt.TableName, vdt, transaction, Columns);
+                                if (!result)
+                                {
+                                    transaction.Rollback();
+                                    cte = null;
+                                }
                             }
-                            string[] Columns = { "nIDRFC", "nFolio"}; // Columnas que identifican registros únicos
-                            
-                            Boolean result = _conexion.UpsertConBulkCopySimple(con, vdt.TableName, vdt, transaction, Columns);
+                            else
+                            {
+                                transaction.Rollback();
+                                cte = null;
+                            }
                         }
 
                         // Todo bien, commit
-                        transaction.Commit();
+                        if (cte!=null)
+                        {
+                            transaction.Commit();
+                        }
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
+                        cte = null;
 
                         string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
                         string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
@@ -437,7 +479,7 @@ namespace Voalaft.Data.Implementaciones
                 }
             }
 
-            return cliente;
+            return cte;
         }
 
         public async Task<ContactoCliente> EliminarContactoCliente(ContactoCliente contacto)
@@ -492,44 +534,63 @@ namespace Voalaft.Data.Implementaciones
             return contactocliente;
         }
 
-        private async Task<Int64> ObtenIdRFC_Cliente(Int64 n_Cliente)
+        private async Task<bool> EliminarContactosCliente(Int64 n_Cliente, SqlConnection externalConnection = null, SqlTransaction externalTransaction = null)
         {
-            Int64? nIDRFC = null;
+            bool? respuesta = false;
+
+            bool shouldCloseConnection = false;
+            bool shouldCommitTransaction = false;
+
+            SqlConnection con = externalConnection;
+            SqlTransaction transaction = externalTransaction;
+
             try
             {
-                using (var con = _conexion.ObtenerSqlConexion())
+                if (con == null)
                 {
-                    con.Open();
-                    var cmd = new SqlCommand("SELECT nIDRFC FROM CAT_Clientes (NOLOCK) where nCliente=@n_Cliente", con);
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add("@n_Cliente", SqlDbType.BigInt).Value = n_Cliente;
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            nIDRFC = ConvertUtils.ToInt64(reader["nIDRFC"]);
-
-                            break;
-                        }
-                    }                    
+                    con = _conexion.ObtenerSqlConexion();
+                    await con.OpenAsync();
+                    shouldCloseConnection = true;
                 }
+
+                if (transaction == null)
+                {
+                    transaction = con.BeginTransaction();
+                    shouldCommitTransaction = true;
+                }
+
+                var cmd = new SqlCommand("DELETE CAT_ClientesContactos WHERE nCliente = @nCliente", con);
+                cmd.CommandType = CommandType.Text; // Usamos CommandType.Text para una consulta SQL directa
+                cmd.Transaction = transaction;
+                // Agregamos el parámetro
+                cmd.Parameters.AddWithValue("@nCliente", n_Cliente);
+
+                // Ejecutamos el comando
+                await cmd.ExecuteNonQueryAsync();
+
+                respuesta = true;
+                if (shouldCommitTransaction)
+                    transaction.Commit();
             }
             catch (Exception ex)
             {
+                if (shouldCommitTransaction)
+                    transaction?.Rollback();
+
                 string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
                 string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
                 int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
 
                 _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
-                throw new DataAccessException("Error(rp) No se pudo obtener el id rfc del cliente")
+                throw new DataAccessException("Error(rp) No se pudo eliminar los contactos del cliente")
                 {
-                    Metodo = "ObtenIdRFC_Cliente",
+                    Metodo = "EliminarCorreosCliente",
                     ErrorMessage = ex.Message,
                     ErrorCode = 1
                 };
             }
-            return (long) nIDRFC;
-        }
+            return (bool)respuesta;
+        }        
 
         public async Task<CatCorreoContactoRFC> EliminarCorreoCliente(CatCorreoContactoRFC correo)
         {
@@ -582,6 +643,103 @@ namespace Voalaft.Data.Implementaciones
                 };
             }
             return correoCliente;
+        }
+
+        private async Task<bool> EliminarCorreosCliente(Int64 nIDRFC, SqlConnection externalConnection = null,SqlTransaction externalTransaction = null)
+        {
+            bool? respuesta = false;
+
+            bool shouldCloseConnection = false;
+            bool shouldCommitTransaction = false;
+
+            SqlConnection con = externalConnection;
+            SqlTransaction transaction = externalTransaction;
+
+            try
+            {
+                if (con == null)
+                {
+                    con = _conexion.ObtenerSqlConexion();
+                    await con.OpenAsync();
+                    shouldCloseConnection = true;
+                }
+
+                if (transaction == null)
+                {
+                    transaction = con.BeginTransaction();
+                    shouldCommitTransaction = true;
+                }
+               
+                var cmd = new SqlCommand("DELETE CAT_CorreosContactoRFC WHERE nIDRFC = @nIDRFC", con);
+                cmd.CommandType = CommandType.Text; // Usamos CommandType.Text para una consulta SQL directa
+                cmd.Transaction = transaction;
+                // Agregamos el parámetro
+                cmd.Parameters.AddWithValue("@nIDRFC", nIDRFC);
+
+                // Ejecutamos el comando
+                await cmd.ExecuteNonQueryAsync();
+
+                respuesta = true;
+                if(shouldCommitTransaction)
+                    transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (shouldCommitTransaction)
+                    transaction?.Rollback();
+
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo eliminar los contactos del cliente")
+                {
+                    Metodo = "EliminarCorreosCliente",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return (bool)respuesta;
+        }
+
+        private async Task<Int64> ObtenIdRFC_Cliente(Int64 n_Cliente)
+        {
+            Int64? nIDRFC = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    var cmd = new SqlCommand("SELECT nIDRFC FROM CAT_Clientes (NOLOCK) where nCliente=@n_Cliente", con);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add("@n_Cliente", SqlDbType.BigInt).Value = n_Cliente;
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            nIDRFC = ConvertUtils.ToInt64(reader["nIDRFC"]);
+
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener el id rfc del cliente")
+                {
+                    Metodo = "ObtenIdRFC_Cliente",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return (long)nIDRFC;
         }
     }
 }
