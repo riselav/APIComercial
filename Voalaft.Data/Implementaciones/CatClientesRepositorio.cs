@@ -343,11 +343,15 @@ namespace Voalaft.Data.Implementaciones
 
                         //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
 
+                        bool nvo=false;
                         int folioSig = (int)(returnParameter.Value ?? 0);
 
                         if (cliente.nCliente == 0)
-                            cliente.nCliente = folioSig;
-
+                        {
+                            nvo = true;
+                            cliente.nFolio = folioSig;
+                            cliente.nCliente = cliente.GenerateID();
+                        }
                         int Renglon = 1;
 
                         if (cliente.ContactoCliente != null && cliente.ContactoCliente?.Count > 0)
@@ -379,8 +383,8 @@ namespace Voalaft.Data.Implementaciones
                                         contacto.correoElectronico,
                                         contacto.tipoContacto,
                                         true,//contacto.activo,
-                                        contacto.usuario,
-                                        contacto.maquina,
+                                        cliente.Usuario,
+                                        cliente.Maquina,
                                         DateTime.Now
                                         );
 

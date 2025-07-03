@@ -10,6 +10,8 @@ namespace Voalaft.Data.Entidades
     {
         public long nCliente { get; set; }
 
+        public long nFolio { get; set; }
+
         public string? cNombreCompleto { get; set; }
 
         public string? cCalle { get; set; }
@@ -54,5 +56,19 @@ namespace Voalaft.Data.Entidades
         public List<ContactoCliente>? ContactoCliente { get; set;}
 
         public List<CatCorreoContactoRFC>? CorreosCliente { get; set; }
+
+        // Método para generar el ID similar a SQL
+        public long GenerateID()
+        {
+            // Convertir a cadenas y dar formato con ceros a la izquierda
+            string? formattedSucursal = this.nSucursalRegistro?.ToString("D3"); // Formatea a 3 dígitos
+            string formattedFolio = this.nFolio.ToString("D6"); // Formatea a 6 dígitos
+
+            // Concatenar el resultado final y convertirlo a long
+            string idString = "1" + formattedSucursal + formattedFolio;
+
+            // Convertir la cadena a long
+            return long.Parse(idString);
+        }
     }
  }
