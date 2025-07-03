@@ -7,7 +7,7 @@ using Voalaft.API.Servicios.Implementacion;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CatalagosSATController : ControllerBase
@@ -379,7 +379,7 @@ namespace Voalaft.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new Exception("Error al consultar las catSatRegimenFiscal");
+                throw new Exception("Error al consultar las los correos del RFC");
             }
             finally { }
 

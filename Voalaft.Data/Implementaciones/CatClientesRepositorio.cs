@@ -1,8 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
+using SQLConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,6 +104,26 @@ namespace Voalaft.Data.Implementaciones
                                             correoElectronico = reader["cCorreoElectronico"].ToString(),
                                             tipoContacto = Convert.ToInt32(reader.GetByte(TipoContactoIndex)),
                                             descripcionTipoContacto = reader["cTipoContacto"].ToString()
+                                        }
+                                         );
+                                    }                                    
+                                }
+
+                                // Mover al siguiente resultado (tabla contactos)
+                                if (reader.NextResult())
+                                {
+                                    catCliente.CorreosCliente = [];
+
+                                    while (reader.Read())
+                                    {
+                                        catCliente?.CorreosCliente.Add(new CatCorreoContactoRFC
+                                        {
+                                            IDRFC = Convert.ToInt64(reader["IDRFC"]),
+                                            Folio = Convert.ToInt32(reader["Folio"]),
+                                            CorreoElectronico = reader["CorreoElectronico"].ToString(),
+                                            Activo = Convert.ToBoolean(reader["Activo"]),
+                                            Usuario = reader["Usuario"].ToString(),
+                                            Maquina = reader["Maquina"].ToString()
                                         }
                                          );
                                     }
@@ -298,6 +320,7 @@ namespace Voalaft.Data.Implementaciones
                         cmd.Parameters.AddWithValue("@cUsuario", cliente.Usuario);
                         cmd.Parameters.AddWithValue("@cNombreMaquina ", cliente.Maquina);
                         cmd.Parameters.AddWithValue("@nSucursalRegistro", cliente.nSucursalRegistro);
+                        cmd.Parameters.AddWithValue("@cUso_CFDI", cliente.CatRFC?.cUso_CFDI ?? "");
 
                         //SqlParameter outputParam = new SqlParameter("@nVenta", SqlDbType.BigInt);
                         //outputParam.Direction = ParameterDirection.Output;
@@ -358,6 +381,34 @@ namespace Voalaft.Data.Implementaciones
                             }
 
                             Boolean result = _conexion.InsertarConBulkCopy(con, vdt.TableName, vdt, transaction);
+                        }
+
+                        if (cliente.CorreosCliente != null && cliente.CorreosCliente?.Count > 0)
+                        {
+                            DataTable vdt = _conexion.ObtenerEsquemaTabla("CAT_CorreosContactoRFC");
+
+                            Renglon = 1;
+
+                            long idRFC = await ObtenIdRFC_Cliente(cliente.nCliente);
+                            foreach (CatCorreoContactoRFC correo in cliente.CorreosCliente)
+                            {
+                                //cliente.CatRFC?.cUso_CFDI ?? ""
+                                correo.IDRFC = idRFC;
+
+                                vdt.Rows.Add(correo.IDRFC,
+                                    Renglon,
+                                    correo.CorreoElectronico,
+                                    correo.Activo ?? true,
+                                    correo.Usuario ?? cliente.Usuario,
+                                    correo.Maquina ?? cliente.Maquina,
+                                    DateTime.Now
+                                    );
+
+                                Renglon += 1;
+                            }
+                            string[] Columns = { "nIDRFC", "nFolio"}; // Columnas que identifican registros únicos
+                            
+                            Boolean result = _conexion.UpsertConBulkCopySimple(con, vdt.TableName, vdt, transaction, Columns);
                         }
 
                         // Todo bien, commit
@@ -439,6 +490,98 @@ namespace Voalaft.Data.Implementaciones
                 };
             }
             return contactocliente;
+        }
+
+        private async Task<Int64> ObtenIdRFC_Cliente(Int64 n_Cliente)
+        {
+            Int64? nIDRFC = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    var cmd = new SqlCommand("SELECT nIDRFC FROM CAT_Clientes (NOLOCK) where nCliente=@n_Cliente", con);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add("@n_Cliente", SqlDbType.BigInt).Value = n_Cliente;
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            nIDRFC = ConvertUtils.ToInt64(reader["nIDRFC"]);
+
+                            break;
+                        }
+                    }                    
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener el id rfc del cliente")
+                {
+                    Metodo = "ObtenIdRFC_Cliente",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return (long) nIDRFC;
+        }
+
+        public async Task<CatCorreoContactoRFC> EliminarCorreoCliente(CatCorreoContactoRFC correo)
+        {
+            CatCorreoContactoRFC correoCliente = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_UP_CAT_EliminaCorreoCliente_SP",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nIDRFC", correo.IDRFC);
+                    cmd.Parameters.AddWithValue("@cCorreoElectronico", correo.CorreoElectronico);
+
+                    // Agrega el parámetro de retorno
+                    var returnParameter = new SqlParameter
+                    {
+                        ParameterName = "@RETURN_VALUE",
+                        Direction = ParameterDirection.ReturnValue
+                    };
+                    cmd.Parameters.Add(returnParameter);
+
+                    await cmd.ExecuteNonQueryAsync();
+
+                    int respuesta = (int)(returnParameter.Value ?? 0);
+
+                    correoCliente = null;
+                    if (respuesta == 1)
+                    {
+                        correoCliente = correo;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo cancelar el contacto de cliente")
+                {
+                    Metodo = "EliminarCorreoCliente",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return correoCliente;
         }
     }
 }

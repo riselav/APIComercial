@@ -20,7 +20,8 @@ CREATE PROCEDURE CAT_IME_Clientes (
 	@bActivo as bit,          
 	@cUsuario as Varchar(50),          
 	@cNombreMaquina as Varchar(50),  
-	@nSucursalRegistro int=NULL  
+	@nSucursalRegistro int=NULL,
+	@cUso_CFDI varchar(5)=''
 )          
 AS           
 BEGIN          
@@ -57,7 +58,7 @@ BEGIN
   @bActivo, @cUsuario, @cNombreMaquina, getdate()  
            
   INSERT INTO CAT_RFC(nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo)
-  SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,'' as cUso_CFDI,@cRegimenFiscal,1
+  SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,@cUso_CFDI as cUso_CFDI,@cRegimenFiscal,1
 
   UPDATE CAT_Clientes SET nIDRFC=@nIDRFC WHERE nCliente=@nID
 
@@ -95,14 +96,14 @@ BEGIN
     
 	IF EXISTS(SELECT 1 FROM CAT_RFC R (NOLOCK) JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC WHERE C.nCliente=@nFolio)
 		UPDATE R SET cRazonSocial=@cRazonSocial,cRFC=@cRFC,
-					 cRegimenFiscal=@cRegimenFiscal
+					 cRegimenFiscal=@cRegimenFiscal,cUso_CFDI=@cUso_CFDI
 		FROM CAT_RFC R (NOLOCK)
 		JOIN CAT_Clientes C (NOLOCK) ON R.nIDRFC=C.nIDRFC
 		WHERE C.nCliente=@nFolio
 	ELSE
 	BEGIN
 		INSERT INTO CAT_RFC(nIDRFC,cRazonSocial,cRFC,cCP,cDomicilio,cUso_CFDI,cRegimenFiscal,bActivo)
-		SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,'' as cUso_CFDI,@cRegimenFiscal,1
+		SELECT @nIDRFC,@cRazonSocial,@cRFC,@cCodigoPostal,@cDomicilio,@cUso_CFDI as cUso_CFDI,@cRegimenFiscal,1
 
 		UPDATE CAT_Clientes SET nIDRFC=@nIDRFC WHERE nCliente=@nFolio
 	END
@@ -113,8 +114,8 @@ BEGIN
   -- Cancela el registro indicado          
            
     UPDATE R SET bActivo= @bActivo,   
-  cUsuario_Cancela=  @cUsuario,          
-        cMaquina_Cancela=  @cNombreMaquina,          
+		cUsuario_Cancela= @cUsuario,          
+        cMaquina_Cancela= @cNombreMaquina,          
         dFecha_Cancela = GETDATE ()          
     FROM CAT_Clientes as R          
     WHERE nCliente = @nFolio  

@@ -24,10 +24,18 @@ BEGIN
 	ORDER BY EM.dFecha_Registra
 
 	IF @nFolio>0
+	BEGIN
 		SELECT nCliente,nContacto,C.cNombre,cPuesto,ISNULL(cTelefono,'') as cTelefono,cCelular,
 		cCorreoElectronico,nTipoContacto,ISNULL(CC.cDescripcion,'') as cTipoContacto
 		FROM CAT_ClientesContactos C(NOLOCK)
 		LEFT JOIN CAT_Catalogos CC (NOLOCK) ON CC.nCodigo=C.nTipoContacto
 			AND CC.cNombre='CAT_TipoContactoCliente'
 		WHERE nCliente=@nFolio
+
+		SELECT CC.nIDRFC as IDRFC,nFolio as Folio,cCorreoElectronico as CorreoElectronico,
+		CC.bActivo as Activo,CC.cUsuario_Registra as Usuario,CC.cMaquina_Registra as Maquina
+		FROM CAT_CorreosContactoRFC CC (NOLOCK)
+		JOIN CAT_Clientes Cl (NOLOCK) ON CC.nIDRFC=Cl.nIDRFC
+		WHERE nCliente=@nFolio
+	END
 END 

@@ -19,5 +19,7 @@ namespace Voalaft.Data.Interfaces
         Task<CatClientes> IME_Cliente(CatClientes cliente);
 
         Task<ContactoCliente> EliminarContactoCliente(ContactoCliente contacto);
+
+        Task<CatCorreoContactoRFC> EliminarCorreoCliente(CatCorreoContactoRFC correo);
     }
 }
