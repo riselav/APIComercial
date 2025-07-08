@@ -1,7 +1,7 @@
 SP_ELIMINASTORE 'CM_UP_CAT_EliminaCorreoCliente_SP'
 GO
 CREATE PROCEDURE CM_UP_CAT_EliminaCorreoCliente_SP (
-	@nCliente bigint,  
+	@nIDRFC bigint,  
 	@cCorreoElectronico varchar(100)
 )
 AS
@@ -11,7 +11,7 @@ BEGIN TRY
 	DELETE D
 	FROM CAT_CorreosContactoRFC D (NOLOCK) --SET bActivo=0,cUsuario_Cancela=@cUsuarioCancela,dFecha_Cancela=GETDATE(),cMaquina_Cancela=@cMaquinaCancela,
 	JOIN CAT_Clientes Cl (NOLOCK) ON Cl.nIDRFC=D.nIDRFC
-	WHERE nCliente=@nCliente AND D.cCorreoElectronico=@cCorreoElectronico
+	WHERE Cl.nIDRFC=@nIDRFC AND D.cCorreoElectronico=@cCorreoElectronico
 
 	RETURN 1
 

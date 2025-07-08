@@ -10,5 +10,7 @@ namespace Voalaft.Data.Entidades
     {
         public long Caja { get; set; }
         public long Sucursal { get; set; }
+
+        public string? Descripcion { get; set; }
     }
 }
