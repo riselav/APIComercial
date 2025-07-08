@@ -145,5 +145,28 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("IME_Caja")]
+        public async Task<ResultadoAPI> IME_Caja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var caja = CryptographyUtils.DeserializarPeticion<CatCaja>(r);
+                caja.Usuario = peticion.usuario;
+                caja.Maquina = peticion.maquina;
+                var cajaResult = await _catCajaServicio.IME_Caja(caja);
+                resultado = CryptographyUtils.CrearResultado(cajaResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar caja");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<List<CatCaja>> ObtenerPorSucursal(long n_Sucursal);
 
         Task<CatCaja> ObtenerCajaPorId(long n_Caja);
+
+        Task<CatCaja> IME_Caja(CatCaja caja);
     }
 }

@@ -189,5 +189,93 @@ namespace Voalaft.Data.Implementaciones
 
             return catCaja;
         }
+
+        public async Task<CatCaja> IME_Caja(CatCaja caja)
+        {
+            CatCaja caj = caja;
+
+            using (var con = _conexion.ObtenerSqlConexion())
+            {
+                await con.OpenAsync();
+
+                using (var transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand()
+                        {
+                            Connection = con,
+                            Transaction = transaction,
+                            CommandText = "CAT_IME_Cajas",
+                            CommandType = CommandType.StoredProcedure,
+                        };
+                        cmd.Parameters.AddWithValue("@nFolio", caja.Caja);
+                        cmd.Parameters.AddWithValue("@nsucursal", caja.Sucursal);
+                        cmd.Parameters.AddWithValue("@cDescripcion", caja.Descripcion);
+                        cmd.Parameters.AddWithValue("@nImpresora", caja.Impresora);
+                        
+                        cmd.Parameters.AddWithValue("@bActivo", caja.Activo);
+                        cmd.Parameters.AddWithValue("@cUsuario", caja.Usuario);
+                        cmd.Parameters.AddWithValue("@cNombreMaquina ", caja.Maquina);
+      
+                        //SqlParameter outputParam = new SqlParameter("@nVenta", SqlDbType.BigInt);
+                        //outputParam.Direction = ParameterDirection.Output;
+                        //cmd.Parameters.Add(outputParam);
+
+                        // Agrega el parámetro de retorno
+                        var returnParameter = new SqlParameter
+                        {
+                            ParameterName = "@RETURN_VALUE",
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        cmd.Parameters.Add(returnParameter);
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        //int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+
+                        //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
+
+                        bool nvo = false;
+                        int folioSig = (int)(returnParameter.Value ?? 0);
+
+                        if (caj.Caja == 0)
+                        {
+                            nvo = true;
+                            caj.Caja = folioSig;
+                        }                 
+
+                        // Todo bien, commit
+                        if (caj != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        caj = null;
+
+                        string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                        string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                        int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                        _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                        throw new DataAccessException("Error(rp) al insertar/editar caja de sucursal")
+                        {
+                            Metodo = "IME_Caja",
+                            ErrorMessage = ex.Message,
+                            ErrorCode = 1
+                        };
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+                }
+            }
+
+            return caj;
+        }
     }
 }
