@@ -1,23 +1,23 @@
-sp_eliminaStore 'RST_IME_CAT_Cajas'
-
+sp_eliminaStore 'CAT_IME_Cajas'
 GO
-
 --SELECT * FROM CAT_Cajas (NOLOCK)
-Create procedure RST_IME_CAT_Cajas (        
-@nFolio as int,          
-@nsucursal as int,      
-@cDescripcion Varchar(100),        
-@nImpresora as Int,        
-@bActivo as bit,        
-@cUsuario as Varchar(50),        
-@cNombreMaquina as Varchar(50)        
+Create procedure CAT_IME_Cajas (        
+	@nFolio as int,          
+	@nsucursal as int,      
+	@cDescripcion Varchar(100),        
+	@nImpresora as Int,        
+	@bActivo as bit,        
+	@cUsuario as Varchar(50),        
+	@cNombreMaquina as Varchar(50)        
 )        
 As         
 Begin        
         
 --=================================================================================================================        
 -- Si el Folio es cero, indica que es un nuevo registro,        
---=================================================================================================================        
+--=================================================================================================================  
+IF @nImpresora =0 SET @nImpresora=NULL
+
 if @nFolio =0         
 Begin        
  Declare @nFolioSig as int =  (Select Isnull(max(nCaja),0)  From CAT_Cajas) + 1        

@@ -43,3 +43,5 @@ IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_Cajas_CAT_S
 	ALTER TABLE [dbo].[CAT_Cajas] ADD CONSTRAINT [FK_CAT_Cajas_CAT_Sucursales]
 	FOREIGN KEY ([nSucursal]) REFERENCES [dbo].[CAT_Sucursales] ([nSucursal]) ON DELETE No Action ON UPDATE No Action
 GO
+
+ALTER TABLE CAT_Cajas ALTER COLUMN nImpresora int;
