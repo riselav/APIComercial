@@ -3,10 +3,14 @@ using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
+using Voalaft.Data.Entidades.Tableros;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
 
@@ -67,18 +71,112 @@ namespace Voalaft.API.Controllers
         }
 
         [HttpPost("ObtenerClientePorId")]
-        public async Task<CatClientes> ObtenerClientePorId(long n_Cliente)
+        public async Task<ResultadoAPI> ObtenerClientePorId(PeticionAPI peticion)
         {
-            CatClientes resultado = null;
+            ResultadoAPI resultado = null;
             try
             {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                JObject json = JObject.Parse(r);
 
-                resultado = await _catClientesServicio.ObtenerPorId(n_Cliente);
+                long n_Cliente = json["nCliente"].Value<long>();
+                var ClienteResult = await _catClientesServicio.ObtenerPorId(n_Cliente);
+                resultado = CryptographyUtils.CrearResultado(ClienteResult);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al consultar el registro de cat cliente");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ConsultaClientes")]
+        public async Task<ResultadoAPI> ConsultaClientes(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Cliente = CryptographyUtils.DeserializarPeticion<ParametrosConsultaClientes>(r);
+                List<Cliente> cli = await _catClientesServicio.ConsultaClientes(Cliente);
+                resultado = CryptographyUtils.CrearResultado(cli);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar los clientes de tablero");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("IME_Cliente")]
+        public async Task<ResultadoAPI> IME_Cliente(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var cliente = CryptographyUtils.DeserializarPeticion<CatClientes>(r);
+                cliente.Usuario = peticion.usuario;
+                cliente.Maquina = peticion.maquina;
+                var clienteResult = await _catClientesServicio.IME_Cliente(cliente);
+                resultado = CryptographyUtils.CrearResultado(clienteResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar cliente");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("EliminarContactoCliente")]
+        public async Task<ResultadoAPI> EliminarContactoCliente(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var contacto = CryptographyUtils.DeserializarPeticion<ContactoCliente>(r);
+                contacto.usuario = peticion.usuario;
+                contacto.maquina = peticion.maquina;
+                var contactoResult = await _catClientesServicio.EliminarContactoCliente(contacto);
+                resultado = CryptographyUtils.CrearResultado(contactoResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al eliminar contacto de cliente");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("EliminarCorreoCliente")]
+        public async Task<ResultadoAPI> EliminarCorreoCliente(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var correo = CryptographyUtils.DeserializarPeticion<CatCorreoContactoRFC>(r);
+                correo.Usuario = peticion.usuario;
+                correo.Maquina = peticion.maquina;
+                var correoResult = await _catClientesServicio.EliminarCorreoCliente(correo);
+                resultado = CryptographyUtils.CrearResultado(correoResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al eliminar contacto de cliente");
             }
             finally { }
 

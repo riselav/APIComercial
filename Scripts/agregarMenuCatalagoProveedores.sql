@@ -19,7 +19,7 @@ INSERT INTO [dbo].[CAT_OpcionesMenu]
            ,[bFormaHija])
      VALUES
            ((select COALESCE(max(nOpcion),0)+1 from CAT_OpcionesMenu(nolock))
-           ,'Catalago Empresas'
+           ,'Catalago Proveedores'
            ,2
            ,''
            ,''

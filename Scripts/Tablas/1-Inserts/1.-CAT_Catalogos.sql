@@ -159,3 +159,19 @@ BEGIN
 END
 
 
+IF NOT EXISTS (SELECT * FROM CAT_Catalogos (NOLOCK) WHERE cNombre='Cat_TipoPersona' AND nCodigo=1)
+BEGIN
+	SET @nCatalogo=@nCatalogo+1
+
+	INSERT INTO CAT_Catalogos
+	SELECT @nCatalogo,'Cat_TipoPersona',1,'FISICA',1
+END
+
+IF NOT EXISTS (SELECT * FROM CAT_Catalogos (NOLOCK) WHERE cNombre='Cat_TipoPersona' AND nCodigo=2)
+BEGIN
+	SET @nCatalogo=@nCatalogo+1
+
+	INSERT INTO CAT_Catalogos
+	SELECT @nCatalogo,'Cat_TipoPersona',2,'MORAL',1
+END
+-- select * from CAT_Catalogos where cNombre= 'Cat_TipoPersona'

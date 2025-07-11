@@ -23,8 +23,8 @@ AS
 BEGIN  
  DECLARE @nConsecutivo int  
   
- --DECLARE @nFolioSig AS INT =  ((SELECT MAX(CONVERT(int,RIGHT(nIDRegistroCaja,8))) FROM CAJ_MovimientosCaja (NOLOCK) WHERE nSucursal=@nSucursal ) + 1)  
- DECLARE @nFolioSig AS INT =  ISNULL((SELECT MAX(CONVERT(int,RIGHT(nIDRegistroCaja,8))) FROM CAJ_MovimientosCaja (NOLOCK) WHERE nIDApertura=@nIDApertura),0)+1  
+ DECLARE @nFolioSig AS INT =  ((SELECT MAX(CONVERT(int,RIGHT(nIDRegistroCaja,8))) FROM CAJ_MovimientosCaja (NOLOCK) WHERE nSucursal=@nSucursal ) + 1)  
+ --DECLARE @nFolioSig AS INT =  ISNULL((SELECT MAX(CONVERT(int,RIGHT(nIDRegistroCaja,8))) FROM CAJ_MovimientosCaja (NOLOCK) WHERE nIDApertura=@nIDApertura),0)+1  
  DECLARE @nIDCaja int=(SELECT nIDCaja FROM CAJ_RegistrosAperturaCaja (NOLOCK) WHERE nIDApertura= @nIDApertura) 
  DECLARE @nConsecutivoSig AS INT =  ISNULL((SELECT MAX(CONVERT(int,RIGHT(nIDRegistroCaja,8)))   
 									 FROM CAJ_MovimientosCaja (NOLOCK)   

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
@@ -6,7 +7,7 @@ using Voalaft.Data.Entidades;
 
 namespace Voalaft.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CatCajaController : Controller
@@ -139,6 +140,29 @@ namespace Voalaft.API.Controllers
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al consultar el registro de cat Caja");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("IME_Caja")]
+        public async Task<ResultadoAPI> IME_Caja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var caja = CryptographyUtils.DeserializarPeticion<CatCaja>(r);
+                caja.Usuario = peticion.usuario;
+                caja.Maquina = peticion.maquina;
+                var cajaResult = await _catCajaServicio.IME_Caja(caja);
+                resultado = CryptographyUtils.CrearResultado(cajaResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar caja");
             }
             finally { }
 

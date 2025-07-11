@@ -7,5 +7,7 @@ namespace Voalaft.Data.Interfaces
     {
         Task<List<CatCodigosPostales>> ListaCodigosPostales();
         Task<List<CatColonias>> ObtenerColoniasPorCP(string cCodigoPostal);
+
+        Task<DireccionPorCodigoPostal> DireccionPorCodigoPostal(string cCodigoPostal);
     }
 }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.Data.Entidades;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
+using Voalaft.API.Servicios.Implementacion;
 
 namespace Voalaft.API.Controllers
 {
@@ -63,6 +65,31 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
-        
+
+       [HttpPost("DireccionPorCodigoPostal")]
+        public async Task<ResultadoAPI> DireccionPorCodigoPostal(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                JObject json = JObject.Parse(r);
+
+                string? cCodigoPostal = json["cCodigoPostal"].Value<String>();
+
+                //int nCaja = json["nCaja"].Value<int>();
+
+                var datoDireccionResult = await _datosDireccionServicio.DireccionPorCodigoPostal(cCodigoPostal);
+                resultado = CryptographyUtils.CrearResultado(datoDireccionResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar los datos de direccion por codigo postal");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }
