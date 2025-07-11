@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.Consultas;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
+using Voalaft.Utilerias;
 
 namespace Voalaft.Data.Implementaciones
 {
@@ -53,7 +55,7 @@ namespace Voalaft.Data.Implementaciones
                             CommandText = "RST_IME_REG_VentasEncabezado",
                             CommandType = CommandType.StoredProcedure,
                         };
-                        regMovimientoVenta.nIDApertura = apertura.IDApertura;
+                        regMovimientoVenta.nIDApertura = apertura == null ? null : apertura.IDApertura;
                         cmd.Parameters.AddWithValue("@nTipoRegistro", regMovimientoVenta.nTipoRegistro);
                         cmd.Parameters.AddWithValue("@nTipoVenta", regMovimientoVenta.nTipoVenta == 0 ? null : regMovimientoVenta.nTipoVenta);
                         cmd.Parameters.AddWithValue("@nSucursal", regMovimientoVenta.nSucursal);
@@ -195,5 +197,133 @@ namespace Voalaft.Data.Implementaciones
             return regMovimientoVenta;
         }
 
+        public async Task<List<MovimientoVentaEnc>> CM_CON_Todas_Cotizaciones(int nSucursal)
+        {
+            List<MovimientoVentaEnc> cotizaciones = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_CON_Todas_Cotizaciones",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", nSucursal);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+
+                        while (await reader.ReadAsync())
+                        {
+                            cotizaciones.Add(
+                                new MovimientoVentaEnc()
+                                {
+                                    nVenta = ConvertUtils.ToInt64(reader["nVenta"]),
+                                    nTipoRegistro = ConvertUtils.ToInt32(reader["nTipoRegistro"]),
+                                    nTipoVenta = ConvertUtils.ToInt32(reader["nTipoVenta"]),
+                                    nSucursal = ConvertUtils.ToInt32(reader["nSucursal"]),
+                                    cDescripcion = ConvertUtils.ToString(reader["cDescripcion"]),
+                                    nCaja = ConvertUtils.ToInt32(reader["nCaja"]),                                    
+                                    nCliente = ConvertUtils.ToInt32(reader["nCliente"]),
+                                    cNombreCompleto = ConvertUtils.ToString(reader["cNombreCompleto"]),
+                                    nIDApertura = ConvertUtils.ToInt64(reader["nIDApertura"]),
+                                    nConsecutivo = ConvertUtils.ToInt64(reader["nConsecutivo"]),
+                                    nSubtotal = ConvertUtils.ToDecimal(reader["nSubtotal"]),
+                                    nImpuestoIVA = ConvertUtils.ToDecimal(reader["nImpuestoIVA"]),
+                                    nImpuestoIEPS = ConvertUtils.ToDecimal(reader["nImpuestoIEPS"]),
+                                    nImporteDescuento = ConvertUtils.ToDecimal(reader["nImporteDescuento"]),
+                                    nTotal = ConvertUtils.ToDecimal(reader["nTotal"]),
+                                    cComentarios = ConvertUtils.ToString(reader["cComentarios"])
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener las cotizaciones")
+                {
+                    Metodo = "CM_CON_Todas_Cotizaciones",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return cotizaciones;
+        }
+
+        public async Task<List<MovimientoVentaDet>> CM_CON_detalle_mov_ventas(long nVenta)
+        {
+            List<MovimientoVentaDet> detalle = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_CON_detalle_mov_ventas",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nVenta", nVenta);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalle.Add(
+                                new MovimientoVentaDet()
+                                {
+                                    nVenta = ConvertUtils.ToInt64(reader["nVenta"]),
+                                    nRenglon = ConvertUtils.ToInt32(reader["nRenglon"]),
+                                    nIDArticulo = ConvertUtils.ToInt32(reader["nIDArticulo"]),
+                                    cDescripcion = ConvertUtils.ToString(reader["cDescripcion"]),
+                                    nCantidad = ConvertUtils.ToDecimal(reader["nCantidad"]),
+                                    nCantidadDevuelta = ConvertUtils.ToDecimal(reader["nCantidadDevuelta"]),
+                                    nPrecioUnitario = ConvertUtils.ToDecimal(reader["nPrecioUnitario"]),
+                                    nPrecioOriginal = ConvertUtils.ToDecimal(reader["nPrecioOriginal"]),
+                                    nSubtotal = ConvertUtils.ToDecimal(reader["nSubtotal"]),
+                                    nImpuestoIVA = ConvertUtils.ToDecimal(reader["nImpuestoIVA"]),
+                                    nIDImpuestoIVA = ConvertUtils.ToInt32(reader["nIDImpuestoIVA"]),
+                                    nPorcentajeImpuestoIVA = ConvertUtils.ToDecimal(reader["nPorcentajeImpuestoIVA"]),
+                                    nImpuestoIEPS = ConvertUtils.ToDecimal(reader["nImpuestoIEPS"]),
+                                    nIDImpuestoIEPS = ConvertUtils.ToInt32(reader["nIDImpuestoIEPS"]),
+                                    nPorcentajeImpuestoIEPS = ConvertUtils.ToDecimal(reader["nPorcentajeImpuestoIEPS"]),
+                                    nImporteDescuento = ConvertUtils.ToDecimal(reader["nImporteDescuento"]),
+                                    nPorcentajeDescuento = ConvertUtils.ToDecimal(reader["nPorcentajeDescuento"]),
+                                    nTotal = ConvertUtils.ToDecimal(reader["nTotal"]),
+                                    cComentarios = ConvertUtils.ToString(reader["cComentarios"])
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener las ventas detalle")
+                {
+                    Metodo = "CM_CON_detalle_mov_ventas",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalle;
+        }
     }
 }
