@@ -93,5 +93,30 @@ namespace Voalaft.API.Servicios.Implementacion
                 };
             }
         }
+
+        public async Task<ImpresionTicketData> Obtener_Ticket_Venta(long nVenta)
+        {
+            try
+            {
+                return await _registroVentaRepositorio.Obtener_Ticket_Venta(nVenta);
+            }
+            catch (DataAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener el ticket de la venta")
+                {
+                    Metodo = "Obtener_Ticket_Venta",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace Voalaft.Data.Interfaces
         Task<RegMovimientoVenta> IME_REG_VentasEncabezado(RegMovimientoVenta regMovimientoVenta);
         Task<List<MovimientoVentaEnc>> CM_CON_Todas_Cotizaciones(int nSucursal);
         Task<List<MovimientoVentaDet>> CM_CON_detalle_mov_ventas(long nVenta);
+        Task<ImpresionTicketData> Obtener_Ticket_Venta(long nVenta);
     }
 }

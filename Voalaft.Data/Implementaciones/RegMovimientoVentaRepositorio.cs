@@ -325,5 +325,83 @@ namespace Voalaft.Data.Implementaciones
 
             return detalle;
         }
+
+        public async Task<ImpresionTicketData> Obtener_Ticket_Venta(long nVenta)
+        {
+            const int LINE_WIDTH = 40;
+
+            var lineas = new List<string>();
+            DateTime fechaActual = DateTime.Now; // Fecha y hora actual en Culiacán, Sinaloa
+
+            // --- Encabezado del Ticket ---
+            lineas.Add("".PadLeft(LINE_WIDTH, '-'));
+            lineas.Add("SUPER TIENDA EL SOL".PadLeft(LINE_WIDTH / 2 + "SUPER TIENDA EL SOL".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("SUCURSAL ZAPATA".PadLeft(LINE_WIDTH / 2 + "SUCURSAL ZAPATA".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("AV. JUAREZ #567 OTE.".PadLeft(LINE_WIDTH / 2 + "AV. JUAREZ #567 OTE.".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("CULIACAN, SINALOA".PadLeft(LINE_WIDTH / 2 + "CULIACAN, SINALOA".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("RFC: ABC123456XYZ".PadRight(LINE_WIDTH, ' '));
+            lineas.Add($"Venta #:{nVenta.ToString().PadRight(LINE_WIDTH - "Venta #:".Length, ' ')}");
+            lineas.Add($"Fecha: {fechaActual.ToString("dd/MM/yyyy HH:mm").PadRight(LINE_WIDTH - "Fecha: ".Length, ' ')}");
+            lineas.Add("Cajero: ANA LOPEZ".PadRight(LINE_WIDTH, ' '));
+            lineas.Add("".PadLeft(LINE_WIDTH, '-'));
+            lineas.Add("DESCRIPCION      CANT.   PRECIO   IMPORTE");
+            lineas.Add("".PadLeft(LINE_WIDTH, '-'));
+
+            // --- Artículos de Venta (simulados) ---
+            var items = new List<dynamic>
+        {
+            new { Nombre = "AGUA EMBOTELLADA 1L", Cantidad = 3, Precio = 12.50m },
+            new { Nombre = "REFRESCO COLA 600ML", Cantidad = 2, Precio = 18.00m },
+            new { Nombre = "PAPAS FRITAS GRANDES", Cantidad = 1, Precio = 30.00m },
+            new { Nombre = "CHOCOLATE BARRA 100G", Cantidad = 4, Precio = 15.00m },
+            new { Nombre = "CHICLE MENTA 5PZ", Cantidad = 5, Precio = 5.00m }
+        };
+
+            decimal subtotal = 0m;
+            foreach (var item in items)
+            {
+                decimal importe = item.Cantidad * item.Precio;
+                subtotal += importe;
+
+                // Ajusta los anchos para que sumen LINE_WIDTH
+                string namePart = item.Nombre.Length > 15 ? item.Nombre.Substring(0, 15).PadRight(15, ' ') : item.Nombre.PadRight(15, ' ');
+                string qtyPart = item.Cantidad.ToString().PadLeft(5, ' ');
+                string pricePart = item.Precio.ToString("F2").PadLeft(8, ' ');
+                string importPart = importe.ToString("F2").PadLeft(9, ' '); // Total de cada linea
+
+                lineas.Add($"{namePart} {qtyPart} {pricePart} {importPart}");
+            }
+
+            lineas.Add("".PadLeft(LINE_WIDTH, '-'));
+
+            // --- Resumen de Totales ---
+            decimal ivaTasa = 0.16m; // IVA del 16% en México
+            decimal iva = subtotal * ivaTasa;
+            decimal descuentoSimulado = subtotal * 0.03m; // 3% de descuento simulado
+            decimal totalGeneral = subtotal + iva - descuentoSimulado;
+
+            lineas.Add($"SUBTOTAL:{subtotal.ToString("F2").PadLeft(LINE_WIDTH - "SUBTOTAL:".Length, ' ')}");
+            lineas.Add($"IVA (16%):{iva.ToString("F2").PadLeft(LINE_WIDTH - "IVA (16%):".Length, ' ')}");
+            lineas.Add($"DESCUENTO:{descuentoSimulado.ToString("F2").PadLeft(LINE_WIDTH - "DESCUENTO:".Length, ' ')}");
+            lineas.Add("".PadLeft(LINE_WIDTH, '='));
+            lineas.Add($"TOTAL:{totalGeneral.ToString("F2").PadLeft(LINE_WIDTH - "TOTAL:".Length, ' ')}");
+            lineas.Add("".PadLeft(LINE_WIDTH, '='));
+
+            // --- Pie de Ticket ---
+            lineas.Add(""); // Línea en blanco
+            lineas.Add("EFECTIVO:".PadRight(LINE_WIDTH - "$1000.00".Length, ' ') + "$1000.00"); // Simula pago con un billete
+            lineas.Add("CAMBIO:".PadRight(LINE_WIDTH - totalGeneral.ToString("F2").Length, ' ') + (1000m - totalGeneral).ToString("F2")); // Calcula el cambio
+            lineas.Add("");
+            lineas.Add("¡GRACIAS POR SU PREFERENCIA!".PadLeft(LINE_WIDTH / 2 + "¡GRACIAS POR SU PREFERENCIA!".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("Visítanos en www.nuestrocomercio.mx".PadLeft(LINE_WIDTH / 2 + "Visítanos en www.nuestrocomercio.mx".Length / 2, ' ').PadRight(LINE_WIDTH, ' '));
+            lineas.Add("".PadLeft(LINE_WIDTH, '-'));
+            lineas.Add("\n\n\n\n"); // Múltiples saltos de línea para el corte del papel
+
+            return new ImpresionTicketData
+            {
+                nVenta = nVenta,
+                LineasImprimibles = lineas
+            };
+        }
     }
 }

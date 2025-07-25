@@ -111,5 +111,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("Obtener_Ticket_Venta")]
+        public async Task<ResultadoAPI> Obtener_Ticket_Venta(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var mv = CryptographyUtils.DeserializarPeticion<RegMovimientoVenta>(r);
+                ImpresionTicketData ticket = await _registroVentaServicio.Obtener_Ticket_Venta(mv.nVenta);
+                resultado = CryptographyUtils.CrearResultado(ticket);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar el ticket");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }
