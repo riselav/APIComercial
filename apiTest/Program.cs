@@ -19,17 +19,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateIssuer = false,
         ValidateAudience = false,
     });
+
+//builder.Services.AddCors(options =>
+//{
+//    // Allow any origin using "*"
+//    options.AddPolicy("AllowAll", builder =>
+//    {
+//        builder.WithOrigins("*"); // Allow requests from any origin
+//        builder.AllowAnyMethod();   // Allow any HTTP method
+//        builder.AllowAnyHeader();   // Allow any header
+//        builder.AllowAnyOrigin();
+//    });
+//});
+
 builder.Services.AddCors(options =>
 {
-    // Allow any origin using "*"
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        builder.WithOrigins("*"); // Allow requests from any origin
-        builder.AllowAnyMethod();   // Allow any HTTP method
-        builder.AllowAnyHeader();   // Allow any header
-        builder.AllowAnyOrigin();
+        policy
+            .SetIsOriginAllowed(origin => true) // Permite cualquier origen
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -49,16 +63,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 app.UsePeticionApiMiddleware();
-
-app.UseHttpsRedirection();
 app.MapControllers();
-
 
 app.Run();
