@@ -22,7 +22,7 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 
         public List<SalesByServiceTypeDto>? VentasPorTipoServicio { get; set; }
 
-        public List<SalesByKitchenStationDto>? VentasPorEstacionComida { get; set; }
+        public List<SalesByKitchenStationDto>? VentasPorEstacionCocina { get; set; }
 
         public List<TopDishDto>? topPlatillosMasVendidos { get; set; }
 

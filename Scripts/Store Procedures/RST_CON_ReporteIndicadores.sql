@@ -287,6 +287,8 @@ DECLARE @nIngresos decimal(18,4)=(
 	AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 )
 
+IF @nIngresos IS NULL SET @nIngresos=0
+
 DECLARE @nEgresos decimal(18,4)=(
 	SELECT SUM(MC.nImporte) as nImporte
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
@@ -295,6 +297,8 @@ DECLARE @nEgresos decimal(18,4)=(
 	WHERE MC.bActivo=1 AND MC.nEfecto=-1
 		--AND MC.nTipoRegistroCaja=2 -- Retiros de caja 
 )
+
+IF @nEgresos IS NULL SET @nEgresos=0
 
 DECLARE @nTicketPromedio decimal(18,2)= (SELECT CASE WHEN @nTotalOrdenes=0 THEN 0.00 ELSE Cast(ISNULL(@nTotalVenta,0) / @nTotalOrdenes as numeric(18,2)) END)
 

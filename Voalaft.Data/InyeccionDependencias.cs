@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.Dashboards.Indicadores;
 using Voalaft.Data.Implementaciones;
 using Voalaft.Data.Interfaces;
 
@@ -55,7 +56,7 @@ namespace Voalaft.Data
 
             services.AddTransient<ICatConceptoCajaRepositorio, CatConceptoCajaRepositorio>();
             services.AddTransient<IRegCorteCajaRepositorio, RegCorteCajaRepositorio>();
-            
+            services.AddTransient<IDashboardIndicadoresRepositorio, DashboardIndicadoresRepositorio>();
         }
     }
 }
