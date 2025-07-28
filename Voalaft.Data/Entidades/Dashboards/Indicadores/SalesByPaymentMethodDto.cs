@@ -8,8 +8,8 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class SalesByPaymentMethodDto
     {
-        public string? PaymentMethod { get; set; }
-        public decimal TotalSales { get; set; }
+        public string? paymentMethod { get; set; }
+        public decimal totalSales { get; set; }
     }
     // Retornaría List<SalesByPaymentMethodDto>
 }

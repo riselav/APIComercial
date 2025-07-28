@@ -8,9 +8,9 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class MonthlyInvoiceStatusDto
     {
-        public string? Month { get; set; }
-        public decimal InvoicedSales { get; set; }
-        public decimal UninvoicedSales { get; set; }
+        public string? month { get; set; }
+        public decimal invoicedSales { get; set; }
+        public decimal uninvoicedSales { get; set; }
     }
     // Retornaría List<MonthlyInvoiceStatusDto>
 }

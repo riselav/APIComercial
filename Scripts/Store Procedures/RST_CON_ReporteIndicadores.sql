@@ -1,8 +1,8 @@
 sp_eliminastore 'RST_CON_ReporteIndicadores'
 
 GO
--- Select dbo.FechaNumero_Fn('20250601')
--- Exec RST_CON_ReporteIndicadores 1, 45809, 45869  
+-- Select dbo.FechaNumero_Fn('20250701')
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865  
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0)  
 As  
 Begin  
@@ -87,7 +87,7 @@ SUM(C.nDotacionInicial) As nImporte, SUM(C.nDotacionInicial) as nImporteUsuario 
 Into #ConcentradoCaja  
 FROM #CAJ_CortesCaja As C (NOLOCK)  
 Group by C.nIDCorteCaja
- 
+
 -- Obtiene solo los pagos de las ventas  
 SELECT MC.nTipoRegistroCaja, MC.nIDCorteCaja, MC.nIDApertura, 
 OCE.nOrden, OCE.nCuenta, MDC.nFormaPago, FP.cDescripcion as cFormaPago, 
@@ -108,7 +108,7 @@ Inner Join REG_OrdenesCuentasEncabezado as OCE (Nolock) on OCE.nOrden = MDC.nOrd
 Inner Join CAT_FormasPago  as FP (Nolock) on FP.nFormaPago =MDC.nFormaPago   
 Inner Join REG_OrdenesEncabezado  as OE (Nolock) on OE.norden = OCE.nOrden and OE.nEstatus IN(@nEstatusPagado,@nEstatusLiberado)
 	--And OE.bCancelado= CASE WHEN @bTodo=1 THEN OCE.bCancelado ELSE 0 END
-Inner Join CAT_Empleados  as E (Nolock) on E.nEmpleado = OE.nEmpleadoAbreMesa   
+Left Join CAT_Empleados  as E (Nolock) on E.nEmpleado = OE.nEmpleadoAbreMesa   
 Inner Join CAT_Catalogos as C (Nolock) on C.cNombre ='CAT_TipoServicio' and C.nCodigo = OE.nTipoServicio  
 Where MC.bActivo =1 -- and MC.nIDCorteCaja = @FolioCorte  
 --select @bTodo,sum(nImporte) from #MovtosPagoOrden where nFormaPago=4-- JAM1

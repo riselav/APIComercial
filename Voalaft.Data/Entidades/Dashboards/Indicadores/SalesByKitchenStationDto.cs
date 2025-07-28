@@ -8,8 +8,8 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class SalesByKitchenStationDto
     {
-        public string? StationName { get; set; }
-        public decimal TotalSales { get; set; }
+        public string? stationName { get; set; }
+        public decimal totalSales { get; set; }
     }
     // Retornaría List<SalesByKitchenStationDto>
 }

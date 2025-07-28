@@ -56,9 +56,9 @@ INSERT INTO [dbo].[CAT_PermisosMenu]
      VALUES
            ((select COALESCE(max(nPermiso),0)+1 from CAT_PermisosMenu (nolock))
            ,(select COALESCE(max(nOpcion),0) from CAT_OpcionesMenu(nolock))
-           ,5
-           ,2
-           ,1
+           ,5 --<--Perfil
+           ,2 --<--Usuario
+           ,1 --<--Activo
            ,'admin'
            ,'admin'
            ,getdate()

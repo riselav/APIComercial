@@ -54,34 +54,34 @@ namespace Voalaft.Data.Implementaciones
 
                         while (await reader.ReadAsync())
                         {
-                            dashboardIndicadores.ResumenIndicadores =
+                            dashboardIndicadores.resumenIndicadores =
                                 new KPISummaryDto()
                                 {
-                                    TotalSales = ConvertUtils.ToDecimal(reader["totalSales"]),
-                                    TotalSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["totalSalesPreviousPeriod"]),
-                                    InvoicedSales = ConvertUtils.ToDecimal(reader["invoicedSales"]),
-                                    InvoicedSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["invoicedSalesPreviousPeriod"]),
-                                    UninvoicedSales = ConvertUtils.ToDecimal(reader["uninvoicedSales"]),
-                                    UninvoicedSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["uninvoicedSalesPreviousPeriod"]),
-                                    NetIncome = ConvertUtils.ToDecimal(reader["netIncome"]),
-                                    NetIncomePreviousPeriod = ConvertUtils.ToDecimal(reader["netIncomePreviousPeriod"]),
-                                    TotalExpenses = ConvertUtils.ToDecimal(reader["totalExpenses"]),
-                                    TotalExpensesPreviousPeriod = ConvertUtils.ToDecimal(reader["totalExpensesPreviousPeriod"]),
+                                    totalSales = ConvertUtils.ToDecimal(reader["totalSales"]),
+                                    totalSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["totalSalesPreviousPeriod"]),
+                                    invoicedSales = ConvertUtils.ToDecimal(reader["invoicedSales"]),
+                                    invoicedSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["invoicedSalesPreviousPeriod"]),
+                                    uninvoicedSales = ConvertUtils.ToDecimal(reader["uninvoicedSales"]),
+                                    uninvoicedSalesPreviousPeriod = ConvertUtils.ToDecimal(reader["uninvoicedSalesPreviousPeriod"]),
+                                    netIncome = ConvertUtils.ToDecimal(reader["netIncome"]),
+                                    netIncomePreviousPeriod = ConvertUtils.ToDecimal(reader["netIncomePreviousPeriod"]),
+                                    totalExpenses = ConvertUtils.ToDecimal(reader["totalExpenses"]),
+                                    totalExpensesPreviousPeriod = ConvertUtils.ToDecimal(reader["totalExpensesPreviousPeriod"]),
                                     //nTipoPersona = reader.IsDBNull(TipoPersonaIndex) ? 0 : reader.GetInt32(TipoPersonaIndex),
                                     //nIDRFC = reader.IsDBNull(IdRFCIndex) ? 0 : reader.GetInt64(IdRFCIndex),
 
-                                    NumberOfCustomers = ConvertUtils.ToInt32(reader["numberOfCustomers"]),
-                                    NumberOfCustomersPreviousPeriod = ConvertUtils.ToInt32(reader["NumberOfCustomersPreviousPeriod"]),
-                                    AverageTicket = ConvertUtils.ToDecimal(reader["averageTicket"]),
-                                    AverageTicketPreviousPeriod = ConvertUtils.ToDecimal(reader["averageTicketPreviousPeriod"]),
-                                    OccupancyRate = ConvertUtils.ToDecimal(reader["occupancyRate"]),
-                                    OccupancyRatePreviousPeriod = ConvertUtils.ToDecimal(reader["occupancyRatePreviousPeriod"])
+                                    numberOfCustomers = ConvertUtils.ToInt32(reader["numberOfCustomers"]),
+                                    numberOfCustomersPreviousPeriod = ConvertUtils.ToInt32(reader["NumberOfCustomersPreviousPeriod"]),
+                                    averageTicket = ConvertUtils.ToDecimal(reader["averageTicket"]),
+                                    averageTicketPreviousPeriod = ConvertUtils.ToDecimal(reader["averageTicketPreviousPeriod"]),
+                                    occupancyRate = ConvertUtils.ToDecimal(reader["occupancyRate"]),
+                                    occupancyRatePreviousPeriod = ConvertUtils.ToDecimal(reader["occupancyRatePreviousPeriod"])
                                 };
 
 
                             // Mover al siguiente resultado (Ventas Diarias)
-                            dashboardIndicadores.VentasDiarias = new List<DailySalesDto>();
-                            dashboardIndicadores.VentasDiarias = [];
+                            dashboardIndicadores.ventasDiarias = new List<DailySalesDto>();
+                            dashboardIndicadores.ventasDiarias = [];
 
                             if (reader.NextResult())
                             {
@@ -89,18 +89,18 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasDiarias.Add(new DailySalesDto
+                                    dashboardIndicadores?.ventasDiarias.Add(new DailySalesDto
                                     {
-                                        Date = Convert.ToString(reader["Date"]),
-                                        TotalSales = Convert.ToDecimal(reader["TotalSales"])
+                                        date = Convert.ToString(reader["Date"]),
+                                        totalSales = Convert.ToDecimal(reader["TotalSales"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Ventas por Categoria)
-                            dashboardIndicadores.VentasPorCategoria = new List<SalesByCategoryDto>();
-                            dashboardIndicadores.VentasPorCategoria = [];
+                            dashboardIndicadores.ventasPorCategoria = new List<SalesByCategoryDto>();
+                            dashboardIndicadores.ventasPorCategoria = [];
 
                             if (reader.NextResult())
                             {
@@ -108,18 +108,18 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasPorCategoria.Add(new SalesByCategoryDto
+                                    dashboardIndicadores?.ventasPorCategoria.Add(new SalesByCategoryDto
                                     {
-                                        CategoryName = Convert.ToString(reader["CategoryName"]),
-                                        TotalSales = Convert.ToDecimal(reader["TotalSales"])
+                                        categoryName = Convert.ToString(reader["CategoryName"]),
+                                        totalSales = Convert.ToDecimal(reader["TotalSales"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Ingresos Vs Gastos)
-                            dashboardIndicadores.IngresosVsGastos = new List<MonthlyFinancialsDto>();
-                            dashboardIndicadores.IngresosVsGastos = [];
+                            dashboardIndicadores.ingresosVsGastos = new List<MonthlyFinancialsDto>();
+                            dashboardIndicadores.ingresosVsGastos = [];
 
                             if (reader.NextResult())
                             {
@@ -127,19 +127,19 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.IngresosVsGastos.Add(new MonthlyFinancialsDto
+                                    dashboardIndicadores?.ingresosVsGastos.Add(new MonthlyFinancialsDto
                                     {
-                                        Month = Convert.ToString(reader["mes"]),
-                                        Income = Convert.ToDecimal(reader["income"]),
-                                        Expenses = Convert.ToDecimal(reader["expenses"])
+                                        month = Convert.ToString(reader["mes"]),
+                                        income = Convert.ToDecimal(reader["income"]),
+                                        expenses = Convert.ToDecimal(reader["expenses"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Facturado Vs No Facturado)
-                            dashboardIndicadores.VentasFacturadasVsNoFacturadas = new List<MonthlyInvoiceStatusDto>();
-                            dashboardIndicadores.VentasFacturadasVsNoFacturadas = [];
+                            dashboardIndicadores.ventasFacturadasVsNoFacturadas = new List<MonthlyInvoiceStatusDto>();
+                            dashboardIndicadores.ventasFacturadasVsNoFacturadas = [];
 
                             if (reader.NextResult())
                             {
@@ -147,19 +147,19 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasFacturadasVsNoFacturadas.Add(new MonthlyInvoiceStatusDto
+                                    dashboardIndicadores?.ventasFacturadasVsNoFacturadas.Add(new MonthlyInvoiceStatusDto
                                     {
-                                        Month = Convert.ToString(reader["mes"]),
-                                        InvoicedSales = Convert.ToDecimal(reader["invoiced"]),
-                                        UninvoicedSales = Convert.ToDecimal(reader["uninvoiced"])
+                                        month = Convert.ToString(reader["mes"]),
+                                        invoicedSales = Convert.ToDecimal(reader["invoiced"]),
+                                        uninvoicedSales = Convert.ToDecimal(reader["uninvoiced"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Ventas Por Forma de Pago)
-                            dashboardIndicadores.VentasPorFormaPago = new List<SalesByPaymentMethodDto>();
-                            dashboardIndicadores.VentasPorFormaPago = [];
+                            dashboardIndicadores.ventasPorFormaPago = new List<SalesByPaymentMethodDto>();
+                            dashboardIndicadores.ventasPorFormaPago = [];
 
                             if (reader.NextResult())
                             {
@@ -167,18 +167,18 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasPorFormaPago.Add(new SalesByPaymentMethodDto
+                                    dashboardIndicadores?.ventasPorFormaPago.Add(new SalesByPaymentMethodDto
                                     {
-                                        PaymentMethod = Convert.ToString(reader["PaymentMethod"]),
-                                        TotalSales = Convert.ToDecimal(reader["TotalSales"])
+                                        paymentMethod = Convert.ToString(reader["PaymentMethod"]),
+                                        totalSales = Convert.ToDecimal(reader["TotalSales"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Ventas Por Tipo de Servicio)
-                            dashboardIndicadores.VentasPorTipoServicio = new List<SalesByServiceTypeDto>();
-                            dashboardIndicadores.VentasPorTipoServicio = [];
+                            dashboardIndicadores.ventasPorTipoServicio = new List<SalesByServiceTypeDto>();
+                            dashboardIndicadores.ventasPorTipoServicio = [];
 
                             if (reader.NextResult())
                             {
@@ -186,18 +186,18 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasPorTipoServicio.Add(new SalesByServiceTypeDto
+                                    dashboardIndicadores?.ventasPorTipoServicio.Add(new SalesByServiceTypeDto
                                     {
-                                        ServiceType = Convert.ToString(reader["ServiceType"]),
-                                        TotalSales = Convert.ToDecimal(reader["TotalSales"])
+                                        serviceType = Convert.ToString(reader["ServiceType"]),
+                                        totalSales = Convert.ToDecimal(reader["TotalSales"])
                                     }
                                     );
                                 }
                             }
 
                             // Mover al siguiente resultado (Ventas Por Estacion de Cocina)
-                            dashboardIndicadores.VentasPorEstacionCocina = new List<SalesByKitchenStationDto>();
-                            dashboardIndicadores.VentasPorEstacionCocina = [];
+                            dashboardIndicadores.ventasPorEstacionCocina = new List<SalesByKitchenStationDto>();
+                            dashboardIndicadores.ventasPorEstacionCocina = [];
 
                             if (reader.NextResult())
                             {
@@ -205,10 +205,10 @@ namespace Voalaft.Data.Implementaciones
                                 while (reader.Read())
                                 {
 
-                                    dashboardIndicadores?.VentasPorEstacionCocina.Add(new SalesByKitchenStationDto
+                                    dashboardIndicadores?.ventasPorEstacionCocina.Add(new SalesByKitchenStationDto
                                     {
-                                        StationName = Convert.ToString(reader["StationName"]),
-                                        TotalSales = Convert.ToDecimal(reader["TotalSales"])
+                                        stationName = Convert.ToString(reader["StationName"]),
+                                        totalSales = Convert.ToDecimal(reader["TotalSales"])
                                     }
                                     );
                                 }
@@ -226,8 +226,8 @@ namespace Voalaft.Data.Implementaciones
 
                                     dashboardIndicadores?.topPlatillosMasVendidos.Add(new TopDishDto
                                     {
-                                        DishName = Convert.ToString(reader["DishName"]),
-                                        Quantity = Convert.ToInt32(reader["Quantity"])
+                                        dishName = Convert.ToString(reader["DishName"]),
+                                        quantity = Convert.ToInt32(reader["Quantity"])
                                     }
                                     );
                                 }
@@ -245,8 +245,8 @@ namespace Voalaft.Data.Implementaciones
 
                                     dashboardIndicadores?.topPlatillosMasRentables.Add(new TopDishProfitableDto
                                     {
-                                        DishName = Convert.ToString(reader["DishName"]),
-                                        RevenueOrProfit = Convert.ToDecimal(reader["RevenueOrProfit"])
+                                        dishName = Convert.ToString(reader["DishName"]),
+                                        revenueOrProfit = Convert.ToDecimal(reader["RevenueOrProfit"])
                                     }
                                     );
                                 }
