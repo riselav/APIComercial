@@ -1,9 +1,9 @@
 sp_eliminastore 'RST_CON_ReporteIndicadores'
-
 GO
+-- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865  
-Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0)  
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 1 
+Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
   
@@ -15,7 +15,7 @@ Declare @TotalCaracteres int = 40
 Declare @LongImporte int = 9  
 Declare @LongCantidad int = 4  
 Declare @LongDescripcion int = (@TotalCaracteres - @LongImporte - @LongCantidad)  
--- Declare @IDApertura bigint  
+
 Declare @nFormaPago int = 1   
 Declare @nFormaPagoEfectivo int = 1  
   
@@ -32,18 +32,6 @@ Declare @nTotalOrdenes int=0
 
 Declare @vnFecha int,@vnFechaFinal int
 
-/*
-IF @FolioCorte>0 
-	SET @vnFecha=(
-		SELECT dbo.FechaNumero_Fn(AP.dFecha)
-		FROM CAJ_CortesCaja CC (NOLOCK)
-		JOIN CAJ_RegistrosAperturaCaja AP (NOLOCK) ON CC.nIDApertura=AP.nIDApertura
-		WHERE CC.nIDCorteCaja= @FolioCorte
-	)
-ELSE
-	SET @vnFecha=@FechaNumero
-*/
-
 SET @vnFecha=@FechaNumeroInicial
 SET @vnFechaFinal=@FechaNumeroFinal
 
@@ -51,20 +39,18 @@ Select C.*
 Into #CAJ_CortesCaja  
 From CAJ_CortesCaja as c   
 JOIN CAJ_RegistrosAperturaCaja AP (NOLOCK) ON C.nIDApertura=AP.nIDApertura
-Where 1=1 --C.nIDCorteCaja = CASE WHEN @FolioCorte=0 THEN C.nIDCorteCaja ELSE @FolioCorte END
+Where 1=1 
 AND dbo.FechaNumero_Fn(AP.dFecha) BETWEEN @vnFecha AND @vnFechaFinal
     
 Select c.*   
 Into #CAJ_DetalleCorteCaja  
 From CAJ_DetalleCorteCaja as c   
 Join #CAJ_CortesCaja CC ON CC.nIDCorteCaja=c.nIDCorteCaja
---Where C.nIDCorteCaja = @FolioCorte  
   
 SELECT AP.*
 Into #CAJ_RegistrosAperturaCaja  
 FROM CAJ_RegistrosAperturaCaja AP (NOLOCK)  
 JOIN #CAJ_CortesCaja CC ON CC.nIDApertura=AP.nIDApertura
---Where nIDApertura =  @IDApertura  
 
 DECLARE @bTodo bit=~@bCr_Simul -- Neg.de @bCr_Simul
 
@@ -72,7 +58,7 @@ Select MC.*
 Into #CAJ_MovimientosCaja  
 From CAJ_MovimientosCaja MC(Nolock)
 Join #CAJ_CortesCaja CC ON CC.nIDCorteCaja=MC.nIDCorteCaja
-Where MC.bActivo =1 --and nIDCorteCaja = @FolioCorte  
+Where MC.bActivo =1
 AND ISNULL(MC.bRegistroEspecial,0)= CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 
 Select MDC.*   
@@ -81,12 +67,13 @@ From CAJ_DetalleMovimientosCaja as MDC (Nolock)
 Inner Join #CAJ_MovimientosCaja as MC (Nolock) on MC.nIDRegistroCaja =mdc.nIDRegistroCaja 
 Where MDC.bActivo =1
 
+/*
 Select C.nIDCorteCaja,
 1 as nTipo, -1 as nFormaPago, Cast('DOTACION INICIAL' as Varchar(max))as cFormaPago, 
 SUM(C.nDotacionInicial) As nImporte, SUM(C.nDotacionInicial) as nImporteUsuario  -- , Cast (0 as numeric(18,2)) as nDiferencia  
 Into #ConcentradoCaja  
 FROM #CAJ_CortesCaja As C (NOLOCK)  
-Group by C.nIDCorteCaja
+Group by C.nIDCorteCaja*/
 
 -- Obtiene solo los pagos de las ventas  
 SELECT MC.nTipoRegistroCaja, MC.nIDCorteCaja, MC.nIDApertura, 
@@ -94,33 +81,22 @@ OCE.nOrden, OCE.nCuenta, MDC.nFormaPago, FP.cDescripcion as cFormaPago,
 nImporte=   CASE WHEN @bTodo=1 THEN isnull(MDC.nImporte_Respaldo, MDC.nImporte) ELSE CASE WHEN MDC.bCancelado=1 THEN 0 ELSE MDC.nImporte END END, -- <- Cr
 OE.nTipoServicio, trim(C.cDescripcion) as cTipoServicio, OE.nEmpleadoAbreMesa as nEmpleado, 
 cEmpleado=Cast( E.cNombre + ' ' + isnull(cApellidoMaterno,'') + ' ' + isnull(cApellidoMaterno ,'') as Varchar(300)),  
---nTotal=		CASE WHEN @bTodo=1 THEN isnull(OE.nTotal_Respaldo,OE.nTotal) ELSE OE.nTotal END, -- <- Cr 
 nTotal=		CASE WHEN @bTodo=1 THEN isnull(MDC.nImporte_Respaldo, MDC.nImporte) ELSE CASE WHEN MDC.bCancelado=1 THEN 0 ELSE MDC.nImporte END END, -- <- Cr 
 nDescuento= CASE WHEN @bTodo=1 THEN isnull(OE.nDescuento_Respaldo,OE.nDescuento) ELSE CASE WHEN MDC.bCancelado=1 THEN 0 ELSE OE.nDescuento END END, -- <- Cr
 MC.bRegistroEspecial, -- <- Cr
-AP.dFecha
+AP.dFecha,OE.nCliente,OE.nMesa
 Into #MovtosPagoOrden  
 FROM #CAJ_MovimientosCaja As MC(NOLOCK)  
 Inner Join CAJ_RegistrosAperturaCaja AP (NOLOCK) ON AP.nIDApertura=MC.nIDApertura
 Inner Join #CAJ_DetalleMovimientosCaja as MDC (NOLOCK) on MDC.nIDRegistroCaja = MC.nIDRegistroCaja And MDC.bActivo =1 and MC.nTipoRegistroCaja = 5 -- 5=Tipo de registro Pago  
 Inner Join REG_OrdenesCuentasEncabezado as OCE (Nolock) on OCE.nOrden = MDC.nOrden and OCE.nCuenta =MDC.nCuenta and OCE.bActivo =1  
-	--And OCE.bCancelado= CASE WHEN @bTodo=1 THEN OCE.bCancelado ELSE 0 END
 Inner Join CAT_FormasPago  as FP (Nolock) on FP.nFormaPago =MDC.nFormaPago   
 Inner Join REG_OrdenesEncabezado  as OE (Nolock) on OE.norden = OCE.nOrden and OE.nEstatus IN(@nEstatusPagado,@nEstatusLiberado)
-	--And OE.bCancelado= CASE WHEN @bTodo=1 THEN OCE.bCancelado ELSE 0 END
 Left Join CAT_Empleados  as E (Nolock) on E.nEmpleado = OE.nEmpleadoAbreMesa   
 Inner Join CAT_Catalogos as C (Nolock) on C.cNombre ='CAT_TipoServicio' and C.nCodigo = OE.nTipoServicio  
-Where MC.bActivo =1 -- and MC.nIDCorteCaja = @FolioCorte  
---select @bTodo,sum(nImporte) from #MovtosPagoOrden where nFormaPago=4-- JAM1
---select nImporte,nImporte_Respaldo,CASE WHEN MDC.bCancelado=1 THEN 0 ELSE MDC.nImporte END,bCancelado,* from #CAJ_DetalleMovimientosCaja mdc where nFormaPago=1
+Where MC.bActivo =1 
 
---Insert Into #ConcentradoCaja  
---Select C.nIDCorteCaja, C.nIDApertura, 2 as nTipo, FP.nFormaPago , '(+) ' + FP.cDescripcion   as cFormaPago,  CD.nImporteCorte  As nImporte, CD.nImporteUsuario   
---FROM #CAJ_CortesCaja As C (NOLOCK)  
---Inner Join #CAJ_DetalleCorteCaja CD (NOLOCK) on CD.nIDCorteCaja = C.nIDCorteCaja   
---Inner Join CAT_FormasPago  as FP (Nolock) on FP.nFormaPago =CD.nFormaPago   
---Where C.nIDCorteCaja = @FolioCorte and CD.nFormaPago not in (@nFormaPago)  
-
+/*
 Insert Into #ConcentradoCaja  
 Select PO.nIDCorteCaja, 
 1 as nTipo, 0 as nFormaPago, Cast('TOTAL DE VENTA' as Varchar(max))as cFormaPago, Sum(nImporte) As nImporte, Sum(nImporte) as nImporteUsuario
@@ -134,9 +110,7 @@ From #CAJ_DetalleCorteCaja CC
 Left Join CAT_FormasPago FP (NOLOCK) ON FP.nFormaPago=CC.nFormaPago
 LEFT JOIN #MovtosPagoOrden PO ON CC.nIDCorteCaja= PO.nIDCorteCaja
 	AND CC.nFormaPago=PO.nFormaPago
-
 Group by CC.nIDCorteCaja, FP.nFormaPago, cFormaPago,FP.cDescripcion  
-
 
 UPDATE CC SET CC.nImporteUsuario= CASE WHEN @bTodo=1 THEN 
 									    --isnull(DC.nImporteUsuario_Respaldo,DC.nImporteUsuario)
@@ -177,341 +151,372 @@ Select C.nIDCorteCaja,
 5 as nTipo, -2 as nFormaPago, '(-) GASTOS',SUM(-1 * nTotalGastos) As nImporte, SUM(-1 *  nTotalGastos) as nImporteUsuario  
 From #CAJ_CortesCaja as C  
 Group by nIDCorteCaja
+*/
 
-Select --P.*,   
+Select
 OE.nOrden, OE.nImporteServDom, OD.nConcepto, CV.cDescripcion as cConcepto, OD.nCantidad, OD.nImporte as nImporteConcepto, OD.nTotal as nTotalConcepto, OD.nEstacionCocina  as nEstacionCocina,
 EC.cDescripcion  as cEstacionCocina, OD.nCocina, C.cDescripcion as cCocina, OD.nSubtotal, Cast(0 as numeric(18,4)) as nServicioDomicilio,
 Cast(0 as numeric(18,2)) as nTotalCompleto,TCn.cDescripcion as cCategoria
 Into #DetalleVenta
---From #MovtosPagoOrden as P  
-From REG_OrdenesEncabezado as OE (Nolock) --on OE.nOrden = P.nOrden  
+From REG_OrdenesEncabezado as OE (Nolock) 
 Inner Join (Select nOrden From #MovtosPagoOrden Group by nOrden ) As P On P.nOrden =OE.nOrden 
 Inner Join CAT_Empleados  as E (Nolock) on E.nEmpleado = OE.nEmpleadoAbreMesa   
 Inner Join REG_OrdenesDetalle as OD (Nolock) on OD.nOrden = OE.nOrden  and OD.bActivo =1
 	  And OD.bCancelado= CASE WHEN @bTodo=1 THEN OD.bCancelado ELSE 0 END -- <--- Cr
 Inner Join CAT_ConceptosVenta  as CV (Nolock) on CV.nConceptoVenta = OD.nConcepto   
 Inner Join CAT_TiposConceptos TCn (NOLOCK) ON TCn.nTipoConcepto=CV.nTipoConcepto
---Inner Join CAT_ConceptosVentaSucursal as cvs (Nolock) on cvs.nConceptoVenta =cv.nConceptoVenta And cvs.nSucursal =@nSucursal
---Inner Join CAT_EstacionesCocinas as EC (Nolock) on EC.nEstacionCocina = cvs.nEstacionesCocinas 
 Inner Join CAT_EstacionesCocinas as EC (Nolock) on EC.nEstacionCocina = OD.nEstacionCocina 
---Inner Join CAT_Cocinas  as C (Nolock) On C.nCocina =EC.nCocina 
 left Join CAT_Cocinas  as C (Nolock) On C.nCocina =OD.nCocina 
 
-
-------Select nEstacionCocina, count(nOrden) as nTotalOrdenes From #DetalleVenta 
-------Group by nEstacionCocina
-
-------Return 
+Set @nTotalVenta = Isnull((Select sum(nImporte) as nImporte From #MovtosPagoOrden),0) -- Total completo para el resto de graficas que lo ocupan
 
 Select nOrden, Count(norden) As nConceptos
-Into #ConceptosporOrden
-From #DetalleVenta
-Group by nOrden
+	Into #ConceptosporOrden
+	From #DetalleVenta
+	Group by nOrden
 
-Select nEstacionCocina, norden --COUNT(DISTINCT nOrden) AS nTotalOrdenes
-Into #OrdenesCocina
-From #DetalleVenta
---Group by nEstacionCocina
-
-----Select * From #OrdenesCocina 
-
-----Return 
-
-----Return 
-
-/*
--- Prorratea el servicio a domicilio entre los numeros de conceptos (nRenglonDetalle)
-Update DV Set nServicioDomicilio = Cast(nImporteServDom /nConceptos as numeric(18,4))
-From #DetalleVenta as DV
-Inner Join #ConceptosporOrden as CO On CO.nOrden = DV.nOrden 
-
-*/
-
---Select  nEmpleado, Cast(cEmpleado as varchar(300)) as cEmpleado, sum(nTotal) as nTotal, Cast(0 as int) as nTotalOrdenes,   
---Cast(0 as numeric(18,2)) as nPorcVentaProporcional  
---Into #VentaEmpleados  
---From #MovtosPagoOrden  
---Group by nEmpleado, cEmpleado  
-
--- Establece el total de la venta del corte de caja o dia  
-Select nEmpleado,sum(nImporte) as nImporte,ROW_NUMBER() OVER(ORDER BY sum(nImporte) DESC) as nRenglon 
-Into #MovtosPagoOrdenGroup 
-From #MovtosPagoOrden 
-GROUP BY nEmpleado ORDER BY sum(nImporte) DESC
-
-DELETE #MovtosPagoOrdenGroup WHERE nRenglon>5
-
-----Set @nTotalVenta = Isnull((Select sum(nImporte) as nImporte From #MovtosPagoOrdenGroup),0)  -- total solo del top 5
-Declare @nTotalSinServicio as numeric (18,2)=0
-Declare @nServDom as numeric (8,2)
-
-Set @nTotalVenta = Isnull((Select sum(nImporte) as nImporte From #MovtosPagoOrden),0) -- Total completo para el resto de graficas que lo ocupan
+		
 Set @nTotalOrdenes = Isnull((Select count(norden) From #ConceptosporOrden),0)
-Set @nServDom= IsNull((Select sum(isnull(nImporteServDom,0)) From (Select nOrden, min(nImporteServDom) as nImporteServDom  From #DetalleVenta Group by nOrden) as SD),0)
 
-set @nTotalSinServicio= @nTotalVenta - @nServDom
+IF @nTipoDetalle=0
+BEGIN
+	Select nEstacionCocina, norden --COUNT(DISTINCT nOrden) AS nTotalOrdenes
+	Into #OrdenesCocina
+	From #DetalleVenta
+	
+	-- Establece el total de la venta del corte de caja o dia  
+	Select nEmpleado,sum(nImporte) as nImporte,ROW_NUMBER() OVER(ORDER BY sum(nImporte) DESC) as nRenglon 
+	Into #MovtosPagoOrdenGroup 
+	From #MovtosPagoOrden 
+	GROUP BY nEmpleado ORDER BY sum(nImporte) DESC
 
---Select @nTotalVenta as '@nTotalVenta', @nTotalOrdenes as '@nTotalOrdenes', @nServDom as '@nServDom', @nTotalSinServicio as '@nTotalSinServicio'
+	DELETE #MovtosPagoOrdenGroup WHERE nRenglon>5
 
---Return 
-Select  nEmpleado,  cEmpleado, count(nOrden) as nTotalOrdenes, sum(nTotal) as nTotal,
-Case when @nTotalVenta =0 then 0 else Cast(sum(nTotal)/@nTotalVenta as numeric(18,2)) End as nPorcVentaProporcional
-Into #VentaEmpleados 
-From (Select nEmpleado, cEmpleado, nOrden, Sum(nTotal) as nTotal 
-From #MovtosPagoOrden Group by nEmpleado, cEmpleado, nOrden, cEmpleado)as MP
-Group by nEmpleado,  cEmpleado
+	Select nCliente,COUNT(1) as nCantidad,ROW_NUMBER() OVER(ORDER BY COUNT(1) DESC) as nRenglon 
+	Into #MovtosPagoOrdenClienteGroup 
+	From #MovtosPagoOrden 
+	GROUP BY nCliente ORDER BY COUNT(1) DESC
 
---Update VE Set VE.nTotalOrdenes = ot.nTotalOrdenes, ve.nPorcVentaProporcional = Cast((nTotal /@nTotalVenta) as numeric(18,4))  
---From #VentaEmpleados as VE   
---Inner Join (Select nEmpleado, cEmpleado, Count(nOrden) as nTotalOrdenes  
---            From #MovtosPagoOrden  
---   Group by nEmpleado, cEmpleado) as OT on OT.nEmpleado= VE.nEmpleado  
+	Select nMesa,COUNT(1) as nCantidad,ROW_NUMBER() OVER(ORDER BY COUNT(1) DESC) as nRenglon 
+	Into #MovtosPagoOrdenMesasGroup
+	From #MovtosPagoOrden 
+	GROUP BY nMesa ORDER BY COUNT(1) DESC
 
-DECLARE @nTotalVentasFacturadas decimal(18,4)=(  
-	Select 
-		--ISNULL(COUNT(1),0) as Cantidad, 
-		ISNULL(SUM(CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END),0) as Total
-	from REG_OrdenesEncabezado Ord(NOLOCK)
-	join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
-	Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
-	where 1=1 --nIDApertura= @IDApertura
-		and nFactura IS NOT NULL and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
-)
+	DECLARE @nClientes int=(SELECT COUNT(1) FROM #MovtosPagoOrdenClienteGroup)
+	DECLARE @nMesasOcupadas int=(SELECT COUNT(1) FROM #MovtosPagoOrdenMesasGroup)
 
-DECLARE @nIngresos decimal(18,4)=(
-	SELECT SUM(MC.nImporte) as nImporte
-	FROM CAJ_MovimientosCaja MC (NOLOCK)
-	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
-	JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-	WHERE MC.bActivo=1 AND MC.nEfecto=1
-	AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
-)
+	----Set @nTotalVenta = Isnull((Select sum(nImporte) as nImporte From #MovtosPagoOrdenGroup),0)  -- total solo del top 5
+	Declare @nTotalSinServicio as numeric (18,2)=0
+	Declare @nServDom as numeric (8,2)
 
-IF @nIngresos IS NULL SET @nIngresos=0
+	Set @nServDom= IsNull((Select sum(isnull(nImporteServDom,0)) From (Select nOrden, min(nImporteServDom) as nImporteServDom  From #DetalleVenta Group by nOrden) as SD),0)
 
-DECLARE @nEgresos decimal(18,4)=(
-	SELECT SUM(MC.nImporte) as nImporte
+	set @nTotalSinServicio= @nTotalVenta - @nServDom
+
+	--Select @nTotalVenta as '@nTotalVenta', @nTotalOrdenes as '@nTotalOrdenes', @nServDom as '@nServDom', @nTotalSinServicio as '@nTotalSinServicio'
+
+	Select  nEmpleado,  cEmpleado, count(nOrden) as nTotalOrdenes, sum(nTotal) as nTotal,
+	Case when @nTotalVenta =0 then 0 else Cast(sum(nTotal)/@nTotalVenta as numeric(18,2)) End as nPorcVentaProporcional
+	Into #VentaEmpleados 
+	From (Select nEmpleado, cEmpleado, nOrden, Sum(nTotal) as nTotal 
+	From #MovtosPagoOrden Group by nEmpleado, cEmpleado, nOrden, cEmpleado)as MP
+	Group by nEmpleado,  cEmpleado
+
+	--Update VE Set VE.nTotalOrdenes = ot.nTotalOrdenes, ve.nPorcVentaProporcional = Cast((nTotal /@nTotalVenta) as numeric(18,4))  
+	--From #VentaEmpleados as VE   
+	--Inner Join (Select nEmpleado, cEmpleado, Count(nOrden) as nTotalOrdenes  
+	--            From #MovtosPagoOrden  
+	--   Group by nEmpleado, cEmpleado) as OT on OT.nEmpleado= VE.nEmpleado  
+
+	DECLARE @nTotalVentasFacturadas decimal(18,4)=(  
+		Select 
+			--ISNULL(COUNT(1),0) as Cantidad, 
+			ISNULL(SUM(CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END),0) as Total
+		from REG_OrdenesEncabezado Ord(NOLOCK)
+		join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
+		Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
+		where 1=1 --nIDApertura= @IDApertura
+			and nFactura IS NOT NULL and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
+	)
+
+	DECLARE @nIngresos decimal(18,4)=(
+		SELECT SUM(MC.nImporte) as nImporte
+		FROM CAJ_MovimientosCaja MC (NOLOCK)
+		JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
+		JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+		WHERE MC.bActivo=1 AND MC.nEfecto=1
+		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
+	)
+
+	IF @nIngresos IS NULL SET @nIngresos=0
+
+	DECLARE @nEgresos decimal(18,4)=(
+		SELECT SUM(MC.nImporte) as nImporte
+		FROM CAJ_MovimientosCaja MC (NOLOCK)
+		JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
+		LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+		WHERE MC.bActivo=1 AND MC.nEfecto=-1
+			--AND MC.nTipoRegistroCaja=2 -- Retiros de caja 
+	)
+
+	IF @nEgresos IS NULL SET @nEgresos=0
+
+	DECLARE @nTicketPromedio decimal(18,2)= (SELECT CASE WHEN @nTotalOrdenes=0 THEN 0.00 ELSE Cast(ISNULL(@nTotalVenta,0) / @nTotalOrdenes as numeric(18,2)) END)
+
+	DECLARE @nTotalMesas int=(SELECT COUNT(1) FROM CAT_Mesas (NOLOCK) WHERE bActivo=1 AND nSucursal=@nSucursal )
+	DECLARE @occupancyRate decimal(18,4)
+
+	SET @occupancyRate = (CAST(@nMesasOcupadas AS DECIMAL(18,4)) / @nTotalMesas)
+
+	-- KPI Summary
+	DECLARE @netIncome decimal(18,4) =(SELECT @nTotalVenta+ @nIngresos-@nEgresos)
+
+	SELECT totalSales=@nTotalVenta,totalSalesPreviousPeriod=0.00,
+		   invoicedSales=@nTotalVentasFacturadas, invoicedSalesPreviousPeriod=0.00,
+		   uninvoicedSales=@nTotalVenta-@nTotalVentasFacturadas,uninvoicedSalesPreviousPeriod=0.00,
+		   netIncome=@netIncome,netIncomePreviousPeriod=0.00,
+		   totalExpenses=@nEgresos,totalExpensesPreviousPeriod=0.00,
+		   numberOfCustomers=@nClientes,numberOfCustomersPreviousPeriod=0.00,
+		   averageTicket=@nTicketPromedio,averageTicketPreviousPeriod=0.00,
+		   occupancyRate=@occupancyRate,occupancyRatePreviousPeriod=0.00
+
+	-- Ventas por Día
+	SET DATEFIRST 1; -- Establece el lunes como el primer día de la semana
+
+	SELECT DATEPART(WEEKDAY, dFecha) as nDiaSemana,FORMAT(dFecha, 'dddd', 'es-MX') as Date,SUM(nImporte) as TotalSales
+	FROM #MovtosPagoOrden
+	GROUP BY DATEPART(WEEKDAY, dFecha),FORMAT(dFecha, 'dddd', 'es-MX')
+	ORDER BY DATEPART(WEEKDAY, dFecha)
+
+	-- Ventas por Categoría
+	Select P.cCategoria as CategoryName,P.nTotalConcepto as TotalSales
+	From (Select cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+		  (sum(nCantidad)* min(nImporteConcepto))  as nTotal,
+		  (sum(nTotalConcepto)) as nTotalConcepto
+		   From #DetalleVenta
+		   Group by cCategoria) as P
+	Order by P.cCategoria
+
+	-- Ingresos Vs Gastos
+	Create table #IncomeVsExpenses(numMes int,mes varchar(100),income decimal(18,2), expenses decimal(18,2))
+
+	SET LANGUAGE Spanish;
+
+	-- ** Egresos
+
+	SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
+	Into #Egresos
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
 	WHERE MC.bActivo=1 AND MC.nEfecto=-1
 		--AND MC.nTipoRegistroCaja=2 -- Retiros de caja 
-)
+	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
-IF @nEgresos IS NULL SET @nEgresos=0
+	-- ** Ingresos
 
-DECLARE @nTicketPromedio decimal(18,2)= (SELECT CASE WHEN @nTotalOrdenes=0 THEN 0.00 ELSE Cast(ISNULL(@nTotalVenta,0) / @nTotalOrdenes as numeric(18,2)) END)
+	SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
+	Into #Ingresos
+	FROM CAJ_MovimientosCaja MC (NOLOCK)
+	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
+	JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+	WHERE MC.bActivo=1 AND MC.nEfecto=1
+		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
+	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
--- KPI Summary
-SELECT totalSales=@nTotalVenta,totalSalesPreviousPeriod=0.00,
-	   invoicedSales=@nTotalVentasFacturadas, invoicedSalesPreviousPeriod=0.00,
-	   uninvoicedSales=@nTotalVenta-@nTotalVentasFacturadas,uninvoicedSalesPreviousPeriod=0.00,
-	   netIncome=@nIngresos,netIncomePreviousPeriod=0.00,
-	   totalExpenses=@nEgresos,totalExpensesPreviousPeriod=0.00,
-	   numberOfCustomers=@nTotalOrdenes,numberOfCustomersPreviousPeriod=0.00,
-	   averageTicket=@nTicketPromedio,averageTicketPreviousPeriod=0.00,
-	   occupancyRate=0.8,occupancyRatePreviousPeriod=0.00
+	CREATE TABLE #MesesDelAño (
+		numMes INT,
+		mes VARCHAR(20)
+	);
 
-SELECT FORMAT(dFecha, 'dddd', 'es-MX') as Date,SUM(nImporte) as TotalSales
-FROM #MovtosPagoOrden
-GROUP BY FORMAT(dFecha, 'dddd', 'es-MX')
+	INSERT INTO #MesesDelAño (numMes, mes)
+	VALUES
+	(1, 'enero'),
+	(2, 'febrero'),
+	(3, 'marzo'),
+	(4, 'abril'),
+	(5, 'mayo'),
+	(6, 'junio'),
+	(7, 'julio'),
+	(8, 'agosto'),
+	(9, 'septiembre'),
+	(10, 'octubre'),
+	(11, 'noviembre'),
+	(12, 'diciembre');
 
-Select P.cCategoria as CategoryName,P.nTotal as TotalSales
-From (Select cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
-	  (sum(nCantidad)* min(nImporteConcepto))  as nTotal
-	   From #DetalleVenta
-	   Group by cCategoria) as P
-Order by P.cCategoria
+	INSERT INTO #IncomeVsExpenses (numMes, mes, income, expenses)
+	SELECT
+		M.numMes,
+		M.mes,
+		ISNULL(I.nImporte, 0) AS income,
+		ISNULL(E.nImporte, 0) AS expenses
+	FROM #MesesDelAño M
+	LEFT JOIN #Ingresos I ON M.numMes = I.numMes
+	LEFT JOIN #Egresos E ON M.numMes = E.numMes
+	ORDER BY M.numMes;
 
-Create table #IncomeVsExpenses(numMes int,mes varchar(100),income decimal(18,2), expenses decimal(18,2))
+	Select mes, income, expenses FROM #IncomeVsExpenses
 
-SET LANGUAGE Spanish;
+	-- Venta Facturada vs No Facturada
+	Create table #InvoicedVsUninvoiced(numMes int,mes varchar(100),invoiced decimal(18,2), uninvoiced decimal(18,2))
 
--- Egresos
+	Select MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes, 
+	ISNULL(SUM(
+	Case when nFactura IS NOT NULL THEN
+			CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END 
+		 else
+			0
+		 end),0) as Facturado,
+	ISNULL(SUM(
+	Case when nFactura IS NULL THEN
+			C.nTotal 
+		 else
+			0
+		 end),0) as NoFacturado
+	Into #FactVsNoFact
+	from REG_OrdenesEncabezado Ord(NOLOCK)
+	join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
+	Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
+	where 1=1
+		and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
+	Group by MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
-SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
-Into #Egresos
-FROM CAJ_MovimientosCaja MC (NOLOCK)
-JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
-LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-WHERE MC.bActivo=1 AND MC.nEfecto=-1
-	--AND MC.nTipoRegistroCaja=2 -- Retiros de caja 
-GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+	INSERT INTO #InvoicedVsUninvoiced (numMes, mes, invoiced, uninvoiced)
+	SELECT
+		M.numMes,
+		M.mes,
+		ISNULL(I.Facturado, 0) AS Facturado,
+		ISNULL(I.NoFacturado, 0) AS NoFacturado
+	FROM #MesesDelAño M
+	LEFT JOIN #FactVsNoFact I ON M.numMes = I.numMes
+	ORDER BY M.numMes;
 
--- Ingresos
+	Select mes,invoiced, uninvoiced FROM #InvoicedVsUninvoiced
 
-SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
-Into #Ingresos
-FROM CAJ_MovimientosCaja MC (NOLOCK)
-JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
-JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-WHERE MC.bActivo=1 AND MC.nEfecto=1
-	AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
-GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+	-- Ventas por Forma de Pago
+	Create table #SalesByPaymentMethodDto(nFormaPago int,PaymentMethod varchar(200),TotalSales decimal(18,2))
 
-CREATE TABLE #MesesDelAño (
-	numMes INT,
-	mes VARCHAR(20)
-);
+	Select nFormaPago,cDescripcion as cFormaPago
+	into #CAT_FormasPago
+	FROM CAT_FormasPago
+	WHERE bActivo=1
 
-INSERT INTO #MesesDelAño (numMes, mes)
-VALUES
-(1, 'enero'),
-(2, 'febrero'),
-(3, 'marzo'),
-(4, 'abril'),
-(5, 'mayo'),
-(6, 'junio'),
-(7, 'julio'),
-(8, 'agosto'),
-(9, 'septiembre'),
-(10, 'octubre'),
-(11, 'noviembre'),
-(12, 'diciembre');
+	Select  
+	nFormaPago, cFormaPago, sum (nImporte) as nImporte
+	into #FormasPagoMovtos
+	From #MovtosPagoOrden   
+	Group by nFormaPago, cFormaPago 
+	order by nImporte desc
 
-INSERT INTO #IncomeVsExpenses (numMes, mes, income, expenses)
-SELECT
-	M.numMes,
-	M.mes,
-	ISNULL(I.nImporte, 0) AS income,
-	ISNULL(E.nImporte, 0) AS expenses
-FROM #MesesDelAño M
-LEFT JOIN #Ingresos I ON M.numMes = I.numMes
-LEFT JOIN #Egresos E ON M.numMes = E.numMes
-ORDER BY M.numMes;
+	INSERT INTO #SalesByPaymentMethodDto(nFormaPago, PaymentMethod, TotalSales)
+	SELECT
+		M.nFormaPago,
+		M.cFormaPago,
+		ISNULL(I.nImporte, 0) AS Total
+	FROM #CAT_FormasPago M
+	LEFT JOIN #FormasPagoMovtos I ON M.nFormaPago = I.nFormaPago
+	ORDER BY M.nFormaPago;
 
-Select mes, income, expenses FROM #IncomeVsExpenses
+	Select PaymentMethod, TotalSales FROM #SalesByPaymentMethodDto
 
-Create table #InvoicedVsUninvoiced(numMes int,mes varchar(100),invoiced decimal(18,2), uninvoiced decimal(18,2))
+	-- Ventas por Tipo de Servicio
+	Create table #TiposServicio (nTipoServicio int,cTipoServicio varchar(200))
 
-Select MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes, 
-ISNULL(SUM(
-Case when nFactura IS NOT NULL THEN
-		CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END 
-	 else
-		0
-	 end),0) as Facturado,
-ISNULL(SUM(
-Case when nFactura IS NULL THEN
-		C.nTotal 
-	 else
-		0
-	 end),0) as NoFacturado
-Into #FactVsNoFact
-from REG_OrdenesEncabezado Ord(NOLOCK)
-join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
-Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
-where 1=1 --nIDApertura= @IDApertura
-	--and nFactura IS NOT NULL 
-	and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
-Group by MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+	Insert into #TiposServicio
+	Select nCodigo,LTRIM(RTRIM(cDescripcion)) FROM CAT_Catalogos (NOLOCK) WHere cNombre= 'CAT_TipoServicio'
 
-INSERT INTO #InvoicedVsUninvoiced (numMes, mes, invoiced, uninvoiced)
-SELECT
-	M.numMes,
-	M.mes,
-	ISNULL(I.Facturado, 0) AS Facturado,
-	ISNULL(I.NoFacturado, 0) AS NoFacturado
-FROM #MesesDelAño M
-LEFT JOIN #FactVsNoFact I ON M.numMes = I.numMes
-ORDER BY M.numMes;
+	Select 
+	nTipoServicio, cTipoServicio, sum (nImporte) as nImporte
+	into #TiposServ
+	From #MovtosPagoOrden   
+	Group by
+	nTipoServicio, cTipoServicio 
+	Order by nImporte desc
 
-Select mes,invoiced, uninvoiced FROM #InvoicedVsUninvoiced
+	Create table #SalesByServiceTypeDto(ServiceType varchar(200),TotalSales decimal(18,2))
 
-Create table #SalesByPaymentMethodDto(nFormaPago int,PaymentMethod varchar(200),TotalSales decimal(18,2))
+	INSERT INTO #SalesByServiceTypeDto(ServiceType, TotalSales)
+	SELECT
+		M.cTipoServicio,
+		ISNULL(I.nImporte, 0) AS Total
+	FROM #TiposServicio M
+	LEFT JOIN #TiposServ I ON M.nTipoServicio = I.nTipoServicio
+	ORDER BY M.nTipoServicio;
 
-Select nFormaPago,cDescripcion as cFormaPago
-into #CAT_FormasPago
-FROM CAT_FormasPago
-WHERE bActivo=1
+	Select ServiceType, TotalSales FROM #SalesByServiceTypeDto
 
-Select  
-nFormaPago, cFormaPago, sum (nImporte) as nImporte
-into #FormasPagoMovtos
-From #MovtosPagoOrden   
-Group by nFormaPago, cFormaPago 
-order by nImporte desc
+	-- Ventas por Estación de Cocina
+	Create table #EstacionesCocina (nEstacionCocina int,cEstacionCocina varchar(200))
 
-INSERT INTO #SalesByPaymentMethodDto(nFormaPago, PaymentMethod, TotalSales)
-SELECT
-	M.nFormaPago,
-	M.cFormaPago,
-	ISNULL(I.nImporte, 0) AS Total
-FROM #CAT_FormasPago M
-LEFT JOIN #FormasPagoMovtos I ON M.nFormaPago = I.nFormaPago
-ORDER BY M.nFormaPago;
+	Insert into #EstacionesCocina
+	Select nEstacionCocina,cDescripcion
+	FROM CAT_EstacionesCocinas (NOLOCK)
+	Where bActivo=1
 
-Select PaymentMethod, TotalSales FROM #SalesByPaymentMethodDto
+	Select nEstacionCocina,cEstacionCocina,Cast (sum(nTotalConcepto + nServicioDomicilio ) as numeric(18,2)) as nImporte
+	into #Estaciones
+	From #DetalleVenta 
+	Group by nEstacionCocina,cEstacionCocina
+	Order by nEstacionCocina
 
-Create table #TiposServicio (nTipoServicio int,cTipoServicio varchar(200))
+	Create table #SalesByKitchenStationDto(StationName varchar(200),TotalSales decimal(18,2))
 
-Insert into #TiposServicio
-Select nCodigo,LTRIM(RTRIM(cDescripcion)) FROM CAT_Catalogos (NOLOCK) WHere cNombre= 'CAT_TipoServicio'
+	INSERT INTO #SalesByKitchenStationDto(StationName, TotalSales)
+	SELECT
+		M.cEstacionCocina,
+		ISNULL(I.nImporte, 0) AS Total
+	FROM #EstacionesCocina M
+	LEFT JOIN #Estaciones I ON M.nEstacionCocina = I.nEstacionCocina
+	ORDER BY M.nEstacionCocina;
 
-Select 
-nTipoServicio,  cTipoServicio, sum (nImporte) as nImporte
-into #TiposServ
-From #MovtosPagoOrden   
-Group by --nIDCorteCaja, nIDApertura, 
-nTipoServicio, cTipoServicio 
-Order by nImporte desc
+	Select StationName, TotalSales FROM #SalesByKitchenStationDto
 
-Create table #SalesByServiceTypeDto(ServiceType varchar(200),TotalSales decimal(18,2))
+	-- Reporte de conceptos con más venta 
+	Select top 10 P.cConcepto as DishName,P.nCantidad as Quantity 
+	From 
+	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	--sum(nImporteConcepto*nCantidad) as nTotal
+	From #DetalleVenta
+	Group by cConcepto) as P
+	Order by nCantidad desc 
 
-INSERT INTO #SalesByServiceTypeDto(ServiceType, TotalSales)
-SELECT
-	M.cTipoServicio,
-	ISNULL(I.nImporte, 0) AS Total
-FROM #TiposServicio M
-LEFT JOIN #TiposServ I ON M.nTipoServicio = I.nTipoServicio
-ORDER BY M.nTipoServicio;
+	-- Reporte de conceptos más valiosos 
+	Select top 10 P.cConcepto as DishName,P.nTotal as RevenueOrProfit 
+	From 
+	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	--sum(nImporteConcepto*nCantidad) as nTotal
+	From #DetalleVenta
+	Group by cConcepto) as P
+	Order by nTotal desc
+End
 
-Select ServiceType, TotalSales FROM #SalesByServiceTypeDto
+IF @nTipoDetalle=1
+BEGIN
+	-- Detalle de Ventas por Categoría
+	Select P.cCategoria as name,P.nTotalConcepto as valor
+	From (Select cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+		  (sum(nCantidad)* min(nImporteConcepto)) as nTotal,
+		  (sum(nTotalConcepto)) as nTotalConcepto
+		   From #DetalleVenta
+		   Group by cCategoria) as P
+	Order by P.cCategoria
 
-Create table #EstacionesCocina (nEstacionCocina int,cEstacionCocina varchar(200))
-
-Insert into #EstacionesCocina
-Select nEstacionCocina,cDescripcion
-FROM CAT_EstacionesCocinas (NOLOCK)
-Where bActivo=1
-
-Select nEstacionCocina,cEstacionCocina,Cast (sum(nTotalConcepto + nServicioDomicilio ) as numeric(18,2)) as nImporte
-into #Estaciones
-From #DetalleVenta 
-Group by nEstacionCocina,cEstacionCocina
-Order by nEstacionCocina
-
-Create table #SalesByKitchenStationDto(StationName varchar(200),TotalSales decimal(18,2))
-
-INSERT INTO #SalesByKitchenStationDto(StationName, TotalSales)
-SELECT
-	M.cEstacionCocina,
-	ISNULL(I.nImporte, 0) AS Total
-FROM #EstacionesCocina M
-LEFT JOIN #Estaciones I ON M.nEstacionCocina = I.nEstacionCocina
-ORDER BY M.nEstacionCocina;
-
-Select StationName, TotalSales FROM #SalesByKitchenStationDto
-
--- Reporte de conceptos con mas venta 
-Select top 10 P.cConcepto as DishName,P.nCantidad as Quantity 
-From 
-(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
-(sum(nCantidad)* min(nImporteConcepto))  as nTotal
---sum(nImporteConcepto*nCantidad) as nTotal
-From #DetalleVenta
-Group by cConcepto) as P
-Order by nCantidad desc 
-
--- Reporte de conceptos mas valiosos 
-Select top 10 P.cConcepto as DishName,P.nTotal as RevenueOrProfit 
-From 
-(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
-(sum(nCantidad)* min(nImporteConcepto))  as nTotal
---sum(nImporteConcepto*nCantidad) as nTotal
-From #DetalleVenta
-Group by cConcepto) as P
-Order by nTotal desc
+	Select P.cCategoria as category,
+	 P.nTotalConcepto as sales, 
+	CONVERT(decimal(18,2),(P.nTotalConcepto/@nTotalVenta)*100) as porcentaje,
+	 P.products,
+	CONVERT(decimal(18,2),(P.nTotalConcepto/@nTotalOrdenes)) as averageTicket,
+	0.00 as trend,CONVERT(bit,1) as trendPositive
+	From (Select cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+		  (sum(nCantidad)* min(nImporteConcepto)) as nTotal,
+		  (sum(nTotalConcepto)) as nTotalConcepto,
+		   count(nConcepto) as products
+		   From #DetalleVenta
+		   Group by cCategoria) as P
+	Order by P.cCategoria
+END
 
 /*       
 -- Tabla 0.- Concentrado de caja  

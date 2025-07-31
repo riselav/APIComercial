@@ -81,7 +81,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ventas Diarias)
                             dashboardIndicadores.ventasDiarias = new List<DailySalesDto>();
-                            dashboardIndicadores.ventasDiarias = [];
+                            //dashboardIndicadores.ventasDiarias = [];
 
                             if (reader.NextResult())
                             {
@@ -100,7 +100,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ventas por Categoria)
                             dashboardIndicadores.ventasPorCategoria = new List<SalesByCategoryDto>();
-                            dashboardIndicadores.ventasPorCategoria = [];
+                            //dashboardIndicadores.ventasPorCategoria = [];
 
                             if (reader.NextResult())
                             {
@@ -119,7 +119,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ingresos Vs Gastos)
                             dashboardIndicadores.ingresosVsGastos = new List<MonthlyFinancialsDto>();
-                            dashboardIndicadores.ingresosVsGastos = [];
+                            //dashboardIndicadores.ingresosVsGastos = [];
 
                             if (reader.NextResult())
                             {
@@ -139,7 +139,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Facturado Vs No Facturado)
                             dashboardIndicadores.ventasFacturadasVsNoFacturadas = new List<MonthlyInvoiceStatusDto>();
-                            dashboardIndicadores.ventasFacturadasVsNoFacturadas = [];
+                            //dashboardIndicadores.ventasFacturadasVsNoFacturadas = [];
 
                             if (reader.NextResult())
                             {
@@ -159,7 +159,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ventas Por Forma de Pago)
                             dashboardIndicadores.ventasPorFormaPago = new List<SalesByPaymentMethodDto>();
-                            dashboardIndicadores.ventasPorFormaPago = [];
+                            //dashboardIndicadores.ventasPorFormaPago = [];
 
                             if (reader.NextResult())
                             {
@@ -178,7 +178,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ventas Por Tipo de Servicio)
                             dashboardIndicadores.ventasPorTipoServicio = new List<SalesByServiceTypeDto>();
-                            dashboardIndicadores.ventasPorTipoServicio = [];
+                            //dashboardIndicadores.ventasPorTipoServicio = [];
 
                             if (reader.NextResult())
                             {
@@ -197,7 +197,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Ventas Por Estacion de Cocina)
                             dashboardIndicadores.ventasPorEstacionCocina = new List<SalesByKitchenStationDto>();
-                            dashboardIndicadores.ventasPorEstacionCocina = [];
+                            //dashboardIndicadores.ventasPorEstacionCocina = [];
 
                             if (reader.NextResult())
                             {
@@ -216,7 +216,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Top 10 Platillos Mas Vendidos)
                             dashboardIndicadores.topPlatillosMasVendidos = new List<TopDishDto>();
-                            dashboardIndicadores.topPlatillosMasVendidos = [];
+                            //dashboardIndicadores.topPlatillosMasVendidos = [];
 
                             if (reader.NextResult())
                             {
@@ -235,7 +235,7 @@ namespace Voalaft.Data.Implementaciones
 
                             // Mover al siguiente resultado (Top 10 Platillos Mas Redituables)
                             dashboardIndicadores.topPlatillosMasRentables = new List<TopDishProfitableDto>();
-                            dashboardIndicadores.topPlatillosMasRentables = [];
+                            //dashboardIndicadores.topPlatillosMasRentables = [];
 
                             if (reader.NextResult())
                             {
@@ -273,6 +273,82 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return dashboardIndicadores;
+        }
+
+        public async Task<SalesByCategoryDetail> ObtenerDetalleVentasPorCategoria(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            SalesByCategoryDetail detalleVentasPorCategoria = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 1);
+                    detalleVentasPorCategoria = new SalesByCategoryDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentasPorCategoria.chartData = new List<ChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentasPorCategoria.chartData.Add(new ChartDataItem
+                            {
+                                name =  Convert.ToString(reader["name"]),
+                                value = Convert.ToDouble(reader["valor"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentasPorCategoria.tableData = new List<TableDataItem>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentasPorCategoria.tableData.Add(new TableDataItem
+                                {
+                                    category = reader["category"].ToString(),
+                                    sales = Convert.ToDouble(reader["sales"]),
+                                    percentage = Convert.ToInt32(reader["porcentaje"]),
+                                    products = Convert.ToInt32(reader["products"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener lista cat rfc")
+                {
+                    Metodo = "Lista",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentasPorCategoria;
         }
     }
 }

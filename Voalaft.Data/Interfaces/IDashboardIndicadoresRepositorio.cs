@@ -11,5 +11,6 @@ namespace Voalaft.Data.Interfaces
     public interface IDashboardIndicadoresRepositorio
     {
         Task<DashboardIndicadores> ObtenerDashboardIndicadores(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+        Task<SalesByCategoryDetail> ObtenerDetalleVentasPorCategoria(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
     }
 }

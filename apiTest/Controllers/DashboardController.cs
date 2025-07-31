@@ -51,5 +51,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetalleVentasPorCategoria")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentasPorCategoria(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                SalesByCategoryDetail salesByCategoryDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentasPorCategoria(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(salesByCategoryDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de Ventas por Categoria");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }
