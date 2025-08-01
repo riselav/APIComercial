@@ -72,5 +72,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetalleIngresosVsGastos")]
+        public async Task<ResultadoAPI> ObtenerDetalleIngresosVsGastos(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                IncomeExpensesDetailDto incomeExpensesDetail = await _dashboardIndicadoresServicio.ObtenerDetalleIngresosVsGastos(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(incomeExpensesDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de Ingresos Vs Gastos");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

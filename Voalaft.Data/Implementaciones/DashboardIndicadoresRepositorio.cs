@@ -266,7 +266,7 @@ namespace Voalaft.Data.Implementaciones
                 _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
                 throw new DataAccessException("Error(rp) No se pudo obtener reporte de Indicadores")
                 {
-                    Metodo = "Lista",
+                    Metodo = "ObtenerDashboardIndicadores",
                     ErrorMessage = ex.Message,
                     ErrorCode = 1
                 };
@@ -340,15 +340,93 @@ namespace Voalaft.Data.Implementaciones
                 int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
 
                 _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
-                throw new DataAccessException("Error(rp) No se pudo obtener lista cat rfc")
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle ventas por categoría")
                 {
-                    Metodo = "Lista",
+                    Metodo = "ObtenerDetalleVentasPorCategoria",
                     ErrorMessage = ex.Message,
                     ErrorCode = 1
                 };
             }
 
             return detalleVentasPorCategoria;
+        }
+
+        public async Task<IncomeExpensesDetailDto> ObtenerDetalleIngresosVsGastos(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            IncomeExpensesDetailDto detalleIngresosVsGastos = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 2);
+                    detalleIngresosVsGastos = new IncomeExpensesDetailDto();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleIngresosVsGastos.chartData = new List<IncomeExpenseChartData>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleIngresosVsGastos.chartData.Add(new IncomeExpenseChartData
+                            {
+                                name = Convert.ToString(reader["mes"]),
+                                ingresos = Convert.ToDecimal(reader["income"]),
+                                gastos = Convert.ToDecimal(reader["expenses"]),
+                                gananciaNeta = Convert.ToDecimal(reader["gananciaNeta"]),
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleIngresosVsGastos.tableData = new List<IncomeExpenseTableData>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleIngresosVsGastos.tableData.Add(new IncomeExpenseTableData
+                                {
+                                    month = reader["mes"].ToString(),
+                                    income = Convert.ToDecimal(reader["income"]),
+                                    expenses = Convert.ToDecimal(reader["expenses"]),
+                                    netProfit = Convert.ToDecimal(reader["netProfit"]),
+                                    margin = Convert.ToDecimal(reader["margin"]),
+                                    trend = Convert.ToDecimal(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de ingresos vs gastos")
+                {
+                    Metodo = "ObtenerDetalleIngresosVsGastos",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleIngresosVsGastos;
         }
     }
 }

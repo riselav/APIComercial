@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 1 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 2 
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -178,6 +178,26 @@ Select nOrden, Count(norden) As nConceptos
 		
 Set @nTotalOrdenes = Isnull((Select count(norden) From #ConceptosporOrden),0)
 
+CREATE TABLE #MesesDelAño (
+		numMes INT,
+		mes VARCHAR(20)
+	);
+
+INSERT INTO #MesesDelAño (numMes, mes)
+VALUES
+(1, 'enero'),
+(2, 'febrero'),
+(3, 'marzo'),
+(4, 'abril'),
+(5, 'mayo'),
+(6, 'junio'),
+(7, 'julio'),
+(8, 'agosto'),
+(9, 'septiembre'),
+(10, 'octubre'),
+(11, 'noviembre'),
+(12, 'diciembre');
+
 IF @nTipoDetalle=0
 BEGIN
 	Select nEstacionCocina, norden --COUNT(DISTINCT nOrden) AS nTotalOrdenes
@@ -319,31 +339,11 @@ BEGIN
 	Into #Ingresos
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
-	JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
 	WHERE MC.bActivo=1 AND MC.nEfecto=1
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
-
-	CREATE TABLE #MesesDelAño (
-		numMes INT,
-		mes VARCHAR(20)
-	);
-
-	INSERT INTO #MesesDelAño (numMes, mes)
-	VALUES
-	(1, 'enero'),
-	(2, 'febrero'),
-	(3, 'marzo'),
-	(4, 'abril'),
-	(5, 'mayo'),
-	(6, 'junio'),
-	(7, 'julio'),
-	(8, 'agosto'),
-	(9, 'septiembre'),
-	(10, 'octubre'),
-	(11, 'noviembre'),
-	(12, 'diciembre');
-
+	
 	INSERT INTO #IncomeVsExpenses (numMes, mes, income, expenses)
 	SELECT
 		M.numMes,
@@ -516,6 +516,54 @@ BEGIN
 		   From #DetalleVenta
 		   Group by cCategoria) as P
 	Order by P.cCategoria
+END
+
+IF @nTipoDetalle=2
+BEGIN
+	Create table #IncomeVsExpensesDetail(numMes int,mes varchar(100),income decimal(18,2), expenses decimal(18,2),gananciaNeta decimal(18,2))
+
+	SET LANGUAGE Spanish;
+
+	-- ** Egresos
+
+	SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
+	Into #EgresosDetalle
+	FROM CAJ_MovimientosCaja MC (NOLOCK)
+	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
+	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+	WHERE MC.bActivo=1 AND MC.nEfecto=-1
+		--AND MC.nTipoRegistroCaja=2 -- Retiros de caja 
+	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+
+	-- ** Ingresos
+
+	SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
+	Into #IngresosDetalle
+	FROM CAJ_MovimientosCaja MC (NOLOCK)
+	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
+	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
+	WHERE MC.bActivo=1 AND MC.nEfecto=1
+		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
+	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+
+	INSERT INTO #IncomeVsExpensesDetail (numMes, mes, income, expenses,gananciaNeta)
+	SELECT
+		M.numMes,
+		M.mes,
+		ISNULL(I.nImporte, 0) AS income,
+		ISNULL(E.nImporte, 0) AS expenses,
+		ISNULL(I.nImporte, 0)-ISNULL(E.nImporte, 0)
+	FROM #MesesDelAño M
+	LEFT JOIN #IngresosDetalle I ON M.numMes = I.numMes
+	LEFT JOIN #EgresosDetalle E ON M.numMes = E.numMes
+	ORDER BY M.numMes;
+
+	Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail
+
+	Select mes, income, expenses,gananciaNeta as netProfit, 
+	Case When income=0 THEN 0 ELSE (gananciaNeta/income)*100 END as margin,
+	0.00 as trend,CONVERT(bit,1) as trendPositive
+	FROM #IncomeVsExpensesDetail
 END
 
 /*       
