@@ -93,5 +93,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetalleFacturadoVsNoFacturado")]
+        public async Task<ResultadoAPI> ObtenerDetalleFacturadoVsNoFacturado(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                InvoicedUninvoicedDetailDto invoicedUninvoicedDetail = await _dashboardIndicadoresServicio.ObtenerDetalleFacturadoVsNoFacturado(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(invoicedUninvoicedDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de Ingresos Vs Gastos");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

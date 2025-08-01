@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 2 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 3 
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -561,11 +561,57 @@ BEGIN
 	Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail
 
 	Select mes, income, expenses,gananciaNeta as netProfit, 
-	Case When income=0 THEN 0 ELSE (gananciaNeta/income)*100 END as margin,
+	Convert(decimal(18,2),Case When income=0 THEN 0 ELSE (gananciaNeta/income)*100 END) as margin,
 	0.00 as trend,CONVERT(bit,1) as trendPositive
 	FROM #IncomeVsExpensesDetail
 END
 
+IF @nTipoDetalle=3
+BEGIN
+	-- Venta Facturada vs No Facturada
+	Create table #InvoicedVsUninvoicedDetail(numMes int,mes varchar(100),ventasFacturadas decimal(18,2), ventasNoFacturadas decimal(18,2),ventaTotal decimal(18,2))
+
+	Select MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes, 
+	ISNULL(SUM(
+	Case when nFactura IS NOT NULL THEN
+			CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END 
+		 else
+			0
+		 end),0) as Facturado,
+	ISNULL(SUM(
+	Case when nFactura IS NULL THEN
+			C.nTotal 
+		 else
+			0
+		 end),0) as NoFacturado,
+	ISNULL(SUM(C.nTotal),0) as nVentaTotal
+	Into #FactVsNoFactDetalle
+	from REG_OrdenesEncabezado Ord(NOLOCK)
+	join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
+	Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
+	where 1=1
+		and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
+	Group by MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
+
+	INSERT INTO #InvoicedVsUninvoicedDetail (numMes, mes, ventasFacturadas, ventasNoFacturadas,ventaTotal)
+	SELECT
+		M.numMes,
+		M.mes,
+		ISNULL(I.Facturado, 0) AS Facturado,
+		ISNULL(I.NoFacturado, 0) AS NoFacturado,
+		ISNULL(I.nVentaTotal, 0) AS nVentaTotal
+	FROM #MesesDelAño M
+	LEFT JOIN #FactVsNoFactDetalle I ON M.numMes = I.numMes
+	ORDER BY M.numMes;
+
+	Select mes,ventasFacturadas, ventasNoFacturadas FROM #InvoicedVsUninvoicedDetail
+
+	Select mes,ventaTotal,
+	ventasFacturadas, Case When ventaTotal =0 Then 0 Else Convert(decimal(18,2), (ventasFacturadas/ventaTotal)*100) End as invoicedPercentage,
+	ventasNoFacturadas,
+	ventasFacturadas+ventasNoFacturadas as Total,Case When ventaTotal =0 Then 0 Else 100-Convert(decimal(18,2), (ventasFacturadas/ventaTotal)*100) End as uninvoicedPercentage	
+	FROM #InvoicedVsUninvoicedDetail
+END
 /*       
 -- Tabla 0.- Concentrado de caja  
 Select nTipo, nFormaPago, cFormaPago, sum(nImporte) as nImporte,  sum(nImporteUsuario ) as nImporteUsuario 
