@@ -17,7 +17,8 @@ Art.nIdArticulo,Art.cClave,Art.cDescripcion as cNombreArticulo,Mr.cDescripcion a
 Ln.cDescripcion as cNombreLinea,Sb.cDescripcion as cNombreSubLinea,Un.cDescripcion as cUnidadInventario,
 cc.cDescripcion as cTipoArticulo,cc2.cDescripcion as cTipoUnidad,
 CASE WHEN Art.bManejaInventario=1 THEN 'SI' ELSE 'NO' END as cManejaInventario,
-CASE WHEN Art.bInsumoFinal=1 THEN 'SI' ELSE 'NO' END as cInsumoFinal,PB.cDescripcion as cProductoBase 
+CASE WHEN Art.bInsumoFinal=1 THEN 'SI' ELSE 'NO' END as cInsumoFinal,PB.cDescripcion as cProductoBase
+,Art.bActivo
 into #Articulos
 FROM CAT_Articulos Art (NOLOCK)
 LEFT JOIN CAT_Marcas Mr (NOLOCK) ON Mr.nMarca=Art.nMarca

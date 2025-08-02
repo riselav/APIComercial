@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
-    public class SalesByCategoryDto
+    public class ChartDataItem
     {
-        public string? categoryName { get; set; }
-        public decimal totalSales { get; set; }
+        public string name { get; set; }
+        public double value { get; set; }
     }
-    // Retornaría List<SalesByCategoryDto>
 }

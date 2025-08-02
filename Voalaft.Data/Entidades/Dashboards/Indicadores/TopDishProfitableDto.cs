@@ -8,8 +8,8 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class TopDishProfitableDto
     {
-        public string? DishName { get; set; }
-        public decimal RevenueOrProfit { get; set; } // Valor monetario
+        public string? dishName { get; set; }
+        public decimal revenueOrProfit { get; set; } // Valor monetario
     }
     // Retornaría List<TopDishProfitableDto>
 }

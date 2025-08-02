@@ -8,21 +8,21 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class DashboardIndicadores
     {
-        public KPISummaryDto? ResumenIndicadores { get; set; }
+        public KPISummaryDto? resumenIndicadores { get; set; }
 
-        public List<DailySalesDto>? VentasDiarias { get; set; }
+        public List<DailySalesDto>? ventasDiarias { get; set; }
 
-        public List<SalesByCategoryDto>? VentasPorCategoria { get; set; }
+        public List<SalesByCategoryDto>? ventasPorCategoria { get; set; }
 
-        public List<MonthlyFinancialsDto>? IngresosVsGastos { get; set; }
+        public List<MonthlyFinancialsDto>? ingresosVsGastos { get; set; }
 
-        public List<MonthlyInvoiceStatusDto>? VentasFacturadasVsNoFacturadas { get; set; }  
+        public List<MonthlyInvoiceStatusDto>? ventasFacturadasVsNoFacturadas { get; set; }  
     
-        public List<SalesByPaymentMethodDto>? VentasPorFormaPago { get; set; }
+        public List<SalesByPaymentMethodDto>? ventasPorFormaPago { get; set; }
 
-        public List<SalesByServiceTypeDto>? VentasPorTipoServicio { get; set; }
+        public List<SalesByServiceTypeDto>? ventasPorTipoServicio { get; set; }
 
-        public List<SalesByKitchenStationDto>? VentasPorEstacionComida { get; set; }
+        public List<SalesByKitchenStationDto>? ventasPorEstacionCocina { get; set; }
 
         public List<TopDishDto>? topPlatillosMasVendidos { get; set; }
 

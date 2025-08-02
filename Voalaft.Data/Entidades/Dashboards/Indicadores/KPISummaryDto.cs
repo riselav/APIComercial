@@ -8,40 +8,40 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class KPISummaryDto
     {
-        public decimal TotalSales { get; set; }
-        public decimal TotalSalesPreviousPeriod { get; set; } // Para calcular el porcentaje de cambio
-        public decimal InvoicedSales { get; set; }
-        public decimal InvoicedSalesPreviousPeriod { get; set; }
-        public decimal UninvoicedSales { get; set; }
-        public decimal UninvoicedSalesPreviousPeriod { get; set; }
-        public decimal NetIncome { get; set; }
-        public decimal NetIncomePreviousPeriod { get; set; }
-        public decimal TotalExpenses { get; set; }
-        public decimal TotalExpensesPreviousPeriod { get; set; }
-        public int NumberOfCustomers { get; set; }
-        public int NumberOfCustomersPreviousPeriod { get; set; }
-        public decimal AverageTicket { get; set; }
-        public decimal AverageTicketPreviousPeriod { get; set; }
-        public decimal OccupancyRate { get; set; } // Podría ser un porcentaje (0.78 para 78%)
-        public decimal OccupancyRatePreviousPeriod { get; set; }
+        public decimal totalSales { get; set; }
+        public decimal totalSalesPreviousPeriod { get; set; } // Para calcular el porcentaje de cambio
+        public decimal invoicedSales { get; set; }
+        public decimal invoicedSalesPreviousPeriod { get; set; }
+        public decimal uninvoicedSales { get; set; }
+        public decimal uninvoicedSalesPreviousPeriod { get; set; }
+        public decimal netIncome { get; set; }
+        public decimal netIncomePreviousPeriod { get; set; }
+        public decimal totalExpenses { get; set; }
+        public decimal totalExpensesPreviousPeriod { get; set; }
+        public int numberOfCustomers { get; set; }
+        public int numberOfCustomersPreviousPeriod { get; set; }
+        public decimal averageTicket { get; set; }
+        public decimal averageTicketPreviousPeriod { get; set; }
+        public decimal occupancyRate { get; set; } // Podría ser un porcentaje (0.78 para 78%)
+        public decimal occupancyRatePreviousPeriod { get; set; }
 
         // Puedes añadir propiedades calculadas si no quieres que el frontend las calcule
 
-        public string TotalSalesChangePercentage => CalculatePercentageChange(TotalSales, TotalSalesPreviousPeriod);
+        public string TotalSalesChangePercentage => CalculatePercentageChange(totalSales, totalSalesPreviousPeriod);
 
-        public string InvoicedSalesChangePercentage => CalculatePercentageChange(InvoicedSales, InvoicedSalesPreviousPeriod);
+        public string InvoicedSalesChangePercentage => CalculatePercentageChange(invoicedSales, invoicedSalesPreviousPeriod);
 
-        public string UnInvoicedSalesChangePercentage => CalculatePercentageChange(UninvoicedSales, UninvoicedSalesPreviousPeriod);
+        public string UnInvoicedSalesChangePercentage => CalculatePercentageChange(uninvoicedSales, uninvoicedSalesPreviousPeriod);
 
-        public string NetIncomeChangePercentage => CalculatePercentageChange(NetIncome, NetIncomePreviousPeriod);
+        public string NetIncomeChangePercentage => CalculatePercentageChange(netIncome, netIncomePreviousPeriod);
 
-        public string TotalExpensesChangePercentage => CalculatePercentageChange(TotalExpenses, TotalExpensesPreviousPeriod);
+        public string TotalExpensesChangePercentage => CalculatePercentageChange(totalExpenses, totalExpensesPreviousPeriod);
 
-        public string NumberOfCustomersChangePercentage => CalculatePercentageChange(NumberOfCustomers, NumberOfCustomersPreviousPeriod);
+        public string NumberOfCustomersChangePercentage => CalculatePercentageChange(numberOfCustomers, numberOfCustomersPreviousPeriod);
 
-        public string AverageTicketChangePercentage => CalculatePercentageChange(AverageTicket, AverageTicketPreviousPeriod);
+        public string AverageTicketChangePercentage => CalculatePercentageChange(averageTicket, averageTicketPreviousPeriod);
 
-        public string OccupancyRateChangePercentage => CalculatePercentageChange(OccupancyRate, OccupancyRatePreviousPeriod);
+        public string OccupancyRateChangePercentage => CalculatePercentageChange(occupancyRate, occupancyRatePreviousPeriod);
 
         private string CalculatePercentageChange(decimal current, decimal previous)
         {

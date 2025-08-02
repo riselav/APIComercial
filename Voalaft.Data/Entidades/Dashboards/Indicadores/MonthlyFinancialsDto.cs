@@ -8,9 +8,9 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class MonthlyFinancialsDto
     {
-        public string? Month { get; set; } // Ej. "Enero", "Febrero"
-        public decimal Income { get; set; }
-        public decimal Expenses { get; set; }
+        public string? month { get; set; } // Ej. "Enero", "Febrero"
+        public decimal income { get; set; }
+        public decimal expenses { get; set; }
     }
     // Retornaría List<MonthlyFinancialsDto>
 }

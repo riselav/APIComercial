@@ -8,8 +8,8 @@ namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
     public class TopDishDto
     {
-        public string? DishName { get; set; }
-        public int Quantity { get; set; } // O decimal si es por volumen
+        public string? dishName { get; set; }
+        public int quantity { get; set; } // O decimal si es por volumen
     }
     // Retornaría List<TopDishDto>
 }
