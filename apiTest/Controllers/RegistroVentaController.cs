@@ -18,12 +18,14 @@ namespace Voalaft.API.Controllers
         private readonly IRegistroVentaServicio _registroVentaServicio;
         private readonly ILogger<RegistroVentaController> _logger;
         private readonly IConfiguration _config;
+        private readonly IRegCorteCajaServicio _regCorteCajaServicio;
 
-        public RegistroVentaController(ILogger<RegistroVentaController> logger, IConfiguration config, IRegistroVentaServicio registroVentaServicio)
+        public RegistroVentaController(ILogger<RegistroVentaController> logger, IConfiguration config, IRegistroVentaServicio registroVentaServicio, IRegCorteCajaServicio regCorteCajaServicio)
         {
             _registroVentaServicio = registroVentaServicio;
             _logger = logger;
             _config = config;
+            _regCorteCajaServicio = regCorteCajaServicio;
         }
 
         [HttpPost("IME_REG_VentasEncabezado")]
@@ -121,6 +123,27 @@ namespace Voalaft.API.Controllers
                 var r = CryptographyUtils.Desencriptar(peticion.contenido);
                 var mv = CryptographyUtils.DeserializarPeticion<RegMovimientoVenta>(r);
                 ImpresionTicketData ticket = await _registroVentaServicio.Obtener_Ticket_Venta(mv.nVenta);
+                resultado = CryptographyUtils.CrearResultado(ticket);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar el ticket");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("Obtener_Ticket_Venta_movimietno")]
+        public async Task<ResultadoAPI> Obtener_Ticket_Venta_movimietno(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                RegMovimientoVenta mv = CryptographyUtils.DeserializarPeticion<RegMovimientoVenta>(r);
+                var ticket = await _regCorteCajaServicio.TicketMovimientoCaja(mv.nVenta);
                 resultado = CryptographyUtils.CrearResultado(ticket);
             }
             catch (Exception ex)

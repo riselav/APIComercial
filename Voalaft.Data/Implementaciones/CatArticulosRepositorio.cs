@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Data;
 using System.Runtime.ConstrainedExecution;
 using Voalaft.Data.DB;
@@ -336,7 +337,7 @@ namespace Voalaft.Data.Implementaciones
                                     ManejaInventario = ConvertUtils.ToString(reader["cManejaInventario"]),
                                     InsumoFinal = ConvertUtils.ToString(reader["cInsumoFinal"]),
                                     ProductoBase = ConvertUtils.ToString(reader["cProductoBase"]),
-
+                                    Activo  = ConvertUtils.ToBoolean(reader["bActivo"]),
                                 }
                                 );
                         }

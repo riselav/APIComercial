@@ -253,5 +253,28 @@ namespace Voalaft.API.Controllers
             return resultado;
         }
 
+        [HttpPost("TicketMovimientoCaja")]
+        public async Task<ResultadoAPI> TicketMovimientoCaja(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var reg= CryptographyUtils.DeserializarPeticion<RegMovimientoCaja>(r);
+                reg.Usuario = peticion.usuario;
+                reg.Maquina = peticion.maquina;
+                var regCorteResult = await _regCorteCajaServicio.TicketMovimientoCaja(reg.IDRegistroCaja);
+                resultado = CryptographyUtils.CrearResultado(regCorteResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al obtenere ticket corte");
+            }
+            finally { }
+
+            return resultado;
+        }
+
     }
 }

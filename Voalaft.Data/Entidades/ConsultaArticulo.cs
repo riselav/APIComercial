@@ -14,6 +14,7 @@ namespace Voalaft.Data.Entidades
         public string? TipoUnidad { get; set; }
         public string? ManejaInventario { get; set; }
         public string? InsumoFinal { get; set; }
-        public string? ProductoBase { get; set; }        
+        public string? ProductoBase { get; set; }
+        public bool? Activo { get; set; }
     }
 }

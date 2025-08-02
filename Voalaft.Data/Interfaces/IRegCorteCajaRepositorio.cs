@@ -12,5 +12,6 @@ namespace Voalaft.Data.Interfaces
     {
         Task<RegCorteCaja> IME_REG_CorteCaja(RegCorteCaja regCorteCaja);
         Task<List<ImpresionData>> TicketCorteCaja(int idSucursal, long idCorte);
+        Task<List<ImpresionData>> TicketMovimientoCaja(long nIDRegistroCaja);
     }
 }

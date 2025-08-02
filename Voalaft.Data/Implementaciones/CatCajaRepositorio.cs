@@ -52,7 +52,7 @@ namespace Voalaft.Data.Implementaciones
                                     Caja = ConvertUtils.ToInt32(reader["nCaja"]),
                                     Descripcion = ConvertUtils.ToString(reader["cDescripcion"]),
                                     Sucursal = ConvertUtils.ToInt32(reader["nSucursal"]),
-                                    NombreSucursal = ConvertUtils.ToString(reader["cNombreSucursal"]),
+                                    //NombreSucursal = ConvertUtils.ToString(reader["cNombreSucursal"]),
                                     Impresora = ConvertUtils.ToInt32(reader["nImpresora"]),
                                     Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
                                     Usuario = ConvertUtils.ToString(reader["cUsuario_Registra"]),

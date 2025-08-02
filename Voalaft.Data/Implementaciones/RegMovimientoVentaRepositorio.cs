@@ -163,7 +163,8 @@ namespace Voalaft.Data.Implementaciones
                             regMovimientoVenta.regMovimientoCaja.Usuario= regMovimientoVenta.Usuario;
                             regMovimientoVenta.regMovimientoCaja.Maquina = regMovimientoVenta.Maquina;
 
-                            await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoVenta.regMovimientoCaja, con, transaction);
+                            var mc = await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoVenta.regMovimientoCaja, con, transaction);
+                            regMovimientoVenta.nVenta = mc.IDRegistroCaja;
                             //await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja); // sin pasar conexión ni transacción
 
                         }
