@@ -19,5 +19,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<KitchenStationDetail> ObtenerDetalleVentaPorEstacionCocina(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
 
         Task<TopSellingDetail> ObtenerDetallePlatillosMasVendidos(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<TopProfitableDetail> ObtenerDetallePlatillosMasRedituables(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
     }
 }

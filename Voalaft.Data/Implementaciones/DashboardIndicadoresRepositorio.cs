@@ -809,5 +809,83 @@ namespace Voalaft.Data.Implementaciones
 
             return detallePlatillosMasVendidos;
         }
+
+        public async Task<TopProfitableDetail> ObtenerDetallePlatillosMasRedituables(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            TopProfitableDetail detallePlatillosMasRedituables = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 8);
+                    detallePlatillosMasRedituables = new TopProfitableDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detallePlatillosMasRedituables.chartData = new List<ChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detallePlatillosMasRedituables.chartData.Add(new ChartDataItem
+                            {
+                                name = Convert.ToString(reader["DishName"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detallePlatillosMasRedituables.tableData = new List<TableDataItemTopRedituables>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detallePlatillosMasRedituables.tableData.Add(new TableDataItemTopRedituables
+                                {
+                                    ranking = Convert.ToInt32(reader["ranking"]),
+                                    product = reader["DishName"].ToString(),
+                                    category = reader["cCategoria"].ToString(),
+                                    totalSales = Convert.ToDouble(reader["TotalSales"]),
+                                    cost = Convert.ToDouble(reader["Costo"]),
+                                    profit= Convert.ToDouble(reader["ganancia"]),
+                                    margin = Convert.ToDouble(reader["Margen"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Estación de Cocina")
+                {
+                    Metodo = "ObtenerDetalleVentaPorEstacionCocina",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detallePlatillosMasRedituables;
+        }
     }
 }

@@ -198,5 +198,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetallePlatillosMasRedituables")]
+        public async Task<ResultadoAPI> ObtenerDetallePlatillosMasRedituables(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                TopProfitableDetail platillosMasRedituables = await _dashboardIndicadoresServicio.ObtenerDetallePlatillosMasRedituables(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(platillosMasRedituables);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de platillos más redituables");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

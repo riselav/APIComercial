@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 7
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 8
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -177,15 +177,8 @@ BEGIN
 	From #MovtosPagoOrden Group by nEmpleado, cEmpleado, nOrden, cEmpleado)as MP
 	Group by nEmpleado,  cEmpleado
 
-	--Update VE Set VE.nTotalOrdenes = ot.nTotalOrdenes, ve.nPorcVentaProporcional = Cast((nTotal /@nTotalVenta) as numeric(18,4))  
-	--From #VentaEmpleados as VE   
-	--Inner Join (Select nEmpleado, cEmpleado, Count(nOrden) as nTotalOrdenes  
-	--            From #MovtosPagoOrden  
-	--   Group by nEmpleado, cEmpleado) as OT on OT.nEmpleado= VE.nEmpleado  
-
 	DECLARE @nTotalVentasFacturadas decimal(18,4)=(  
 		Select 
-			--ISNULL(COUNT(1),0) as Cantidad, 
 			ISNULL(SUM(CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END),0) as Total
 		from REG_OrdenesEncabezado Ord(NOLOCK)
 		join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
@@ -411,7 +404,6 @@ BEGIN
 	From 
 	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
 	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
-	--sum(nImporteConcepto*nCantidad) as nTotal
 	From #DetalleVenta
 	Group by cConcepto) as P
 	Order by nCantidad desc 
@@ -421,7 +413,6 @@ BEGIN
 	From 
 	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
 	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
-	--sum(nImporteConcepto*nCantidad) as nTotal
 	From #DetalleVenta
 	Group by cConcepto) as P
 	Order by nTotal desc
@@ -691,10 +682,31 @@ BEGIN
 	Order by nCantidad desc
 END
 
---IF @nTipoDetalle=8
---BEGIN
+IF @nTipoDetalle=8
+BEGIN
+	-- Reporte de conceptos más valiosos 
+	Select top 10 P.cConcepto as DishName,P.nTotal as TotalSales 
+	From 
+	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	From #DetalleVenta
+	Group by cConcepto) as P
+	Order by nTotal desc
 
---END
+	-- Reporte de conceptos más valiosos 
+	Select top 10 ROW_NUMBER()OVER(Order by nTotal desc) as ranking,P.cConcepto as DishName,P.cCategoria,
+	P.nTotal as TotalSales,
+	0.00 as Costo,
+	P.nTotal - 0.00 as ganancia,
+	CONVERT(decimal(18,2), ((P.nTotal - 0.00) / P.nTotal) * 100) AS Margen,
+	100.00 as trend,CONVERT(bit,1) as trendPositive
+	From 
+	(Select cConcepto,cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	From #DetalleVenta
+	Group by cConcepto,cCategoria) as P
+	Order by nTotal desc
+END
 
 /*       
 -- Tabla 0.- Concentrado de caja  
