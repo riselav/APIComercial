@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 8
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 2
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -168,8 +168,6 @@ BEGIN
 
 	set @nTotalSinServicio= @nTotalVenta - @nServDom
 
-	--Select @nTotalVenta as '@nTotalVenta', @nTotalOrdenes as '@nTotalOrdenes', @nServDom as '@nServDom', @nTotalSinServicio as '@nTotalSinServicio'
-
 	Select  nEmpleado,  cEmpleado, count(nOrden) as nTotalOrdenes, sum(nTotal) as nTotal,
 	Case when @nTotalVenta =0 then 0 else Cast(sum(nTotal)/@nTotalVenta as numeric(18,2)) End as nPorcVentaProporcional
 	Into #VentaEmpleados 
@@ -186,13 +184,13 @@ BEGIN
 		where 1=1 --nIDApertura= @IDApertura
 			and nFactura IS NOT NULL and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
 	)
-
+	
 	DECLARE @nIngresos decimal(18,4)=(
 		SELECT SUM(MC.nImporte) as nImporte
 		FROM CAJ_MovimientosCaja MC (NOLOCK)
 		JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
 		JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-		WHERE MC.bActivo=1 AND MC.nEfecto=1
+		WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 	)
 
@@ -217,7 +215,7 @@ BEGIN
 	SET @occupancyRate = (CAST(@nMesasOcupadas AS DECIMAL(18,4)) / @nTotalMesas)
 
 	-- KPI Summary
-	DECLARE @netIncome decimal(18,4) =(SELECT @nTotalVenta+ @nIngresos-@nEgresos)
+	DECLARE @netIncome decimal(18,4) =(SELECT @nTotalVenta-@nEgresos)
 
 	SELECT totalSales=@nTotalVenta,totalSalesPreviousPeriod=0.00,
 		   invoicedSales=@nTotalVentasFacturadas, invoicedSalesPreviousPeriod=0.00,
@@ -268,7 +266,7 @@ BEGIN
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-	WHERE MC.bActivo=1 AND MC.nEfecto=1
+	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 	
@@ -468,7 +466,7 @@ BEGIN
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-	WHERE MC.bActivo=1 AND MC.nEfecto=1
+	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END
 	GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
@@ -541,7 +539,7 @@ END
 
 IF @nTipoDetalle=4
 BEGIN
--- Ventas por Forma de Pago
+	-- Ventas por Forma de Pago
 	Create table #SalesByPaymentMethodDetail(nFormaPago int,PaymentMethod varchar(200),TotalSales decimal(18,2),Cant int)
 
 	Select nFormaPago,cDescripcion as cFormaPago
@@ -666,7 +664,6 @@ BEGIN
 	From 
 	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
 	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
-	--sum(nImporteConcepto*nCantidad) as nTotal
 	From #DetalleVenta
 	Group by cConcepto) as P
 	Order by nCantidad desc
@@ -693,7 +690,6 @@ BEGIN
 	Group by cConcepto) as P
 	Order by nTotal desc
 
-	-- Reporte de conceptos más valiosos 
 	Select top 10 ROW_NUMBER()OVER(Order by nTotal desc) as ranking,P.cConcepto as DishName,P.cCategoria,
 	P.nTotal as TotalSales,
 	0.00 as Costo,
