@@ -20,5 +20,7 @@ namespace Voalaft.Data.Interfaces
         Task<PaymentMethodDetail> ObtenerDetalleVentaPorFormaPago(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
 
         Task<ServiceTypeDetail> ObtenerDetalleVentaPorTipoServicio(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<KitchenStationDetail> ObtenerDetalleVentaPorEstacionCocina(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
     }
 }

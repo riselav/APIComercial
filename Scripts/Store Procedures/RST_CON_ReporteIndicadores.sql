@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 5 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 6 
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -692,6 +692,46 @@ BEGIN
 
 END
 
+IF @nTipoDetalle=6
+BEGIN
+	-- Ventas por Estación de Cocina
+	Create table #EstacionesCocina2 (nEstacionCocina int,cEstacionCocina varchar(200))
+
+	Insert into #EstacionesCocina2
+	Select nEstacionCocina,cDescripcion
+	FROM CAT_EstacionesCocinas (NOLOCK)
+	Where bActivo=1
+	--select cEstacionCocina,count(1) as nCantidad from #DetalleVenta where cEstacionCocina='PIZZA' group by cEstacionCocina
+	Select nEstacionCocina,cEstacionCocina,
+	Cast (sum(nTotalConcepto + nServicioDomicilio ) as numeric(18,2)) as nImporte,
+	COUNT(DISTINCT nConcepto) AS Cant
+	into #Estaciones2
+	From #DetalleVenta 
+	Group by nEstacionCocina,cEstacionCocina
+	Order by nEstacionCocina
+
+	Create table #SalesByKitchenStationDetail(StationName varchar(200),TotalSales decimal(18,2),Productos int)
+
+	INSERT INTO #SalesByKitchenStationDetail(StationName, TotalSales,Productos)
+	SELECT
+		M.cEstacionCocina,
+		ISNULL(I.nImporte, 0) AS Total,
+		ISNULL(I.Cant, 0) AS Cant
+	FROM #EstacionesCocina2 M
+	LEFT JOIN #Estaciones2 I ON M.nEstacionCocina = I.nEstacionCocina
+	ORDER BY M.nEstacionCocina;
+
+	Select StationName, TotalSales FROM #SalesByKitchenStationDetail
+
+	DECLARE @nTotalEstacionCocina int=(SELECT SUM(TotalSales) FROM #SalesByKitchenStationDetail)
+
+	Select StationName as station, TotalSales as sales,
+	CASE WHEN @nTotalEstacionCocina=0 THEN 0 ELSE CONVERT(decimal(18,2),TotalSales/@nTotalEstacionCocina)*100 END as porcentaje,
+		Productos as productos,
+		CONVERT(decimal(18,2),(TotalSales/@nTotalOrdenes)) as averageTicket,
+		0.00 as trend,CONVERT(bit,1) as trendPositive
+	FROM #SalesByKitchenStationDetail
+END
 /*       
 -- Tabla 0.- Concentrado de caja  
 Select nTipo, nFormaPago, cFormaPago, sum(nImporte) as nImporte,  sum(nImporteUsuario ) as nImporteUsuario 

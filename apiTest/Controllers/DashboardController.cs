@@ -156,5 +156,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetalleVentaPorEstacionCocina")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentaPorEstacionCocina(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                KitchenStationDetail kitchenStationDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentaPorEstacionCocina(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(kitchenStationDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de venta por estación de cocina");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

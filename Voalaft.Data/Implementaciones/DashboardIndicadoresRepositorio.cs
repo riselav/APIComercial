@@ -656,5 +656,81 @@ namespace Voalaft.Data.Implementaciones
 
             return detalleVentaPorTipoServicio;
         }
+
+        public async Task<KitchenStationDetail> ObtenerDetalleVentaPorEstacionCocina(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            KitchenStationDetail detalleVentaPorEstacionCocina = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 6);
+                    detalleVentaPorEstacionCocina = new KitchenStationDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentaPorEstacionCocina.chartData = new List<KitchenChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentaPorEstacionCocina.chartData.Add(new KitchenChartDataItem
+                            {
+                                name = Convert.ToString(reader["StationName"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentaPorEstacionCocina.tableData = new List<KitchenTableDataItem>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentaPorEstacionCocina.tableData.Add(new KitchenTableDataItem
+                                {
+                                    station = reader["station"].ToString(),
+                                    sales = Convert.ToDouble(reader["sales"]),
+                                    percentage = Convert.ToDouble(reader["porcentaje"]),
+                                    products = Convert.ToInt32(reader["productos"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Estación de Cocina")
+                {
+                    Metodo = "ObtenerDetalleVentaPorEstacionCocina",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentaPorEstacionCocina;
+        }
     }
 }
