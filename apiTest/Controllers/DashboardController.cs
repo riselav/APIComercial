@@ -108,7 +108,7 @@ namespace Voalaft.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new Exception("Error al consultar datos de detalle de Ingresos Vs Gastos");
+                throw new Exception("Error al consultar datos de detalle de facturado Vs No facturado");
             }
             finally { }
 
@@ -129,7 +129,28 @@ namespace Voalaft.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new Exception("Error al consultar datos de detalle de Ingresos Vs Gastos");
+                throw new Exception("Error al consultar datos de detalle de venta por forma de pago");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetalleVentaPorTipoServicio")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentaPorTipoServicio(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                ServiceTypeDetail serviceTypeDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentaPorTipoServicio(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(serviceTypeDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de venta por tipo de servicio");
             }
             finally { }
 

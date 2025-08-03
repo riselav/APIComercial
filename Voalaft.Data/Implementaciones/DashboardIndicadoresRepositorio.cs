@@ -580,5 +580,81 @@ namespace Voalaft.Data.Implementaciones
 
             return detalleVentaPorFormaPago;
         }
+
+        public async Task<ServiceTypeDetail> ObtenerDetalleVentaPorTipoServicio(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            ServiceTypeDetail detalleVentaPorTipoServicio = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 5);
+                    detalleVentaPorTipoServicio = new ServiceTypeDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentaPorTipoServicio.chartData = new List<ServiceChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentaPorTipoServicio.chartData.Add(new ServiceChartDataItem
+                            {
+                                name = Convert.ToString(reader["ServiceType"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentaPorTipoServicio.tableData = new List<ServiceTableDataItem>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentaPorTipoServicio.tableData.Add(new ServiceTableDataItem
+                                {
+                                    serviceType = reader["serviceType"].ToString(),
+                                    sales = Convert.ToDouble(reader["sales"]),
+                                    percentage = Convert.ToDouble(reader["porcentaje"]),
+                                    orders = Convert.ToInt32(reader["ordenes"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Tipo de Servicio")
+                {
+                    Metodo = "ObtenerDetalleVentaPorTipoServicio",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentaPorTipoServicio;
+        }
     }
 }

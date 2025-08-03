@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 4 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 5 
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -651,6 +651,47 @@ BEGIN
 		0.00 as trend,CONVERT(bit,1) as trendPositive
 	FROM #SalesByPaymentMethodDetail
 END
+
+IF @nTipoDetalle=5
+BEGIN
+	-- Ventas por Tipo de Servicio
+	Create table #TiposServicio2 (nTipoServicio int,cTipoServicio varchar(200))
+
+	Insert into #TiposServicio2
+	Select nCodigo,LTRIM(RTRIM(cDescripcion)) FROM CAT_Catalogos (NOLOCK) WHere cNombre= 'CAT_TipoServicio'
+	
+	Select 
+	nTipoServicio, cTipoServicio, sum (nImporte) as nImporte,COUNT(1) as Cant
+	into #TiposServDetalle
+	From #MovtosPagoOrden   
+	Group by
+	nTipoServicio, cTipoServicio 
+	Order by nImporte desc
+
+	Create table #SalesByServiceTypeDtoDetail(ServiceType varchar(200),TotalSales decimal(18,2),Ordenes int)
+
+	INSERT INTO #SalesByServiceTypeDtoDetail(ServiceType, TotalSales,Ordenes)
+	SELECT
+		M.cTipoServicio,
+		ISNULL(I.nImporte, 0) AS Total,
+		ISNULL(I.Cant, 0) AS Ordenes
+	FROM #TiposServicio2 M
+	LEFT JOIN #TiposServDetalle I ON M.nTipoServicio = I.nTipoServicio
+	ORDER BY M.nTipoServicio;
+
+	Select ServiceType, TotalSales FROM #SalesByServiceTypeDtoDetail
+
+	DECLARE @nTotalTiposServicio int=(SELECT SUM(TotalSales) FROM #SalesByServiceTypeDtoDetail)
+
+	Select ServiceType, TotalSales as sales, 
+		CASE WHEN @nTotalTiposServicio=0 THEN 0 ELSE CONVERT(decimal(18,2),TotalSales/@nTotalTiposServicio)*100 END as porcentaje,
+		Ordenes as ordenes,
+		CONVERT(decimal(18,2),(TotalSales/@nTotalOrdenes)) as averageTicket,
+		0.00 as trend,CONVERT(bit,1) as trendPositive
+	FROM #SalesByServiceTypeDtoDetail
+
+END
+
 /*       
 -- Tabla 0.- Concentrado de caja  
 Select nTipo, nFormaPago, cFormaPago, sum(nImporte) as nImporte,  sum(nImporteUsuario ) as nImporteUsuario 
