@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 3 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 4 
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -611,6 +611,45 @@ BEGIN
 	ventasNoFacturadas,
 	ventasFacturadas+ventasNoFacturadas as Total,Case When ventaTotal =0 Then 0 Else 100-Convert(decimal(18,2), (ventasFacturadas/ventaTotal)*100) End as uninvoicedPercentage	
 	FROM #InvoicedVsUninvoicedDetail
+END
+
+IF @nTipoDetalle=4
+BEGIN
+-- Ventas por Forma de Pago
+	Create table #SalesByPaymentMethodDetail(nFormaPago int,PaymentMethod varchar(200),TotalSales decimal(18,2),Cant int)
+
+	Select nFormaPago,cDescripcion as cFormaPago
+	into #CAT_FormasPago2
+	FROM CAT_FormasPago
+	WHERE bActivo=1
+	
+	Select  
+	nFormaPago, cFormaPago, sum (nImporte) as nImporte,COUNT(1) as nCant
+	into #FormasPagoMovtosDetalle
+	From #MovtosPagoOrden   
+	Group by nFormaPago, cFormaPago 
+	order by nImporte desc
+	
+	INSERT INTO #SalesByPaymentMethodDetail(nFormaPago, PaymentMethod, TotalSales,Cant)
+	SELECT
+		M.nFormaPago,
+		M.cFormaPago,
+		ISNULL(I.nImporte, 0) AS Total,
+		ISNULL(I.nCant, 0) AS Cant
+	FROM #CAT_FormasPago2 M
+	LEFT JOIN #FormasPagoMovtosDetalle I ON M.nFormaPago = I.nFormaPago
+	ORDER BY M.nFormaPago;
+
+	Select PaymentMethod, TotalSales FROM #SalesByPaymentMethodDetail
+
+	DECLARE @nTotalFormasPago int=(SELECT SUM(TotalSales) FROM #SalesByPaymentMethodDetail)
+
+	Select PaymentMethod, TotalSales as sales, 
+		CASE WHEN @nTotalFormasPago=0 THEN 0 ELSE CONVERT(decimal(18,2),TotalSales/@nTotalFormasPago)*100 END as porcentaje,
+		cant as transactions,
+		CONVERT(decimal(18,2),(TotalSales/@nTotalOrdenes)) as averageTicket,
+		0.00 as trend,CONVERT(bit,1) as trendPositive
+	FROM #SalesByPaymentMethodDetail
 END
 /*       
 -- Tabla 0.- Concentrado de caja  
