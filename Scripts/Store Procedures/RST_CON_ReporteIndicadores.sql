@@ -2,7 +2,7 @@ sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
 -- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 6 
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45865 , 7
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -67,14 +67,6 @@ From CAJ_DetalleMovimientosCaja as MDC (Nolock)
 Inner Join #CAJ_MovimientosCaja as MC (Nolock) on MC.nIDRegistroCaja =mdc.nIDRegistroCaja 
 Where MDC.bActivo =1
 
-/*
-Select C.nIDCorteCaja,
-1 as nTipo, -1 as nFormaPago, Cast('DOTACION INICIAL' as Varchar(max))as cFormaPago, 
-SUM(C.nDotacionInicial) As nImporte, SUM(C.nDotacionInicial) as nImporteUsuario  -- , Cast (0 as numeric(18,2)) as nDiferencia  
-Into #ConcentradoCaja  
-FROM #CAJ_CortesCaja As C (NOLOCK)  
-Group by C.nIDCorteCaja*/
-
 -- Obtiene solo los pagos de las ventas  
 SELECT MC.nTipoRegistroCaja, MC.nIDCorteCaja, MC.nIDApertura, 
 OCE.nOrden, OCE.nCuenta, MDC.nFormaPago, FP.cDescripcion as cFormaPago, 
@@ -95,63 +87,6 @@ Inner Join REG_OrdenesEncabezado  as OE (Nolock) on OE.norden = OCE.nOrden and O
 Left Join CAT_Empleados  as E (Nolock) on E.nEmpleado = OE.nEmpleadoAbreMesa   
 Inner Join CAT_Catalogos as C (Nolock) on C.cNombre ='CAT_TipoServicio' and C.nCodigo = OE.nTipoServicio  
 Where MC.bActivo =1 
-
-/*
-Insert Into #ConcentradoCaja  
-Select PO.nIDCorteCaja, 
-1 as nTipo, 0 as nFormaPago, Cast('TOTAL DE VENTA' as Varchar(max))as cFormaPago, Sum(nImporte) As nImporte, Sum(nImporte) as nImporteUsuario
-From #MovtosPagoOrden PO -- <- Cr
-Group by PO.nIDCorteCaja
-
-Insert Into #ConcentradoCaja  
-Select CC.nIDCorteCaja,  
-2 as nTipo, FP.nFormaPago, '     - ' + ISNULL(cFormaPago,FP.cDescripcion), Sum(ISNULL(nImporte,0)) As nImporte, 0 as nImporteUsuario
-From #CAJ_DetalleCorteCaja CC
-Left Join CAT_FormasPago FP (NOLOCK) ON FP.nFormaPago=CC.nFormaPago
-LEFT JOIN #MovtosPagoOrden PO ON CC.nIDCorteCaja= PO.nIDCorteCaja
-	AND CC.nFormaPago=PO.nFormaPago
-Group by CC.nIDCorteCaja, FP.nFormaPago, cFormaPago,FP.cDescripcion  
-
-UPDATE CC SET CC.nImporteUsuario= CASE WHEN @bTodo=1 THEN 
-									    --isnull(DC.nImporteUsuario_Respaldo,DC.nImporteUsuario)
-										CASE WHEN DC.nImporteUsuario_Respaldo IS NULL THEN
-											      DC.nImporteUsuario
-										ELSE
-											DC.nImporteUsuario_Respaldo- 
-											   CASE WHEN DC.nImporteUsuario_Respaldo=DC.nImporteCorte_Respaldo AND DC.nDiferencia_Respaldo IS NOT NULL THEN
-													DC.nDiferencia_Respaldo
-											   ELSE
-													0
-											   END
-										END
-								   ELSE
-										DC.nImporteUsuario											 
-								   END
-FROM #ConcentradoCaja CC
-JOIN #CAJ_DetalleCorteCaja DC ON CC.nFormaPago=DC.nFormaPago
-	AND CC.nIDCorteCaja=DC.nIDCorteCaja
-WHERE nTipo=2	
-
-Insert Into #ConcentradoCaja  
-Select C.nIDCorteCaja, 
-3 as nTipo, 1 as nFormaPago , '(+) OTROS INGRESOS',
-nImporte= SUM(CASE WHEN @bTodo=1 THEN ISNULL(nTotalIngresos_Respaldo,nTotalIngresos) ELSE nTotalIngresos END), 
-nImporteUsuario= SUM(CASE WHEN @bTodo=1 THEN ISNULL(nTotalIngresos_Respaldo,nTotalIngresos) ELSE nTotalIngresos END)
-From #CAJ_CortesCaja as C  
-Group by nIDCorteCaja
-  
-Insert Into #ConcentradoCaja  
-Select C.nIDCorteCaja,
-4 as nTipo, -2 as nFormaPago , '(-) RETIROS',SUM(-1 * nTotalRetiros) As nImporte, SUM(-1 * nTotalRetiros) as nImporteUsuario  
-From #CAJ_CortesCaja as C
-Group by nIDCorteCaja
-  
-Insert Into #ConcentradoCaja  
-Select C.nIDCorteCaja, 
-5 as nTipo, -2 as nFormaPago, '(-) GASTOS',SUM(-1 * nTotalGastos) As nImporte, SUM(-1 *  nTotalGastos) as nImporteUsuario  
-From #CAJ_CortesCaja as C  
-Group by nIDCorteCaja
-*/
 
 Select
 OE.nOrden, OE.nImporteServDom, OD.nConcepto, CV.cDescripcion as cConcepto, OD.nCantidad, OD.nImporte as nImporteConcepto, OD.nTotal as nTotalConcepto, OD.nEstacionCocina  as nEstacionCocina,
@@ -701,7 +636,7 @@ BEGIN
 	Select nEstacionCocina,cDescripcion
 	FROM CAT_EstacionesCocinas (NOLOCK)
 	Where bActivo=1
-	--select cEstacionCocina,count(1) as nCantidad from #DetalleVenta where cEstacionCocina='PIZZA' group by cEstacionCocina
+	
 	Select nEstacionCocina,cEstacionCocina,
 	Cast (sum(nTotalConcepto + nServicioDomicilio ) as numeric(18,2)) as nImporte,
 	COUNT(DISTINCT nConcepto) AS Cant
@@ -732,6 +667,35 @@ BEGIN
 		0.00 as trend,CONVERT(bit,1) as trendPositive
 	FROM #SalesByKitchenStationDetail
 END
+
+IF @nTipoDetalle=7
+BEGIN
+	-- Reporte de conceptos con más venta 
+	Select top 10 P.cConcepto as DishName,P.nCantidad as Quantity 
+	From 
+	(Select cConcepto, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	--sum(nImporteConcepto*nCantidad) as nTotal
+	From #DetalleVenta
+	Group by cConcepto) as P
+	Order by nCantidad desc
+
+	Select top 10 ROW_NUMBER()OVER(Order by nCantidad desc) as ranking ,P.cConcepto as DishName,P.cCategoria,P.nCantidad as Quantity,P.nPrecio,P.nTotal, 
+	0.00 as trend,CONVERT(bit,1) as trendPositive
+	From 
+	(Select cConcepto,cCategoria, sum(nCantidad) as nCantidad, min(nImporteConcepto) as nPrecio, 
+	(sum(nCantidad)* min(nImporteConcepto))  as nTotal
+	--sum(nImporteConcepto*nCantidad) as nTotal
+	From #DetalleVenta
+	Group by cConcepto,cCategoria) as P
+	Order by nCantidad desc
+END
+
+--IF @nTipoDetalle=8
+--BEGIN
+
+--END
+
 /*       
 -- Tabla 0.- Concentrado de caja  
 Select nTipo, nFormaPago, cFormaPago, sum(nImporte) as nImporte,  sum(nImporteUsuario ) as nImporteUsuario 

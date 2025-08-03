@@ -177,5 +177,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ObtenerDetallePlatillosMasVendidos")]
+        public async Task<ResultadoAPI> ObtenerDetallePlatillosMasVendidos(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                TopSellingDetail platillosMasVendidos = await _dashboardIndicadoresServicio.ObtenerDetallePlatillosMasVendidos(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(platillosMasVendidos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de platillos más vendidos");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }
