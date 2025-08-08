@@ -177,5 +177,43 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("get_menu_web_usuario")]
+        public async Task<ResultadoAPI> get_menu_web_usuario(PeticionAPI peticion)
+        {
+            //var peticion = HttpContext.Items["peticion"] as PeticionAPI;
+            UsuarioLogin user = null;
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                user = CryptographyUtils.DeserializarPeticion<UsuarioLogin>(r);
+
+                Console.WriteLine(user.usuario_id);
+                
+                 Usuarios usuario = await _usuario.ObtenerPorUsuario(user.usuario_id);
+                if (usuario==null)
+                {
+                    throw new Exception("Usuario no encontrado "+user.usuario_id);
+                }
+
+                var menu = await _usuario.get_menu_web_usuario(usuario.Folio);
+                if (menu == null)
+                {
+                    throw new Exception("Menu no encontrado " + user.usuario_id);
+                }
+               
+                resultado = CryptographyUtils.CrearResultado(menu);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("No se pudo obtener el menu");
+            }
+            finally { }
+
+            return resultado;
+        }
+
     }
 }

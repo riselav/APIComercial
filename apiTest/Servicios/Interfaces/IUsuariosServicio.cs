@@ -1,4 +1,5 @@
 ﻿using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.Menu;
 
 namespace Voalaft.API.Servicios.Interfaces
 {
@@ -7,6 +8,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<List<Usuarios>> Lista();
         Task<Usuarios> ObtenerPorUsuario(string usuario);
         Task<List<MenuUsuario>> ObtenerMenuUsuario(int nUsuario);
+        Task<MenuNavigationRoute> get_menu_web_usuario(int nUsuario);
 
         Task<Usuarios> AccesoUsuario(Usuarios usuario);
 
