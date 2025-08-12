@@ -1,8 +1,8 @@
 sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
--- Select dbo.FechaNumero_Fn('20250701')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45839 , 0
+-- Select dbo.FechaNumero_Fn('20250703')
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45841 , 0
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -773,7 +773,8 @@ BEGIN
 	
 	Select nEstacionCocina,cEstacionCocina,
 	Cast (sum(nTotalConcepto + nServicioDomicilio ) as numeric(18,2)) as nImporte,
-	COUNT(DISTINCT nConcepto) AS Cant
+	--COUNT(DISTINCT nConcepto) AS Cant
+	SUM(nCantidad) AS Cant
 	into #Estaciones2
 	From #DetalleVenta 
 	Group by nEstacionCocina,cEstacionCocina
