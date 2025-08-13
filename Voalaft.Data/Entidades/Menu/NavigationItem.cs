@@ -8,14 +8,14 @@ namespace Voalaft.Data.Entidades.Menu
 {
     public class NavigationItem
     {
-        public short Id { get; set; }
-        public string Segment { get; set; }
-        public string Title { get; set; }
-        public string Icon { get; set; }
-        public List<NavigationItem> Children { get; set; }
+        public short id { get; set; }
+        public string segment { get; set; }
+        public string title { get; set; }
+        public string icon { get; set; }
+        public List<NavigationItem> children { get; set; }
 
         // Propiedades adicionales para la construcción del árbol
-        public string MenuUrl { get; set; }
-        public short? PadreId { get; set; }
+        public string menuUrl { get; set; }
+        public short? padreId { get; set; }
     }
 }

@@ -333,7 +333,7 @@ namespace Voalaft.Data.Implementaciones
                     SqlCommand cmd = new SqlCommand()
                     {
                         Connection = con,
-                        CommandText = "get_menu_web_usuario",
+                        CommandText = "get_menu_web_opciones",
                         CommandType = CommandType.StoredProcedure,
                     };
                     cmd.Parameters.AddWithValue("@user_id", nUsuario);
@@ -351,9 +351,9 @@ namespace Voalaft.Data.Implementaciones
                                     MenuDescripcion = ConvertUtils.ToString(reader["MENU_DESCRIPCION"]),
                                     MenuOrden = ConvertUtils.ToInt16(reader["MENU_ORDEN"]),
                                     MenuUrl= ConvertUtils.ToString(reader["MENU_URL"]),
-                                    MenuIcono = ConvertUtils.ToString(reader["MENU_ICONO"])
+                                    MenuIcono = ConvertUtils.ToString(reader["MENU_ICONO"]),
+                                    MenuIconoParent = ConvertUtils.ToString(reader["MENU_ICONO_PARENT"])
                                 });
-                            break;
                         }
                     }
                 }

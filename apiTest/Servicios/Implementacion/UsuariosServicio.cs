@@ -144,8 +144,9 @@ namespace Voalaft.API.Servicios.Implementacion
                 };
             }
         }
-
-        public async Task<MenuNavigationRoute> get_menu_web_usuario(int nUsuario)
+        
+            public async Task<Dictionary<string, object>> get_menu_web_usuario(int nUsuario)
+        //public async Task<MenuNavigationRoute> get_menu_web_usuario(int nUsuario)
         {
             try
             {
@@ -160,13 +161,13 @@ namespace Voalaft.API.Servicios.Implementacion
                 var rutas = _ConstruirRutasRecursivas(arbolMenu, new List<RouteItem>(), new List<string>());
                 result.navigation = menuNavegacion;
                 result.routes = rutas;
-                //    // 3. Devolver el resultado final
-                //    return new Dictionary<string, object>
-                //{
-                //    { "navigation", menuNavegacion },
-                //    { "routes", rutas }
-                //};
-                return result;
+                // 3. Devolver el resultado final
+                return new Dictionary<string, object>
+                {
+                    { "navigation", menuNavegacion },
+                    { "routes", rutas }
+                };
+               // return result;
             }
             catch (DataAccessException ex)
             {
@@ -200,12 +201,12 @@ namespace Voalaft.API.Servicios.Implementacion
                 {
                     nodos[menu.MenuIdParent.Value] = new NavigationItem
                     {
-                        Id = menu.MenuIdParent.Value,
-                        Title = menu.MenuDescripcionParent,
-                        Icon = "", // El ícono del padre usualmente se define en su propia fila
-                        PadreId = null,
-                        MenuUrl = null,
-                        Children = new List<NavigationItem>()
+                        id = menu.MenuIdParent.Value,
+                        title = menu.MenuDescripcionParent,
+                        icon = menu.MenuIconoParent ?? "",
+                        padreId = null,
+                        menuUrl = null,
+                        children = new List<NavigationItem>()
                     };
                 }
 
@@ -214,12 +215,12 @@ namespace Voalaft.API.Servicios.Implementacion
                 {
                     nodos[menu.MenuId] = new NavigationItem
                     {
-                        Id = menu.MenuId,
-                        Title = menu.MenuDescripcion,
-                        Icon = menu.MenuIcono ?? "",
-                        PadreId = menu.MenuIdParent,
-                        MenuUrl = menu.MenuUrl,
-                        Children = new List<NavigationItem>()
+                        id = menu.MenuId,
+                        title = menu.MenuDescripcion,
+                        icon = menu.MenuIcono ?? "",
+                        padreId = menu.MenuIdParent,
+                        menuUrl = menu.MenuUrl,
+                        children = new List<NavigationItem>()
                     };
                 }
             }
@@ -228,13 +229,13 @@ namespace Voalaft.API.Servicios.Implementacion
             var arbol = new Dictionary<short, NavigationItem>();
             foreach (var nodo in nodos.Values)
             {
-                if (nodo.PadreId.HasValue && nodos.ContainsKey(nodo.PadreId.Value))
+                if (nodo.padreId.HasValue && nodos.ContainsKey(nodo.padreId.Value))
                 {
-                    nodos[nodo.PadreId.Value].Children.Add(nodo);
+                    nodos[nodo.padreId.Value].children.Add(nodo);
                 }
                 else
                 {
-                    arbol.Add(nodo.Id, nodo);
+                    arbol.Add(nodo.id, nodo);
                 }
             }
 
@@ -244,15 +245,15 @@ namespace Voalaft.API.Servicios.Implementacion
         private static List<NavigationItem> _ConstruirMenuNavegacion(Dictionary<short, NavigationItem> nodosPrincipales)
         {
             var menu = new List<NavigationItem>();
-            foreach (var nodo in nodosPrincipales.Values.OrderBy(n => n.Title)) // O por un campo de orden
+            foreach (var nodo in nodosPrincipales.Values) // O por un campo de orden
             {
                 var elementoMenu = new NavigationItem
                 {
-                    Id = nodo.Id,
-                    Title = nodo.Title,
-                    Icon = nodo.Icon,
-                    Segment = RemoverAcentos(nodo.Title).ToLower().Replace(" ", "-"),
-                    Children = nodo.Children.Any() ? _ConstruirSubmenus(nodo.Children) : null
+                    id = nodo.id,
+                    title = nodo.title,
+                    icon = nodo.icon,
+                    segment = RemoverAcentos(nodo.title).ToLower().Replace(" ", "-"),
+                    children = nodo.children.Any() ? _ConstruirSubmenus(nodo.children) : null
                 };
                 menu.Add(elementoMenu);
             }
@@ -262,15 +263,15 @@ namespace Voalaft.API.Servicios.Implementacion
         private static List<NavigationItem> _ConstruirSubmenus(List<NavigationItem> hijos)
         {
             var submenus = new List<NavigationItem>();
-            foreach (var hijo in hijos.OrderBy(h => h.Title))
+            foreach (var hijo in hijos)
             {
                 var submenu = new NavigationItem
                 {
-                    Id = hijo.Id,
-                    Title = hijo.Title,
-                    Icon = hijo.Icon,
-                    Segment = RemoverAcentos(hijo.Title).ToLower().Replace(" ", "-"),
-                    Children = hijo.Children.Any() ? _ConstruirSubmenus(hijo.Children) : null
+                    id = hijo.id,
+                    title = hijo.title,
+                    icon = hijo.icon,
+                    segment = RemoverAcentos(hijo.title).ToLower().Replace(" ", "-"),
+                    children = hijo.children.Any() ? _ConstruirSubmenus(hijo.children) : null
                 };
                 submenus.Add(submenu);
             }
@@ -281,23 +282,23 @@ namespace Voalaft.API.Servicios.Implementacion
         {
             foreach (var nodo in nodos.Values)
             {
-                var pathSegment = RemoverAcentos(nodo.Title).ToLower().Replace(" ", "-");
+                var pathSegment = RemoverAcentos(nodo.title).ToLower().Replace(" ", "-");
                 var currentPath = new List<string>(padres) { pathSegment };
 
-                if (nodo.Children != null && nodo.Children.Any())
+                if (nodo.children != null && nodo.children.Any())
                 {
                     // Si tiene hijos, convierte la lista de hijos a diccionario y sigue recursivamente
-                    var hijosDict = nodo.Children.ToDictionary(hijo => hijo.Id);
+                    var hijosDict = nodo.children.ToDictionary(hijo => hijo.id);
                     _ConstruirRutasRecursivas(hijosDict, rutas, currentPath);
                 }
-                else if (!string.IsNullOrEmpty(nodo.MenuUrl))
+                else if (!string.IsNullOrEmpty(nodo.menuUrl))
                 {
                     // Es un nodo final con URL, lo agregamos a las rutas
                     rutas.Add(new RouteItem
                     {
-                        Id = nodo.Id.ToString(),
-                        Path = string.Join("/", currentPath),
-                        Component = nodo.MenuUrl
+                        id = nodo.id.ToString(),
+                        path = string.Join("/", currentPath),
+                        component = nodo.menuUrl
                     });
                 }
             }

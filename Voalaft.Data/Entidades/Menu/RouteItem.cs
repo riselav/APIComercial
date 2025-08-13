@@ -8,8 +8,8 @@ namespace Voalaft.Data.Entidades.Menu
 {
     public class RouteItem
     {
-        public string Id { get; set; }
-        public string Path { get; set; }
-        public string Component { get; set; }
+        public string id { get; set; }
+        public string path { get; set; }
+        public string component { get; set; }
     }
 }

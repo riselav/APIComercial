@@ -11,6 +11,7 @@ namespace Voalaft.Data.Entidades.Menu
         public short? MenuOrden { get; set; }
         public string MenuUrl { get; set; }
         public string MenuIcono { get; set; }
+        public string MenuIconoParent { get; set; }
     }
 
 }
