@@ -547,7 +547,7 @@ BEGIN
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja_Prev AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5 AND MC.bActivo=1
+	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
 	INSERT INTO #IncomeVsExpensesDetail (numMes, mes, income, expenses,gananciaNeta)
