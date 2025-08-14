@@ -1,8 +1,8 @@
 sp_eliminastore 'RST_CON_ReporteIndicadores'
 GO
 -- Select dbo.NumeroFecha_Fn(45865)
--- Select dbo.FechaNumero_Fn('20250703')
--- Exec RST_CON_ReporteIndicadores 1, 45839, 45841 , 0
+-- Select dbo.FechaNumero_Fn('20250731')
+-- Exec RST_CON_ReporteIndicadores 1, 45839, 45869 , 0
 Create procedure RST_CON_ReporteIndicadores (@nSucursal int,@FechaNumeroInicial int=0, @FechaNumeroFinal int=0,@nTipoDetalle tinyint=0)  
 As  
 Begin  
@@ -360,15 +360,17 @@ BEGIN
 	Create table #InvoicedVsUninvoiced(numMes int,mes varchar(100),invoiced decimal(18,2), uninvoiced decimal(18,2))
 
 	Select MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes, 
-	ISNULL(SUM(Case when nFactura IS NOT NULL THEN CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END else 0 end),0) as Facturado,
-	ISNULL(SUM(Case when nFactura IS NULL THEN C.nTotal else 0 end),0) as NoFacturado
+	ISNULL(SUM(Case when ISNULL(nFactura,0)<>0 THEN CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END else 0 end),0) as Facturado,
+	--ISNULL(SUM(Case when ISNULL(nFactura,0)=0 THEN C.nTotal else 0 end),0) as NoFacturado
+	ISNULL(SUM(C.nTotal),0)-
+	ISNULL(SUM(Case when ISNULL(nFactura,0)<>0 THEN CASE WHEN C.nImporteFactura>0 THEN C.nImporteFactura ELSE C.nTotal END else 0 end),0) as NoFacturado
 	Into #FactVsNoFact
 	from REG_OrdenesEncabezado Ord(NOLOCK)
 	join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
 	Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
-	where 1=1 and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
+	where 1=1 and Ord.nEstatus<>6 and c.bActivo=1-- AND isnull(C.bCancelado,0)=0
 	Group by MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
-
+	
 	INSERT INTO #InvoicedVsUninvoiced (numMes, mes, invoiced, uninvoiced)
 	SELECT M.numMes, M.mes, ISNULL(I.Facturado, 0) AS Facturado, ISNULL(I.NoFacturado, 0) AS NoFacturado
 	FROM #MesesDelAño M
@@ -529,8 +531,7 @@ BEGIN
 	JOIN #CAJ_RegistrosAperturaCaja_Prev AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
 	WHERE MC.bActivo=1 AND MC.nEfecto=-1 GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
-
-
+	
 	-- ** Ingresos
 	SELECT MONTH(AP.dFecha) as numMes,DATENAME(MONTH,AP.dFecha) as cMes,SUM(MC.nImporte) as nImporte
 	Into #IngresosDetalle
@@ -546,9 +547,8 @@ BEGIN
 	FROM CAJ_MovimientosCaja MC (NOLOCK)
 	JOIN #CAJ_RegistrosAperturaCaja_Prev AP ON AP.nIDApertura=MC.nIDApertura
 	LEFT JOIN CAT_ConceptosCaja CC (NOLOCK) ON CC.nConceptoCaja=MC.nConceptoCaja
-	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5
+	WHERE MC.bActivo=1 AND MC.nEfecto=1 AND MC.nTipoRegistroCaja=5 AND MC.bActivo=1
 		AND ISNULL(MC.bRegistroEspecial,0)=CASE WHEN @bTodo=1 THEN 0 ELSE ISNULL(MC.bRegistroEspecial,0) END GROUP BY MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
-
 
 	INSERT INTO #IncomeVsExpensesDetail (numMes, mes, income, expenses,gananciaNeta)
 	SELECT
@@ -567,7 +567,7 @@ BEGIN
 	ORDER BY M.numMes;
 
 	Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail
-
+	--Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail_Prev -- alvaro
 	Select
 		d.mes,
 		d.income,
@@ -608,7 +608,7 @@ BEGIN
 	join REG_OrdenesCuentasEncabezado C (NOLOCK) ON Ord.nOrden=C.nOrden
 	Join #CAJ_RegistrosAperturaCaja AP ON AP.nIDApertura=Ord.nIDApertura
 	where 1=1
-		and Ord.nEstatus<>6 and c.bActivo=1 AND isnull(C.bCancelado,0)=0
+		and Ord.nEstatus<>6 and c.bActivo=1-- AND isnull(C.bCancelado,0)=0
 	Group by MONTH(AP.dFecha),DATENAME(MONTH,AP.dFecha)
 
 	-- Periodo previo
