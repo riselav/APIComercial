@@ -567,7 +567,7 @@ BEGIN
 	ORDER BY M.numMes;
 
 	Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail
-	--Select mes, income, expenses,gananciaNeta FROM #IncomeVsExpensesDetail_Prev -- alvaro
+	
 	Select
 		d.mes,
 		d.income,
