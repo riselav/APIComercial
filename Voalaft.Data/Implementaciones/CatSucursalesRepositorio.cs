@@ -104,7 +104,11 @@ namespace Voalaft.Data.Implementaciones
                                     nSucursal= ConvertUtils.ToInt32(reader["nSucursal"]),
                                     cDescripcion= ConvertUtils.ToString(reader["cDescripcion"]),
                                     nEmpresa = ConvertUtils.ToInt32(reader["nEmpresa"]),
+                                    NombreEmpresa = ConvertUtils.ToString(reader["NombreEmpresa"]),
+
                                     nPlaza = ConvertUtils.ToInt32(reader["nPlaza"]),
+                                    NombrePlaza = ConvertUtils.ToString(reader["NombrePlaza"]),
+
                                     nRegion = ConvertUtils.ToInt32(reader["nRegion"]),
                                     cEstado= ConvertUtils.ToString(reader["cEstado"]),
                                     cLocalidad = ConvertUtils.ToString(reader["cLocalidad"]),
@@ -166,7 +170,11 @@ namespace Voalaft.Data.Implementaciones
                                     nSucursal = ConvertUtils.ToInt32(reader["nSucursal"]),
                                     cDescripcion = ConvertUtils.ToString(reader["cDescripcion"]),
                                     nEmpresa = ConvertUtils.ToInt32(reader["nEmpresa"]),
+                                    NombreEmpresa = ConvertUtils.ToString(reader["NombreEmpresa"]),
+
                                     nPlaza = ConvertUtils.ToInt32(reader["nPlaza"]),
+                                    NombrePlaza = ConvertUtils.ToString(reader["NombrePlaza"]),
+
                                     nRegion = ConvertUtils.ToInt32(reader["nRegion"]),
                                     cEstado = ConvertUtils.ToString(reader["cEstado"]),
                                     cLocalidad = ConvertUtils.ToString(reader["cLocalidad"]),
