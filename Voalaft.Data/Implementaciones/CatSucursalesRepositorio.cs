@@ -204,7 +204,10 @@ namespace Voalaft.Data.Implementaciones
                                     cLocalidad = ConvertUtils.ToString(reader["cLocalidad"]),
                                     cMunicipio = ConvertUtils.ToString(reader["cMunicipio"]),
                                     cCodigoPostal = ConvertUtils.ToString(reader["cCodigoPostal"]),
+                                    
                                     cColonia = ConvertUtils.ToString(reader["cColonia"]),
+                                    NombreColonia = ConvertUtils.ToString(reader["NombreColonia"]),
+
                                     nZona = ConvertUtils.ToInt32(reader["nZona"]),
                                     cDomicilio = ConvertUtils.ToString(reader["cDomicilio"]),
                                     cTelefono1 = ConvertUtils.ToString(reader["cTelefono1"]),
