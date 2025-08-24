@@ -1,31 +1,28 @@
 sp_eliminaStore 'CAT_IME_Sucursales'
-
 GO
-
-
 CREATE procedure CAT_IME_Sucursales (    
-@nFolio as int,    
-@cDescripcion Varchar(50),    
-@nEmpresa int,
-@nPlaza as INT,  
-@nRegion as INT,  
-@cEstado varchar(5),  
-@cLocalidad varchar(5),  
-@cMunicipio varchar(5),  
-@cCodigoPostal varchar(10) ,  
-@cColonia varchar(10) ,  
-@nZona int ,  
-@cDomicilio varchar(300) ,  
-@cTelefono1 varchar(20) ,  
-@cTelefono2 varchar(20) ,  
-@bActivo as bit,    
-@cUsuario as Varchar(50),    
-@cNombreMaquina as Varchar(50)    
+	@nFolio as int,    
+	@cDescripcion Varchar(50),    
+	@nEmpresa int,
+	@nPlaza as INT,  
+	@nRegion as INT,  
+	@cEstado varchar(5),  
+	@cLocalidad varchar(5),  
+	@cMunicipio varchar(5),  
+	@cCodigoPostal varchar(10) ,  
+	@cColonia varchar(10) ,  
+	@nZona int ,  
+	@cDomicilio varchar(300) ,  
+	@cTelefono1 varchar(20) ,  
+	@cTelefono2 varchar(20) ,  
+	@bActivo as bit,    
+	@cUsuario as Varchar(50),    
+	@cNombreMaquina as Varchar(50)    
 )    
 As     
 Begin    
     
-    
+ IF @nZona=0 SET @nZona=NULL   
 --=================================================================================================================    
 -- Si el Folio es cero, indica que es un nuevo registro,    
 --=================================================================================================================    

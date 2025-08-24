@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.Tableros;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
 using Voalaft.Utilerias;
@@ -54,10 +55,33 @@ namespace Voalaft.Data.Implementaciones
                     cmd.Parameters.AddWithValue("@bActivo", catSucursal.Activo);
                     cmd.Parameters.AddWithValue("@cUsuario", catSucursal.Usuario );
                     cmd.Parameters.AddWithValue("@cNombreMaquina", catSucursal.Maquina );
-                    await cmd.ExecuteNonQueryAsync();
+                    //await cmd.ExecuteNonQueryAsync();
 
                     //int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
                     //catLinea.Linea = folioSig;
+
+                    // Agrega el parámetro de retorno
+                    var returnParameter = new SqlParameter
+                    {
+                        ParameterName = "@RETURN_VALUE",
+                        Direction = ParameterDirection.ReturnValue
+                    };
+                    cmd.Parameters.Add(returnParameter);
+
+                    await cmd.ExecuteNonQueryAsync();
+
+                    //int folioSig = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+
+                    //long valorOutput = (long)cmd.Parameters["@nVenta"].Value;
+
+                    bool nvo = false;
+                    int folioSig = (int)(returnParameter.Value ?? 0);
+
+                    if (catSucursal.nSucursal == 0)
+                    {
+                        nvo = true;
+                        catSucursal.nSucursal = folioSig;
+                    }
                 }
             }
             catch (Exception ex)

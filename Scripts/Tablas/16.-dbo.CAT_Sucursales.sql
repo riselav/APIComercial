@@ -35,7 +35,6 @@ CREATE TABLE [dbo].[CAT_Sucursales]
 	[nEmpresa] int NOT NULL    -- id de catálogo de empresa a la que pertene la sucursal
 )
 
-
 	/* Create Primary Keys, Indexes, Uniques, Checks */
 
 	ALTER TABLE [dbo].[CAT_Sucursales] ADD CONSTRAINT [PK_CAT_Sucursales]
@@ -73,8 +72,9 @@ IF dbo.fn_ExisteCampo('CAT_Sucursales','nAlmacenInventario')=0
 	ALTER TABLE CAT_Sucursales ADD nAlmacenInventario int
 GO
 
-
 IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_CAT_Sucursales_CAT_Almacenes' AND xtype = 'F')
 	ALTER TABLE [dbo].[CAT_Sucursales] ADD CONSTRAINT [FK_CAT_Sucursales_CAT_Almacenes]
 	FOREIGN KEY ([nAlmacenInventario]) REFERENCES [dbo].[CAT_Almacenes] ([nAlmacen]) ON DELETE No Action ON UPDATE No Action
 GO
+
+ALTER TABLE CAT_Sucursales ALTER COLUMN nZona int null
