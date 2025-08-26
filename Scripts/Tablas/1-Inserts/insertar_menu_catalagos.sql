@@ -86,8 +86,6 @@ begin
                ,(@nOpcionInicial+9,'Productos Base',2,null,'PageCatProductosBase',@nOpcionPadre,1100,1,'admin','admin',getdate(),1)
                ,(@nOpcionInicial+10,'Unidad Relacional',2,null,'PageCatUnidadesRelacionales',@nOpcionPadre,1110,1,'admin','admin',getdate(),1)
                ,(@nOpcionInicial+11,'Proveedores',2,null,'ProveedoresBuzon',@nOpcionPadre,1120,1,'admin','admin',getdate(),1)
-               ,(@nOpcionInicial+12,'Contacto Proveedor',2,null,'ContactoProveedorBuzon',@nOpcionPadre,1130,1,'admin','admin',getdate(),1)
-               -- La línea duplicada fue corregida. Incrementamos el ID (+13) y el orden (1140).
                ,(@nOpcionInicial+13,'Cajas',2,null,'CajasTablero',@nOpcionPadre,1140,1,'admin','admin',getdate(),1)
                ;
 end
@@ -188,6 +186,7 @@ end
 
 go
 
+
 begin
 
     -- Declaramos la variable que contendrá el ID del menú padre ('Catálogos')
@@ -217,7 +216,8 @@ begin
                ,[dFecha_Registra]
                ,[bWeb])
          VALUES
-                (@nOpcionInicial,'Registro de Venta',4,'AddShoppingCart','RegistroVenta',@nOpcionPadre,4010,1,'admin','admin',getdate(),1)
+                (@nOpcionInicial,'Registro de Venta',4,'AddShoppingCart','RegistroVenta',@nOpcionPadre,4010,1,'admin','admin',getdate(),1),
+				(@nOpcionInicial,'Reporte de Ventas',4,'Insights','ReporteVentas',@nOpcionPadre,4020,1,'admin','admin',getdate(),1)
                ;
 			   
 end
@@ -276,6 +276,7 @@ BEGIN
 
 END
 GO
+
 
 
 
@@ -412,3 +413,4 @@ BEGIN
 
 END
 GO
+

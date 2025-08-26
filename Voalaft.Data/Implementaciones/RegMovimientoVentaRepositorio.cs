@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
 using Voalaft.Data.Entidades.Consultas;
 using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
@@ -403,6 +404,97 @@ namespace Voalaft.Data.Implementaciones
                 nVenta = nVenta,
                 LineasImprimibles = lineas
             };
+        }
+
+        public enum TipoRegistro
+        {
+            Venta = 1,
+            Cotizacion = 3
+        }
+
+        public async Task<List<ReporteVentas>> CM_CON_reporte_ventas_sp(ParametrosReporteVentas parametrosReporteVentas)
+        {
+            var ventasMap = new Dictionary<long, ReporteVentas>();
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_CON_reporte_ventas_sp",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nCajero", parametrosReporteVentas.nCajero == 0 ? null : parametrosReporteVentas.nCajero);
+                    cmd.Parameters.AddWithValue("@bEstatus", parametrosReporteVentas.bEstatus);
+                    cmd.Parameters.AddWithValue("@nTipoVenta", parametrosReporteVentas.nTipoVenta == 0 ? null : parametrosReporteVentas.nTipoVenta);
+                    cmd.Parameters.AddWithValue("@fechaInicio", parametrosReporteVentas.fechaInicio);
+                    cmd.Parameters.AddWithValue("@fechaFin", parametrosReporteVentas.fechaFin);
+                    cmd.Parameters.AddWithValue("@cBusquedaGeneral", parametrosReporteVentas.cBusquedaGeneral == "" ? null : parametrosReporteVentas.cBusquedaGeneral);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+
+                        while (await reader.ReadAsync())
+                        {
+                            var folio = ConvertUtils.ToInt64(reader["folio"]);
+                            var nVenta = ConvertUtils.ToInt64(reader["nVenta"]);
+
+                            // Si el folio no existe en el diccionario, crea una nueva venta
+                            if (!ventasMap.TryGetValue(nVenta, out var venta))
+                            {
+                                TipoRegistro cTipoRegistro = (TipoRegistro)ConvertUtils.ToInt32(reader["nTipoRegistro"]);
+                                venta = new ReporteVentas
+                                {
+                                    folio = folio,
+                                    nVenta = nVenta,
+                                    nTipoRegistro = ConvertUtils.ToInt32(reader["nTipoRegistro"]),
+                                    cTipoRegistro = cTipoRegistro.ToString(),
+                                    fechaHora = ConvertUtils.ToDateTime(reader["fechaHora"]),
+                                    nEmpleadoRegistra = ConvertUtils.ToInt32(reader["nEmpleado_Registra"]),
+                                    cajero = ConvertUtils.ToString(reader["cajero"]),
+                                    nCliente = reader["nCliente"] is DBNull ? (int?)null : ConvertUtils.ToInt32(reader["nCliente"]),
+                                    cNombreCompleto = ConvertUtils.ToString(reader["cNombreCompleto"]),
+                                    importe = ConvertUtils.ToDecimal(reader["importe"]),
+                                    nFactura = ConvertUtils.ToInt64(reader["nFactura"]), // Se mapea como string o int?
+                                    cComentarios = ConvertUtils.ToString(reader["cComentarios"]),
+                                    bActivo = ConvertUtils.ToBoolean(reader["bActivo"]),
+                                    listReporteVentasDetalle = new List<ReporteVentasDetalle>()
+                                };
+                                ventasMap.Add(nVenta, venta);
+                            }
+
+                            // Agrega el detalle a la venta correspondiente
+                            venta.listReporteVentasDetalle.Add(
+                                new ReporteVentasDetalle
+                                {
+                                    nIDArticulo = ConvertUtils.ToInt32(reader["nIDArticulo"]),
+                                    cDescripcion = ConvertUtils.ToString(reader["cDescripcion"]),
+                                    nCantidad = ConvertUtils.ToDecimal(reader["nCantidad"]),
+                                    nPrecioUnitario = ConvertUtils.ToDecimal(reader["nPrecioUnitario"]),
+                                    nTotal = ConvertUtils.ToDecimal(reader["nTotal"])
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener las ventas")
+                {
+                    Metodo = "CM_CON_reporte_ventas_sp",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return ventasMap.Values.ToList();
         }
     }
 }

@@ -4,6 +4,7 @@ using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
+using Voalaft.Data.Entidades.ClasesParametros;
 using Voalaft.Data.Entidades.Consultas;
 using Voalaft.Utilerias;
 
@@ -150,6 +151,27 @@ namespace Voalaft.API.Controllers
             {
                 _logger.LogError(ex.Message, ex);
                 throw new Exception("Error al consultar el ticket");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("CM_CON_reporte_ventas_sp")]
+        public async Task<ResultadoAPI> CM_CON_reporte_ventas_sp(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var mv = CryptographyUtils.DeserializarPeticion<ParametrosReporteVentas>(r);
+                List<ReporteVentas> ventas = await _registroVentaServicio.CM_CON_reporte_ventas_sp(mv);
+                resultado = CryptographyUtils.CrearResultado(ventas);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar la lista de venta");
             }
             finally { }
 
