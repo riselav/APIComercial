@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using Voalaft.API.Servicios.Implementacion;
 using Voalaft.API.Servicios.Interfaces;
 using Voalaft.API.Utils;
 using Voalaft.Data.Entidades;
@@ -88,5 +90,52 @@ namespace Voalaft.API.Controllers
             return resultado;
         }
 
+        [HttpPost("IME_ConfiguracionTicketSucursal")]
+        public async Task<ResultadoAPI> IME_ConfiguracionTicketSucursal(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Sucursal = CryptographyUtils.DeserializarPeticion<CatSucursales>(r);
+                Sucursal.Usuario = peticion.usuario;
+                Sucursal.Maquina = peticion.maquina;
+                var SucursalResult = await _SucursalesService.IME_ConfiguracionTicketSucursal(Sucursal);
+                resultado = CryptographyUtils.CrearResultado(SucursalResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al guardar la Sucursal");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerConfiguracionTicketSucursal")]
+        public async Task<ResultadoAPI> ObtenerConfiguracionTicketSucursal(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                JObject json = JObject.Parse(r);
+
+                int n_Sucursal = json["nSucursal"].Value<int>();
+                var ConfiguracionResult = await _SucursalesService.ObtenerConfiguracionTicketSucursal(n_Sucursal);
+                resultado = CryptographyUtils.CrearResultado(ConfiguracionResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar el registro de configuración de ticket de sucursal");
+            }
+            finally { }
+
+            return resultado;
+        }
+
     }
+
 }
