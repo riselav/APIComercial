@@ -79,7 +79,7 @@ CREATE TABLE [IVT_ResumenSaldosExistencias]
 
 /* Create Primary Keys, Indexes, Uniques, Checks */
 	ALTER TABLE [IVT_ResumenSaldosExistencias] ADD CONSTRAINT [PK_IVT_ResumenSaldosExistencias]
-	PRIMARY KEY CLUSTERED ([nAlmacen] ASC,[nIDArticulo] ASC)
+	PRIMARY KEY CLUSTERED ([nAlmacen] ASC,[nIDArticulo] ASC,[nAnio] ASC)
 END
 GO
 
