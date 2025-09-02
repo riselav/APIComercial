@@ -93,3 +93,7 @@ IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_IVT_ResumenSald
 	ALTER TABLE [IVT_ResumenSaldosExistencias] ADD CONSTRAINT [FK_IVT_ResumenSaldosExistencias_CAT_Articulos]
 	FOREIGN KEY ([nIDArticulo]) REFERENCES [CAT_Articulos] ([nIDArticulo]) ON DELETE No Action ON UPDATE No Action
 GO
+
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='CK_IVT_Resumen_NoNegSaldoFinal' AND type ='C')
+	ALTER TABLE dbo.IVT_ResumenSaldosExistencias WITH NOCHECK ADD CONSTRAINT CK_IVT_Resumen_NoNegSaldoFinal
+	CHECK (nCantidadSaldoFinal >= 0);
