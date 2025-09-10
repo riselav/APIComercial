@@ -113,6 +113,7 @@ namespace Voalaft.API.Controllers
                 Usuarios usuarioLogin = new Usuarios();
                 usuarioLogin.Usuario = user.usuario_id;
                 usuarioLogin.Password = user.password;
+                usuarioLogin.operacionRestringida = user.operacionRestringida;
 
                 Usuarios usuario = await _usuario.AccesoUsuario(usuarioLogin);
                 if (usuario == null)

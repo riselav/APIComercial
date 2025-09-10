@@ -177,5 +177,50 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("IME_CAN_Cancelar_Venta")]
+        public async Task<ResultadoAPI> IME_CAN_Cancelar_Venta(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var paramCancela= CryptographyUtils.DeserializarPeticion<ParamCancelaVenta>(r);
+                paramCancela.Usuario = peticion.usuario;
+                paramCancela.Maquina = peticion.maquina;
+                var result = await _registroVentaServicio.IME_CAN_Cancelar_Venta(paramCancela);
+                resultado = CryptographyUtils.CrearResultado(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al cancelar la venta");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("CM_CON_FormasPago_Venta")]
+        public async Task<ResultadoAPI> CM_CON_FormasPago_Venta(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var mv = CryptographyUtils.DeserializarPeticion<RegMovimientoVenta>(r);
+                List<FormasPagoImporte> detalle = await _registroVentaServicio.CM_CON_FormasPago_Venta(mv.nVenta);
+                resultado = CryptographyUtils.CrearResultado(detalle);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar la lista de de formas de pago");
+            }
+            finally { }
+
+            return resultado;
+        }
+
     }
 }

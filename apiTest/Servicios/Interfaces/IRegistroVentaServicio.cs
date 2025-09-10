@@ -11,5 +11,7 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<List<MovimientoVentaDet>> CM_CON_detalle_mov_ventas(long nVenta);
         Task<ImpresionTicketData> Obtener_Ticket_Venta(long nVenta);
         Task<List<ReporteVentas>> CM_CON_reporte_ventas_sp(ParametrosReporteVentas parametrosReporteVentas);
+        Task<ParamCancelaVenta> IME_CAN_Cancelar_Venta(ParamCancelaVenta paramCancelaVenta);
+        Task<List<FormasPagoImporte>> CM_CON_FormasPago_Venta(long nVenta);
     }
 }

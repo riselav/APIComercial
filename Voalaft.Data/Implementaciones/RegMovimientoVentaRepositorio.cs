@@ -165,7 +165,23 @@ namespace Voalaft.Data.Implementaciones
                             regMovimientoVenta.regMovimientoCaja.Maquina = regMovimientoVenta.Maquina;
 
                             var mc = await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoVenta.regMovimientoCaja, con, transaction);
-                            regMovimientoVenta.nVenta = mc.IDRegistroCaja;
+                            regMovimientoVenta.nIDRegistroCaja = mc.IDRegistroCaja;
+                            if(regMovimientoVenta.nIDRegistroCaja != null && regMovimientoVenta.nIDRegistroCaja > 0 )
+                            {
+                                SqlCommand cmdUpd = new SqlCommand()
+                                {
+                                    Connection = con,
+                                    Transaction = transaction,
+                                    CommandText = "UPDATE VTA_MovimientosVenta SET nIDRegistroCaja = @nIDRegistroCaja WHERE nVenta = @nVenta",
+                                    CommandType = CommandType.Text,
+                                };
+
+                                cmdUpd.Parameters.AddWithValue("@nIDRegistroCaja", regMovimientoVenta.nIDRegistroCaja);
+                                cmdUpd.Parameters.AddWithValue("@nVenta", regMovimientoVenta.nVenta);
+
+                                await cmdUpd.ExecuteNonQueryAsync();
+                                
+                            }
                             //await _movimientoCajaRepositorio.IME_REG_MovimientoCaja(regMovimientoCaja); // sin pasar conexión ni transacción
 
                         }
@@ -495,6 +511,95 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return ventasMap.Values.ToList();
+        }
+
+        public async Task<ParamCancelaVenta> IME_CAN_Cancelar_Venta(ParamCancelaVenta paramCancelaVenta)
+        {
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    await con.OpenAsync();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "IME_CAN_Cancelar_Venta",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+
+                    cmd.Parameters.AddWithValue("@nVenta", paramCancelaVenta.nVenta);
+                    cmd.Parameters.AddWithValue("@nEmpleadoCancela", paramCancelaVenta.usuarioCancelo);
+                    cmd.Parameters.AddWithValue("@nEmpleadoAutorizaCancelacion", paramCancelaVenta.usuarioAutorizo);
+                    cmd.Parameters.AddWithValue("@nMotivoCancelacion", paramCancelaVenta.motivo);
+                    cmd.Parameters.AddWithValue("@cObservacionesCancelacion", paramCancelaVenta.observacion ?? (object)DBNull.Value);
+
+                    // Mapeo de los nombres de usuario y máquina
+                    cmd.Parameters.AddWithValue("@cUsuario_Cancela", paramCancelaVenta.Usuario ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@cMaquina_Cancela", paramCancelaVenta.Maquina ?? (object)DBNull.Value);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al cancelar la venta con nVenta: {nVenta}", paramCancelaVenta.nVenta);
+                throw new DataAccessException("Error(rp) No se pudo cancelar la venta.")
+                {
+                    Metodo = "CancelarVenta",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            return paramCancelaVenta;
+        }
+
+        public async Task<List<FormasPagoImporte>> CM_CON_FormasPago_Venta(long nVenta)
+        {
+            List<FormasPagoImporte> detalle = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_CON_FormasPago_Venta",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nVenta", nVenta);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            detalle.Add(
+                                new FormasPagoImporte()
+                                {
+                                    FormaPago = ConvertUtils.ToInt32(reader["nFormaPago"]),
+                                    Descripcion = ConvertUtils.ToString(reader["cDescripcion"]),
+                                    Importe = ConvertUtils.ToDecimal(reader["nImporte"])                                    
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener las formas de pago")
+                {
+                    Metodo = "CM_CON_FormasPago_Venta",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalle;
         }
     }
 }

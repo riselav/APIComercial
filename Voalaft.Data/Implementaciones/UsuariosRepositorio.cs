@@ -232,6 +232,27 @@ namespace Voalaft.Data.Implementaciones
                         {
                             usuarioValido = null;
                         }
+                        else if(usuario.operacionRestringida > 0)
+                        {
+                            var cmd2 = new SqlCommand("select nUsuario from CAT_PermisosOperacionesRestringidas (NOLOCK) where nUsuario=@nUsuario and nOperacionRestringida=@nOperacionRestringida", con);
+                            cmd2.CommandType = CommandType.Text;
+                            cmd2.Parameters.Add("@nUsuario", SqlDbType.Int).Value = usuarioValido.Folio;
+                            cmd2.Parameters.Add("@nOperacionRestringida", SqlDbType.Int).Value = usuario.operacionRestringida;
+
+                            bool bUsuarioPermisoValido = false;
+                            using (var reader = await cmd2.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    bUsuarioPermisoValido = true;
+                                    break;
+                                }
+                            }
+                            if(!bUsuarioPermisoValido)
+                            {
+                                usuarioValido = null;
+                            }
+                        }
                     }
                 }
             }

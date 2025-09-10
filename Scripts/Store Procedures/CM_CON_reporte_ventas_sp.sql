@@ -12,7 +12,7 @@ BEGIN
     SET @cBusquedaGeneral = UPPER('%' + ISNULL(@cBusquedaGeneral, '') + '%')
 
 	select vta.nVenta, vta.nConsecutivo as folio,vta.nTipoRegistro, vta.dFecha_Registra as fechaHora, vta.nEmpleado_Registra, coalesce(emp.cnombre,'') as cajero, vta.nCliente, cli.cNombreCompleto, vta.nTotal as importe, vta.nFactura, vta.cComentarios, vta.bActivo  
-	,vtaDet.nIDArticulo, art.cDescripcion, vtaDet.nCantidad, vtaDet.nPrecioUnitario, vtaDet.nTotal
+	,vtaDet.nIDArticulo, art.cDescripcion, vtaDet.nCantidad, vtaDet.nPrecioUnitario, vtaDet.nTotal, vta.nIDRegistroCaja
 	from VTA_MovimientosVenta vta (nolock)
 	left join CAT_Empleados emp (nolock) on vta.nEmpleado_Registra = emp.nEmpleado
 	left join CAT_Clientes cli (nolock) on vta.nCliente = cli.nCliente
