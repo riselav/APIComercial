@@ -108,7 +108,112 @@ namespace Voalaft.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new Exception("Error al consultar datos de detalle de Ingresos Vs Gastos");
+                throw new Exception("Error al consultar datos de detalle de facturado Vs No facturado");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetalleVentaPorFormaPago")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentaPorFormaPago(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                PaymentMethodDetail paymentMethodDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentaPorFormaPago(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(paymentMethodDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de venta por forma de pago");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetalleVentaPorTipoServicio")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentaPorTipoServicio(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                ServiceTypeDetail serviceTypeDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentaPorTipoServicio(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(serviceTypeDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de venta por tipo de servicio");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetalleVentaPorEstacionCocina")]
+        public async Task<ResultadoAPI> ObtenerDetalleVentaPorEstacionCocina(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                KitchenStationDetail kitchenStationDetail = await _dashboardIndicadoresServicio.ObtenerDetalleVentaPorEstacionCocina(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(kitchenStationDetail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de venta por estación de cocina");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetallePlatillosMasVendidos")]
+        public async Task<ResultadoAPI> ObtenerDetallePlatillosMasVendidos(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                TopSellingDetail platillosMasVendidos = await _dashboardIndicadoresServicio.ObtenerDetallePlatillosMasVendidos(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(platillosMasVendidos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de platillos más vendidos");
+            }
+            finally { }
+
+            return resultado;
+        }
+
+        [HttpPost("ObtenerDetallePlatillosMasRedituables")]
+        public async Task<ResultadoAPI> ObtenerDetallePlatillosMasRedituables(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var parametrosDashboardIndicadores = CryptographyUtils.DeserializarPeticion<ParametrosDashboardIndicadores>(r);
+                TopProfitableDetail platillosMasRedituables = await _dashboardIndicadoresServicio.ObtenerDetallePlatillosMasRedituables(parametrosDashboardIndicadores.Sucursal, parametrosDashboardIndicadores.FechaInicioNumero, parametrosDashboardIndicadores.FechaFinNumero);
+                resultado = CryptographyUtils.CrearResultado(platillosMasRedituables);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar datos de detalle de platillos más redituables");
             }
             finally { }
 

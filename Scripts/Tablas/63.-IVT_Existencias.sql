@@ -47,3 +47,7 @@ IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='FK_IVT_Existencias
 	ALTER TABLE [IVT_Existencias] ADD CONSTRAINT [FK_IVT_Existencias_CAT_Articulos]
 	FOREIGN KEY ([nIDArticulo]) REFERENCES [CAT_Articulos] ([nIDArticulo]) ON DELETE No Action ON UPDATE No Action
 GO
+
+IF not EXISTS (SELECT 1 FROM SysObjects (NOLOCK) where name ='CK_IVT_Existencias_NoNeg' AND type ='C')
+	ALTER TABLE dbo.IVT_Existencias WITH NOCHECK ADD CONSTRAINT CK_IVT_Existencias_NoNeg
+	CHECK (nExistencia >= 0 /* y opcional: AND nValorInventario >= 0 */);

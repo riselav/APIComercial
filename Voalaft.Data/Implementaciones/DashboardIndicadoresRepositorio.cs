@@ -504,5 +504,388 @@ namespace Voalaft.Data.Implementaciones
 
             return detalleFacturadoVsNoFacturado;
         }
+
+        public async Task<PaymentMethodDetail> ObtenerDetalleVentaPorFormaPago(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            PaymentMethodDetail detalleVentaPorFormaPago = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 4);
+                    detalleVentaPorFormaPago = new PaymentMethodDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentaPorFormaPago.chartData = new List<ChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentaPorFormaPago.chartData.Add(new ChartDataItem
+                            {
+                                name = Convert.ToString(reader["PaymentMethod"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentaPorFormaPago.tableData = new List<TableDataItemFormasPago>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentaPorFormaPago.tableData.Add(new TableDataItemFormasPago
+                                {
+                                    paymentMethod = reader["PaymentMethod"].ToString(),
+                                    sales = Convert.ToDecimal(reader["sales"]),
+                                    percentage = Convert.ToDouble(reader["porcentaje"]),
+                                    transactions = Convert.ToInt32(reader["transactions"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive= Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por forma de pago")
+                {
+                    Metodo = "ObtenerDetalleVentaPorFornaPago",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentaPorFormaPago;
+        }
+
+        public async Task<ServiceTypeDetail> ObtenerDetalleVentaPorTipoServicio(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            ServiceTypeDetail detalleVentaPorTipoServicio = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 5);
+                    detalleVentaPorTipoServicio = new ServiceTypeDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentaPorTipoServicio.chartData = new List<ServiceChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentaPorTipoServicio.chartData.Add(new ServiceChartDataItem
+                            {
+                                name = Convert.ToString(reader["ServiceType"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentaPorTipoServicio.tableData = new List<ServiceTableDataItem>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentaPorTipoServicio.tableData.Add(new ServiceTableDataItem
+                                {
+                                    serviceType = reader["serviceType"].ToString(),
+                                    sales = Convert.ToDouble(reader["sales"]),
+                                    percentage = Convert.ToDouble(reader["porcentaje"]),
+                                    orders = Convert.ToInt32(reader["ordenes"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Tipo de Servicio")
+                {
+                    Metodo = "ObtenerDetalleVentaPorTipoServicio",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentaPorTipoServicio;
+        }
+
+        public async Task<KitchenStationDetail> ObtenerDetalleVentaPorEstacionCocina(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            KitchenStationDetail detalleVentaPorEstacionCocina = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 6);
+                    detalleVentaPorEstacionCocina = new KitchenStationDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detalleVentaPorEstacionCocina.chartData = new List<KitchenChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detalleVentaPorEstacionCocina.chartData.Add(new KitchenChartDataItem
+                            {
+                                name = Convert.ToString(reader["StationName"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detalleVentaPorEstacionCocina.tableData = new List<KitchenTableDataItem>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detalleVentaPorEstacionCocina.tableData.Add(new KitchenTableDataItem
+                                {
+                                    station = reader["station"].ToString(),
+                                    sales = Convert.ToDouble(reader["sales"]),
+                                    percentage = Convert.ToDouble(reader["porcentaje"]),
+                                    products = Convert.ToInt32(reader["productos"]),
+                                    averageTicket = Convert.ToDouble(reader["averageTicket"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Estación de Cocina")
+                {
+                    Metodo = "ObtenerDetalleVentaPorEstacionCocina",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detalleVentaPorEstacionCocina;
+        }
+
+        public async Task<TopSellingDetail> ObtenerDetallePlatillosMasVendidos(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            TopSellingDetail detallePlatillosMasVendidos = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 7);
+                    detallePlatillosMasVendidos = new TopSellingDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detallePlatillosMasVendidos.chartData = new List<ChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detallePlatillosMasVendidos.chartData.Add(new ChartDataItem
+                            {
+                                name = Convert.ToString(reader["DishName"]),
+                                value = Convert.ToDouble(reader["Quantity"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detallePlatillosMasVendidos.tableData = new List<TableDataItemTopVendidos>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detallePlatillosMasVendidos.tableData.Add(new TableDataItemTopVendidos
+                                {
+                                    ranking = Convert.ToInt32(reader["ranking"]),
+                                    product = reader["DishName"].ToString(),
+                                    category = reader["cCategoria"].ToString(),
+                                    unitsSold = Convert.ToInt32(reader["Quantity"]),
+                                    unitPrice = Convert.ToDouble(reader["nPrecio"]),
+                                    totalSales = Convert.ToDouble(reader["nTotal"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Estación de Cocina")
+                {
+                    Metodo = "ObtenerDetalleVentaPorEstacionCocina",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detallePlatillosMasVendidos;
+        }
+
+        public async Task<TopProfitableDetail> ObtenerDetallePlatillosMasRedituables(int n_Sucursal, int n_FechaInicial, int n_FechaFinal)
+        {
+            TopProfitableDetail detallePlatillosMasRedituables = null;
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "RST_CON_ReporteIndicadores",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", n_Sucursal);
+                    cmd.Parameters.AddWithValue("@FechaNumeroInicial", n_FechaInicial);
+                    cmd.Parameters.AddWithValue("@FechaNumeroFinal", n_FechaFinal);
+                    cmd.Parameters.AddWithValue("@nTipoDetalle", 8);
+                    detallePlatillosMasRedituables = new TopProfitableDetail();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Primera tabla - ChartData
+
+                        detallePlatillosMasRedituables.chartData = new List<ChartDataItem>();
+                        //detalleVentasPorCategoria.chartData = [];
+
+                        while (await reader.ReadAsync())
+                        {
+                            detallePlatillosMasRedituables.chartData.Add(new ChartDataItem
+                            {
+                                name = Convert.ToString(reader["DishName"]),
+                                value = Convert.ToDouble(reader["TotalSales"])
+                            });
+                        }
+
+                        // Segunda tabla - TableData
+                        if (await reader.NextResultAsync())
+                        {
+                            detallePlatillosMasRedituables.tableData = new List<TableDataItemTopRedituables>();
+                            //detalleVentasPorCategoria.tableData = [];
+
+                            while (await reader.ReadAsync())
+                            {
+                                detallePlatillosMasRedituables.tableData.Add(new TableDataItemTopRedituables
+                                {
+                                    ranking = Convert.ToInt32(reader["ranking"]),
+                                    product = reader["DishName"].ToString(),
+                                    category = reader["cCategoria"].ToString(),
+                                    totalSales = Convert.ToDouble(reader["TotalSales"]),
+                                    cost = Convert.ToDouble(reader["Costo"]),
+                                    profit= Convert.ToDouble(reader["ganancia"]),
+                                    margin = Convert.ToDouble(reader["Margen"]),
+                                    trend = Convert.ToDouble(reader["trend"]),
+                                    trendPositive = Convert.ToBoolean(reader["trendPositive"])
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener detalle de Venta por Estación de Cocina")
+                {
+                    Metodo = "ObtenerDetalleVentaPorEstacionCocina",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return detallePlatillosMasRedituables;
+        }
     }
 }

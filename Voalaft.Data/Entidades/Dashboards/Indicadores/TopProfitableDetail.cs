@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
-    public class ChartDataItem
+    public class TopProfitableDetail
     {
-        public string? name { get; set; }
-        public double value { get; set; }
+        public List<ChartDataItem>? chartData { get; set; }
+        public List<TableDataItemTopRedituables>? tableData { get; set; }
     }
 }

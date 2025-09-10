@@ -54,6 +54,8 @@ namespace Voalaft.API.Servicios
             services.AddTransient<IDashboardIndicadoresServicio, DashboardIndicadoresServicio>();
             services.AddTransient<ICatMotivosServicio, CatMotivosServicio>();
 
+            services.AddTransient<ICatPlazasServicio, CatPlazasServicio>();
+
         }
     }
 }

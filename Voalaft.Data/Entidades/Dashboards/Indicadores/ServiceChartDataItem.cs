@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
-    public class ChartDataItem
+    public class ServiceChartDataItem
     {
         public string? name { get; set; }
         public double value { get; set; }

@@ -12,7 +12,7 @@ CREATE TABLE [IVT_MovimientosInventarioDetalle]
 	[nFolioMovimiento] bigint NOT NULL,    -- id de movimiento de inventario al que pertenece el registro
 	[nRenglon] smallint NOT NULL,    -- consecutivo de renglón de número de registro 
 	[nTipoMovimiento] int NOT NULL,    -- id de catálogo de tipo de movimiento con el que se hizo el cabecero de esta tabla
-	[nEfecto] tinyint NOT NULL,    -- tipo de efecto del movimiento de inventario que suma o resta de saldo de existencia
+	[nEfecto] smallint NOT NULL,    -- tipo de efecto del movimiento de inventario que suma o resta de saldo de existencia
 	[nAlmacen] int NOT NULL,    -- id de catálogo de almacén con el que se hizo el cabecero de este registro
 	[nFecha] int NOT NULL,    -- fecha del movimiento en formato número
 	[nIDArticulo] int NOT NULL,    -- id de folio de catálogo de artículo relacionado al detalle del movimiento

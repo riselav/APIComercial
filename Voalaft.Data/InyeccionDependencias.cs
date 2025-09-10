@@ -58,6 +58,7 @@ namespace Voalaft.Data
             services.AddTransient<IRegCorteCajaRepositorio, RegCorteCajaRepositorio>();
             services.AddTransient<IDashboardIndicadoresRepositorio, DashboardIndicadoresRepositorio>();
             services.AddTransient<ICatMotivosRepositorio, CatMotivosRepositorio>();
+            services.AddTransient<ICatPlazasRepositorio, CatPlazasRepositorio>();
         }
     }
 }

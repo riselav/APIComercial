@@ -11,5 +11,15 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<IncomeExpensesDetailDto> ObtenerDetalleIngresosVsGastos(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
 
         Task<InvoicedUninvoicedDetailDto> ObtenerDetalleFacturadoVsNoFacturado(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<PaymentMethodDetail> ObtenerDetalleVentaPorFormaPago(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<ServiceTypeDetail> ObtenerDetalleVentaPorTipoServicio(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<KitchenStationDetail> ObtenerDetalleVentaPorEstacionCocina(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<TopSellingDetail> ObtenerDetallePlatillosMasVendidos(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
+
+        Task<TopProfitableDetail> ObtenerDetallePlatillosMasRedituables(int n_Sucursal, int n_FechaInicial, int n_FechaFinal);
     }
 }

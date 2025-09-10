@@ -26,5 +26,16 @@ namespace Voalaft.Data.Entidades
         public string? Usuario { get; set; }
         public string? Maquina { get; set; }
 
+        public string? NombreColonia { get; set; }
+
+        public string? NombreEmpresa { get; set; }
+
+        public string? NombrePlaza { get; set; }
+
+        public int AlmacenInventario { get; set; }
+
+        public List<string>? EncabezadoTicket { get; set; }
+
+        public List<string>? PieTicket { get; set; }
     }
 }

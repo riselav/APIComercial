@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Voalaft.Data.Entidades.Dashboards.Indicadores
 {
-    public class ChartDataItem
+    public class KitchenStationDetail
     {
-        public string? name { get; set; }
-        public double value { get; set; }
+        public List<KitchenChartDataItem>? chartData { get; set; }
+        public List<KitchenTableDataItem>? tableData { get; set; }
     }
 }
