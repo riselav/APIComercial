@@ -58,7 +58,7 @@ namespace Voalaft.Data.Implementaciones
                         };
                         regMovimientoVenta.nIDApertura = apertura == null ? null : apertura.IDApertura;
                         cmd.Parameters.AddWithValue("@nTipoRegistro", regMovimientoVenta.nTipoRegistro);
-                        cmd.Parameters.AddWithValue("@nTipoVenta", regMovimientoVenta.nTipoVenta == 0 ? null : regMovimientoVenta.nTipoVenta);
+                        cmd.Parameters.AddWithValue("@nTipoVenta", regMovimientoVenta.nTipoVenta == 0 ? 2 : regMovimientoVenta.nTipoVenta);
                         cmd.Parameters.AddWithValue("@nSucursal", regMovimientoVenta.nSucursal);
                         cmd.Parameters.AddWithValue("@nCaja", regMovimientoVenta.nCaja);
                         cmd.Parameters.AddWithValue("@nCliente", regMovimientoVenta.nCliente);
@@ -95,6 +95,8 @@ namespace Voalaft.Data.Implementaciones
 
                         cmd.Parameters.AddWithValue("@cUsuario_Registra", regMovimientoVenta.Usuario);
                         cmd.Parameters.AddWithValue("@cMaquina_Registra", regMovimientoVenta.Maquina);
+                        cmd.Parameters.AddWithValue("@dFecha", regMovimientoVenta.dFecha);
+                        
 
                         //cmd.Parameters.AddWithValue("@nVenta", regMovimientoVenta.nVenta);
                         SqlParameter outputParam = new SqlParameter("@nVenta", SqlDbType.BigInt);
@@ -600,6 +602,60 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return detalle;
+        }
+
+        public async Task<List<ImpresionData>> TicketVenta(int nSucursal, long nVenta)
+        {
+            List<ImpresionData> impresion = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "COM_TicketVenta",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@nSucursal", nSucursal);
+                    cmd.Parameters.AddWithValue("@nFolio", nVenta);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            impresion.Add(
+                                new ImpresionData()
+                                {
+                                    nRenglon = ConvertUtils.ToInt32(reader["nRenglon"]),
+                                    nRenglonConcepto = ConvertUtils.ToInt32(reader["nRenglonConcepto"]),
+                                    nRenglonMod = ConvertUtils.ToInt32(reader["nRenglonMod"]),
+                                    cLinea = ConvertUtils.ToString(reader["cLinea"]),
+                                    bLetraGrande = ConvertUtils.ToBoolean(reader["bLetraGrande"]),
+                                    bNegrita = ConvertUtils.ToBoolean(reader["bNegrita"]),
+                                    bCodBarra = ConvertUtils.ToBoolean(reader["bCodBarra"])
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener el ticket")
+                {
+                    Metodo = "TicketCorteCaja",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return impresion;
         }
     }
 }

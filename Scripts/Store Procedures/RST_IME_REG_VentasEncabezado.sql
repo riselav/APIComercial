@@ -1,6 +1,9 @@
-SP_ELIMINASTORE 'RST_IME_REG_VentasEncabezado'
+
+sp_eliminastore 'RST_IME_REG_VentasEncabezado'
+
 GO
-CREATE PROCEDURE RST_IME_REG_VentasEncabezado 
+
+CREATE PROCEDURE [dbo].[RST_IME_REG_VentasEncabezado] 
     @nTipoRegistro TINYINT = 1, -- Venta
     @nTipoVenta TINYINT = NULL,
 	@nSucursal INT,
@@ -39,6 +42,7 @@ CREATE PROCEDURE RST_IME_REG_VentasEncabezado
 
     @cUsuario_Registra VARCHAR(50),
     @cMaquina_Registra VARCHAR(50),
+	@dFecha DATE,
     @nVenta BIGINT OUTPUT
 AS
 BEGIN
@@ -59,8 +63,8 @@ BEGIN
 		-- 1 + Sucursal (3) + Caja (2) + Consecutivo (9)
 		SET @nVenta = CAST('1' +
                        RIGHT('000' + CAST(@nSucursal AS VARCHAR(3)), 3) +
-                       RIGHT('000' + CAST(@nCaja AS VARCHAR(3)), 3) +
-                       RIGHT('00000000' + CAST(@NuevoConsecutivo AS VARCHAR(8)), 8)
+                       RIGHT('00' + CAST(@nCaja AS VARCHAR(2)), 2) +
+                       RIGHT('000000000' + CAST(@NuevoConsecutivo AS VARCHAR(9)), 9)
                   AS BIGINT);
 	END
 	ELSE
@@ -78,7 +82,7 @@ BEGIN
                   AS BIGINT);
 	END
 	
-	DECLARE @dFecha datetime = (SELECT dbo.FechaNumero_Fn(@nFecha))
+	--DECLARE @dFecha datetime = (SELECT dbo.FechaNumero_Fn(@nFecha))
 
     -- 3. Insertar en la tabla
     INSERT INTO VTA_MovimientosVenta (
@@ -93,3 +97,6 @@ BEGIN
         1,@cUsuario_Registra,@cMaquina_Registra,GETDATE()
     );
 END
+GO
+
+

@@ -136,15 +136,15 @@ namespace Voalaft.API.Controllers
             return resultado;
         }
 
-        [HttpPost("Obtener_Ticket_Venta_movimietno")]
-        public async Task<ResultadoAPI> Obtener_Ticket_Venta_movimietno(PeticionAPI peticion)
+        [HttpPost("Obtener_Ticket_Venta_movimiento")]
+        public async Task<ResultadoAPI> Obtener_Ticket_Venta_movimiento(PeticionAPI peticion)
         {
             ResultadoAPI resultado = null;
             try
             {
                 var r = CryptographyUtils.Desencriptar(peticion.contenido);
                 RegMovimientoVenta mv = CryptographyUtils.DeserializarPeticion<RegMovimientoVenta>(r);
-                var ticket = await _regCorteCajaServicio.TicketMovimientoCaja(mv.nVenta);
+                var ticket = await _registroVentaServicio.TicketVenta(mv.nSucursal, mv.nVenta);
                 resultado = CryptographyUtils.CrearResultado(ticket);
             }
             catch (Exception ex)

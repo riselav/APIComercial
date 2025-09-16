@@ -194,5 +194,30 @@ namespace Voalaft.API.Servicios.Implementacion
                 };
             }
         }
+
+        public async Task<List<ImpresionData>> TicketVenta(int nSucursal, long nVenta)
+        {
+            try
+            {
+                return await _registroVentaRepositorio.TicketVenta(nSucursal, nVenta);
+            }
+            catch (DataAccessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new ServiciosException("Error(srv) No se pudo obtener ticket")
+                {
+                    Metodo = "TicketVenta",
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
     }
 }
