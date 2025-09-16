@@ -1,10 +1,14 @@
+/*ALTER TABLE CAT_OpcionesMenu ADD bWeb bit
+
 alter table CAT_ModulosMenu add cIcono varchar(50) null;
  
 update CAT_ModulosMenu set cIcono='Settings' where nModulo=2;
 update CAT_ModulosMenu set cIcono='Security' where nModulo=1;
 update CAT_ModulosMenu set cIcono='Store' where nModulo=4;
+*/
 
-
+-- begin tran
+-- rollback tran
 begin 
  declare @nOpcionCat int = 0;
 
@@ -217,7 +221,7 @@ begin
                ,[bWeb])
          VALUES
                 (@nOpcionInicial,'Registro de Venta',4,'AddShoppingCart','RegistroVenta',@nOpcionPadre,4010,1,'admin','admin',getdate(),1),
-				(@nOpcionInicial,'Reporte de Ventas',4,'Insights','ReporteVentas',@nOpcionPadre,4020,1,'admin','admin',getdate(),1)
+				(@nOpcionInicial+1,'Reporte de Ventas',4,'Insights','ReporteVentas',@nOpcionPadre,4020,1,'admin','admin',getdate(),1)
                ;
 			   
 end
