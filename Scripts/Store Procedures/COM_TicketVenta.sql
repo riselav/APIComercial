@@ -1,11 +1,9 @@
-
-
 sp_eliminastore 'COM_TicketVenta'
 
 GO
 
 
--- Exec COM_TicketVenta 1, 100100100000065
+-- Exec COM_TicketVenta 1, 100100100000038
 Create procedure COM_TicketVenta (@nSucursal int, @nFolio bigint)
 As 
 Begin 
@@ -155,41 +153,28 @@ Group by DMC.nFormaPago, FP.cDescripcion
 
  -- Inserta los conceptos de la orden de una cuenta especifica
 Insert Into @DetalleOrden(norden, nRenglonConcepto, nRenglonModificador, nCantidad, cDescripcion, nImporte, nTotal, bModificador)
-SELECT VD.nVenta, VD.nRenglon, 1, VD.nCantidad, A.cDescripcion, VD.nPrecioUnitario, VD.nCantidad * VD.nTotal, 0
+SELECT VD.nVenta, VD.nRenglon, 1, VD.nCantidad, A.cClave + ' ' + A.cDescripcion, VD.nPrecioUnitario, VD.nCantidad * nPrecioUnitario, 0
 FROM #VTA_MovimientosVentaDetalle  as VD (NOLOCK)
 Inner Join CAT_Articulos  as A (Nolock) on A.nIDArticulo = VD.nIDArticulo 
-
 
 -- Inserta el encabezado del ticket 
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 Exec RST_EncabezadoTicket @nSucursal
 
---Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
---Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
---Select @nRenglon, 0,0, Replicate(' ',@TotalCaracteres) as cTicket
 
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 Select @nRenglon, 0,0, Replicate(' ',@TotalCaracteres) as cTicket
 
---Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
---Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bLetraGrande ) 
---Select @nRenglon, 0,0, Replicate(' ',(@TotalCaracteres - len(@cTipoServicio))/2)  + @cTipoServicio + Replicate(' ',(@TotalCaracteres - len( @cTipoServicio))/2) as  cTicket,1
 
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 Select @nRenglon, 0,0, Replicate(' ', @TotalCaracteres) as cTicket 
---union all
---Select @nRenglon +1 , 0,0, Replicate(' ', @TotalCaracteres) as cTicket 
 
 
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bLetraGrande  ) 
 Select @nRenglon, 0,0, left('Cliente: ' + Case When Isnull(@cClienteComanda,'')='' then isnull(@cCliente,'') else @cClienteComanda End, @TotalCaracteres ),0
-
---Select Case When Isnull(@cClienteComanda,'')='' then @cCliente else @cClienteComanda End as Cliente
-
---Return 
 
 
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0) + 1  
@@ -222,29 +207,56 @@ Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea ) 
 Select @nRenglon, 0,0, Replicate('=',@TotalCaracteres) as cTicket 
 
+
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 Select @nRenglon, 0,0,left('Cant.' + Replicate(' ', @LongCantidad), @LongCantidad) +
-left(' Descripción' + Replicate(' ', @longdescripcion), @longdescripcion) +
-Right(Replicate(' ', @LongImporte) + 'Importe' , @LongImporte) 
-		
+left(' Descripción' + Replicate(' ', @longdescripcion), @longdescripcion-10) + 'Precio'+
+Right(Replicate(' ', @LongImporte + 4 ) + 'Importe' , @LongImporte + 4) 
+
+
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 Select @nRenglon, 0,0, Replicate('=',@TotalCaracteres) as cTicket 
 
--- Inserta el detalle de la orden/cuenta
-Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
+-- Inserta la descripción del artículo 
+    Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 	Insert Into @Ticket  ( nRenglon, nRenglonConcepto, nRenglonMod, clinea)  
-	Select  @nRenglon + row_Number() over(order by nOrden,nRenglonConcepto,nRenglonModificador), nRenglonConcepto, nRenglonModificador, 
-	left( right(Replicate(' ',@LongCantidad) + Case When (bmodificador =1 or nCantidad=0) then ' ' else ltrim(nCantidad) End, @LongCantidad) + left( ' ' + cDescripcion +  REPLICATE(' ',@LongDescripcion ), @LongDescripcion) + RIGHT(REPLICATE(' ', @LongImporte )+CONVERT(varchar(20),CONVERT(decimal(18,2),nTotal)),@LongImporte), @TotalCaracteres )  
+	Select  @nRenglon + row_Number() over(order by nOrden,nRenglonConcepto,nRenglonModificador),nRenglonConcepto, nRenglonModificador, left(cDescripcion, @TotalCaracteres) 
 	From @DetalleOrden 
 	Order by  nOrden,nRenglonConcepto, nRenglonModificador
-		
+
+	---- Inserta la cantidad, precio y total
+ --   Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
+	--Insert Into @Ticket  ( nRenglon, nRenglonConcepto, nRenglonMod, clinea)  
+	--Select  @nRenglon + row_Number() over(order by nOrden,nRenglonConcepto,nRenglonModificador),nRenglonConcepto, nRenglonModificador+1, 
+	--Left(Replicate(' ', @LongCantidad) + ltrim(nCantidad),@LongCantidad) 
+	----Left(Replicate(' ', @TotalCaracteres -@LongImporte + 5) + ltrim(nImporte ),@TotalCaracteres -@LongImporte + 5) 
+	--From @DetalleOrden 
+	--Where nRenglonConcepto >0
+	--Order by  nOrden,nRenglonConcepto, nRenglonModificador
+
+	set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1
+	Insert Into @Ticket  ( nRenglon, nRenglonConcepto, nRenglonMod, clinea)  
+	Select  T.nRenglon, T.nRenglonConcepto,2,
+	Right(Replicate(' ', @LongCantidad) + ltrim(D.nCantidad),@LongCantidad) +
+	Right(Replicate(' ', @LongDescripcion) + ltrim(D.nImporte), @LongDescripcioN-@LongCantidad ) + 
+	Right(REplicate(' ', @LongImporte+@LongCantidad ) + ltrim(D.nTotal),@LongImporte +@LongCantidad)
+
+	--Right(Replicate(' ', @TotalCaracteres -@LongDescripcion - @LongCantidad+@LongImporte) + Right(REplicate(' ', @LongImporte) + ltrim(D.nTotal),@LongImporte),@TotalCaracteres)
+	From @Ticket As T 
+	Inner Join @DetalleOrden as D on D.nRenglonConcepto = T.nRenglonConcepto and D.nRenglonModificador = T.nRenglonMod 
+	Where T.nRenglonConcepto >0
+	Order by  nOrden, nRenglonModificador, nRenglonConcepto
+
+
+-- Exec COM_TicketVenta 1, 100100100000038
+
+	
 	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea )
 	Select @nRenglon, 0,0, Replicate('=',@TotalCaracteres) as cTicket 
-		
- 	
+		 	
 	if @nDescto >0 
 	Begin
 		Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
@@ -255,22 +267,15 @@ Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1
 		Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea ) 
 		Select @nRenglon, 0,0, right(right(Replicate(' ',@TotalCaracteres - @LongImporte) + 'DESCTO: ',@TotalCaracteres - @LongImporte)  + RIGHT(REPLICATE(' ', @LongImporte) +CONVERT(varchar(10),CONVERT(decimal(18,2),@nDescto )),@LongImporte),@TotalCaracteres) as cTicket 
 	End 
-
-	
-
+		
 	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bNegrita )
 	Select @nRenglon, 0,0, right(right(Replicate(' ',@TotalCaracteres - @LongImporte) + 'SUBTOTAL: ',@TotalCaracteres - @LongImporte)  + RIGHT(REPLICATE(' ',@LongImporte)+CONVERT(varchar(20),CONVERT(decimal(18,2),@nSubTotal )),@LongImporte),@TotalCaracteres) as cTicket,1
 	
 	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bNegrita )
-	Select @nRenglon, 0,0, right(right(Replicate(' ',@TotalCaracteres - @LongImporte) + 'DESCTO: ',@TotalCaracteres - @LongImporte)  + RIGHT(REPLICATE(' ',@LongImporte)+CONVERT(varchar(20),CONVERT(decimal(18,2),@nDescto )),@LongImporte),@TotalCaracteres) as cTicket,1
-	
-	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
-	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bNegrita )
 	Select @nRenglon, 0,0, right(right(Replicate(' ',@TotalCaracteres - @LongImporte) + 'IMPUESTO: ',@TotalCaracteres - @LongImporte)  + RIGHT(REPLICATE(' ',@LongImporte)+CONVERT(varchar(20),CONVERT(decimal(18,2),@nImpuesto  )),@LongImporte),@TotalCaracteres) as cTicket,1
 	
-
 	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bNegrita )
 	Select @nRenglon, 0,0, right(right(Replicate(' ',@TotalCaracteres - @LongImporte) + 'TOTAL: ',@TotalCaracteres - @LongImporte)  + RIGHT(REPLICATE(' ',@LongImporte)+CONVERT(varchar(20),CONVERT(decimal(18,2),@nTotal)),@LongImporte),@TotalCaracteres) as cTicket,1
@@ -333,9 +338,9 @@ Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1
 	Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1
 	Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea, bLetraGrande, bCodBarra )
 	--Select @nRenglon, 0,0, Case when @nOrden is null then '' else 'No. ORDEN: ' + ltrim(@nOrden) End 
-	select  @nRenglon + 1, 1, 1, Replicate(' ',(@TotalCaracteres  - len('#ORDEN'))/2) + '#ORDEN' + Replicate(' ',(@TotalCaracteres - len('#ORDEN'))/2), 0,0
+	select  @nRenglon + 1, 0, 0, Replicate(' ',(@TotalCaracteres  - len('#FOLIO'))/2) + '#FOLIO' + Replicate(' ',(@TotalCaracteres - len('#FOLIO'))/2), 0,0
 	union all
-	select  @nRenglon + 2, 1, 1,'   '+ltrim(@nFolio), 0,1
+	select  @nRenglon + 2, 0, 0,'   '+ltrim(@nFolio), 1,1
 
 Set @nRenglon= isnull((Select max(nRenglon) From @Ticket),0)+1  
 Insert Into @Ticket  (nRenglon, nRenglonConcepto, nRenglonMod, clinea ) 
@@ -346,5 +351,6 @@ Exec RST_PieDeTicket @nSucursal
 
 
 Select * From @Ticket 
+Order by nRenglon,  nRenglonMod
 
 End 
