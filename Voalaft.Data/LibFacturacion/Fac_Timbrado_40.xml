@@ -1,0 +1,1813 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Fac_Timbrado_40
+</name>
+</assembly>
+<members>
+<member name="T:Fac_Timbrado_40.My.Resources.Resources">
+<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+</member>
+<member name="P:Fac_Timbrado_40.My.Resources.Resources.ResourceManager">
+<summary>
+  Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+</summary>
+</member>
+<member name="P:Fac_Timbrado_40.My.Resources.Resources.Culture">
+<summary>
+  Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+</summary>
+</member>
+<member name="T:Fac_Timbrado_40.ClsCodigoPostal">
+ <summary>
+ Clase Código Postal
+ </summary>
+ 
+</member>
+<member name="M:Fac_Timbrado_40.clsEmisores.#ctor">
+Public ReadOnly Property Configuracion As clsConfiguracionEmisor
+    Get
+        If atrFolio = 0 Then Return Nothing
+        Return clsConfiguracionEmisor.Obten(atrFolio)
+    End Get
+End Property
+</member>
+<member name="M:Fac_Timbrado_40.CLS_CFDI.flLlenaComprobante_Timbra(System.String,Fac_Timbrado_40.CLS_COM,System.Boolean,System.String,System.String@,System.String,System.String,Fac_Timbrado_40.clsComprobanteEmitido@,System.String@)">
+ <summary>
+ Timbra el documento modo pruebas o timbrado productivo
+ </summary>
+ <param name="prmOBJ_com"></param>
+ <param name="prmPruebas"></param>
+ <param name="prmRuta"></param>
+ <param name="prmMensaje"></param>
+ <param name="ContenidoKeyPem"></param>
+ <param name="ContenidoKeyCer"></param>
+ <returns></returns>
+</member>
+<member name="M:Fac_Timbrado_40.CLS_CFDI.slFunctionTimbraPruebas(Fac_Timbrado_40.CLS_COM,System.String,System.String@,System.String,System.String)">
+ <summary>
+ Función para timbrar pruebas
+ </summary>
+ <param name="prmvOBJ_com"></param>
+ <param name="prmRuta"></param>
+ <param name="prmMensaje"></param>
+ <param name="ContenidoKeyPem"></param>
+ <param name="ContenidoKeyCer"></param>
+ <returns></returns>
+</member>
+<member name="M:Fac_Timbrado_40.CLS_CFDI.CancelaTimbrePrueba(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.String@)">
+ <summary>
+ Cancela facturas de prueba
+ </summary>
+ <param name="prmKeyCSD"></param>
+ <param name="prmCERCSD"></param>
+ <param name="paswCSD"></param>
+ <param name="prmUUID"></param>
+ <param name="rfcEmisor"></param>
+ <param name="rfcReceptor"></param>
+ <param name="prmTotal"></param>
+ <param name="prmMotivo"></param>
+ <param name="prmFoliosustitucion"></param>
+ <param name="prmMensaje"></param>
+ <returns></returns>
+</member>
+<member name="M:Fac_Timbrado_40.CLS_CFDI.CancelaTimbre(System.Object,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.String@)">
+ <summary>
+ Cancela facturas de prueba
+ </summary>
+ <param name="prmKeyCSD"></param>
+ <param name="prmCERCSD"></param>
+ <param name="paswCSD"></param>
+ <param name="prmUUID"></param>
+ <param name="rfcEmisor"></param>
+ <param name="rfcReceptor"></param>
+ <param name="prmTotal"></param>
+ <param name="prmMotivo"></param>
+ <param name="prmFoliosustitucion"></param>
+ <param name="prmMensaje"></param>
+ <returns></returns>
+</member>
+<member name="M:Fac_Timbrado_40.CLS_CFDI.Consulta_Estatus_Timbre_SAT(System.String,System.String,System.Decimal,System.String,System.String@)">
+ <summary>
+ Consulta estatus de timbre en el SAT
+ </summary>
+ <param name="prmRFCEmisor"></param>
+ <param name="prmRFCReceptor"></param>
+ <param name="prmnImporte"></param>
+ <param name="prmCUUid"></param>
+ <param name="prmEstado"></param>
+ <returns></returns>
+</member>
+<member name="T:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.#ctor">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.ConsultaCompleted">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.Consulta(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.ConsultaAsync(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.ConsultaAsync(System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCFDIService.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse.CodigoEstatus">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse.EsCancelable">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse.Estado">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse.EstatusCancelacion">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.Acuse.ValidacionEFOS">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.ConsultaTimbreSAT.ConsultaCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.#ctor">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCFDICompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrar3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTFDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSelloCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSello3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSONCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXTCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelar2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFXCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFX2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPEMCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarEstadoSATCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCreditosDisponiblesCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCfdisRelacionadosCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarAutorizacionesPendientesCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.autorizarCancelacionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarRetencionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencion3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionTFDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSONCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSON3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarRetencionCSDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarSPCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarSPCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.validarCompleted">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCFDI(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCFDIAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCFDIAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrar(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrar3(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrar3Async(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrar3Async(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTFD(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTFDAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTFDAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSello(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSelloAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSelloAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSello3(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSello3Async(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarConSello3Async(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSONAsync(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSONAsync(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON2(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON2Async(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON2Async(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarJSON3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXTAsync(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXTAsync(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT2(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT2Async(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarTXT3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelar(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelar2(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelar2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelar2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFX(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFXAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFXAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFX2(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFX2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPFX2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPEM(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPEMAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarPEMAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarEstadoSAT(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarEstadoSATAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarEstadoSATAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCreditosDisponibles(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCreditosDisponiblesAsync(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCreditosDisponiblesAsync(System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCfdisRelacionados(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCfdisRelacionadosAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarCfdisRelacionadosAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarAutorizacionesPendientes(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarAutorizacionesPendientesAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarAutorizacionesPendientesAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.autorizarCancelacion(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.autorizarCancelacionAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.autorizarCancelacionAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarRetencion(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarRetencionAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.consultarRetencionAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencion(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencion3(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencion3Async(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencion3Async(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionTFD(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionTFDAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionTFDAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSON(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSONAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSONAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSON3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSON3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarRetencionJSON3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarRetencionCSD(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarRetencionCSDAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarRetencionCSDAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarSP(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarSPAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.timbrarSPAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarSP(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarSPAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.cancelarSPAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.validar(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.validarAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.validarAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado.ServicioTimbradoWS.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarCFDI">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarCFDI.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarCFDI.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarCFDI.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaValidacion">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaValidacion.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaValidacion.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaValidacion.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbradoSP">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbradoSP.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbradoSP.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbradoSP.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarRetencion">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarRetencion.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarRetencion.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaConsultarRetencion.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaAutorizar">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaAutorizar.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaAutorizar.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaAutorizar.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaPendientes">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaPendientes.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaPendientes.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaPendientes.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaRelacionados">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaRelacionados.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaRelacionados.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaRelacionados.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaCreditos">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCreditos.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCreditos.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCreditos.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaEstatusSAT">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaEstatusSAT.CodigoEstatus">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaEstatusSAT.EsCancelable">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaEstatusSAT.Estado">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaEstatusSAT.EstatusCancelacion">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaCancelar">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCancelar.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCancelar.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCancelar.data">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaCancelar.status">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbrado">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbrado.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbrado.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.RespuestaTimbrado.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCFDICompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCFDICompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarCFDICompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrar3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrar3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrar3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTFDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTFDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarTFDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarConSelloCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarConSelloCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarConSelloCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarConSello3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarConSello3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarConSello3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSONCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSONCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarJSONCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSON2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSON2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarJSON2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSON3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarJSON3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarJSON3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarTXTCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXT2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXT2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarTXT2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXT3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarTXT3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarTXT3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelar2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelar2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelar2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPFXCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPFXCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarPFXCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPFX2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPFX2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarPFX2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPEMCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarPEMCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarPEMCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarEstadoSATCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarEstadoSATCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarEstadoSATCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCreditosDisponiblesCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCreditosDisponiblesCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarCreditosDisponiblesCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCfdisRelacionadosCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarCfdisRelacionadosCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarCfdisRelacionadosCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarAutorizacionesPendientesCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarAutorizacionesPendientesCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarAutorizacionesPendientesCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.autorizarCancelacionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.autorizarCancelacionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.autorizarCancelacionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarRetencionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.consultarRetencionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.consultarRetencionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencion3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencion3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarRetencion3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionTFDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionTFDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionTFDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSONCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSONCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSONCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSON3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSON3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarRetencionJSON3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarRetencionCSDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarRetencionCSDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarRetencionCSDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarSPCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.timbrarSPCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.timbrarSPCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarSPCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.cancelarSPCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.cancelarSPCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.validarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado.validarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado.validarCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.#ctor">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCFDICompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrar3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTFDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSelloCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSello3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSONCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXTCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT4Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelar2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFXCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFX2Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPEMCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarEstadoSATCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCreditosDisponiblesCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCfdisRelacionadosCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarAutorizacionesPendientesCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.autorizarCancelacionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarRetencionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencion3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionTFDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSONCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSON3Completed">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarRetencionCSDCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarSPCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarSPCompleted">
+<remarks/>
+</member>
+<member name="E:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.validarCompleted">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCFDI(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCFDIAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCFDIAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrar(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrar3(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrar3Async(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrar3Async(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTFD(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTFDAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTFDAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSello(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSelloAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSelloAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSello3(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSello3Async(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarConSello3Async(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSONAsync(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSONAsync(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON2(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON2Async(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON2Async(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarJSON3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXTAsync(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXTAsync(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT2(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT2Async(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT4(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT4Async(System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarTXT4Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelar(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelar2(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelar2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelar2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFX(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFXAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFXAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFX2(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFX2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPFX2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPEM(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPEMAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarPEMAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarEstadoSAT(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarEstadoSATAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarEstadoSATAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCreditosDisponibles(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCreditosDisponiblesAsync(System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCreditosDisponiblesAsync(System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCfdisRelacionados(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCfdisRelacionadosAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarCfdisRelacionadosAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarAutorizacionesPendientes(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarAutorizacionesPendientesAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarAutorizacionesPendientesAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.autorizarCancelacion(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.autorizarCancelacionAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.autorizarCancelacionAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarRetencion(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarRetencionAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.consultarRetencionAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencion(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencion3(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencion3Async(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencion3Async(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionTFD(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionTFDAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionTFDAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSON(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSONAsync(System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSONAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSON3(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSON3Async(System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarRetencionJSON3Async(System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarRetencionCSD(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarRetencionCSDAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarRetencionCSDAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarSP(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarSPAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.timbrarSPAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarSP(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarSPAsync(System.String,System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.cancelarSPAsync(System.String,System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.validar(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.validarAsync(System.String,System.String)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.validarAsync(System.String,System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:Fac_Timbrado_40.WS_Timbrado_Pruebas.ServicioTimbradoWS.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarCFDI">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarCFDI.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarCFDI.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarCFDI.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaValidacion">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaValidacion.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaValidacion.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaValidacion.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbradoSP">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbradoSP.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbradoSP.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbradoSP.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarRetencion">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarRetencion.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarRetencion.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaConsultarRetencion.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaAutorizar">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaAutorizar.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaAutorizar.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaAutorizar.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaPendientes">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaPendientes.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaPendientes.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaPendientes.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaRelacionados">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaRelacionados.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaRelacionados.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaRelacionados.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCreditos">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCreditos.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCreditos.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCreditos.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaEstatusSAT">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaEstatusSAT.CodigoEstatus">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaEstatusSAT.EsCancelable">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaEstatusSAT.Estado">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaEstatusSAT.EstatusCancelacion">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCancelar">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCancelar.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCancelar.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCancelar.data">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaCancelar.status">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbrado">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbrado.code">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbrado.message">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.RespuestaTimbrado.data">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCFDICompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCFDICompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCFDICompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrar3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrar3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrar3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTFDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTFDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTFDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSelloCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSelloCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSelloCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSello3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSello3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarConSello3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSONCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSONCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSONCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarJSON3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXTCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT4CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT4CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarTXT4CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelar2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelar2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelar2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFXCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFXCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFXCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFX2CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFX2CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPFX2CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPEMCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPEMCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarPEMCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarEstadoSATCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarEstadoSATCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarEstadoSATCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCreditosDisponiblesCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCreditosDisponiblesCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCreditosDisponiblesCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCfdisRelacionadosCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCfdisRelacionadosCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarCfdisRelacionadosCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarAutorizacionesPendientesCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarAutorizacionesPendientesCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarAutorizacionesPendientesCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.autorizarCancelacionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.autorizarCancelacionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.autorizarCancelacionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarRetencionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarRetencionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.consultarRetencionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencion3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencion3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencion3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionTFDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionTFDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionTFDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSONCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSONCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSONCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSON3CompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSON3CompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarRetencionJSON3CompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarRetencionCSDCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarRetencionCSDCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarRetencionCSDCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarSPCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarSPCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.timbrarSPCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarSPCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarSPCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.cancelarSPCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.validarCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:Fac_Timbrado_40.WS_Timbrado_Pruebas.validarCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:Fac_Timbrado_40.WS_Timbrado_Pruebas.validarCompletedEventArgs.Result">
+<remarks/>
+</member>
+</members>
+</doc>
