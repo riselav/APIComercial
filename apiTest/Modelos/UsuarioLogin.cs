@@ -13,5 +13,6 @@ namespace Voalaft.API
         public string token { get; set; }
         public List<MenuUsuario> menuUsuarios { get; set; }
         public int operacionRestringida { get; set; }
-}
+        public string logo { get; set; }
+    }
 }

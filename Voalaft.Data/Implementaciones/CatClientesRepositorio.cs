@@ -1,14 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using SQLConnector;
-using System;
-using System.Collections.Generic;
+
 using System.Data;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
 using Voalaft.Data.Entidades.ClasesParametros;

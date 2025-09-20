@@ -61,6 +61,7 @@ namespace Voalaft.API.Controllers
                     user.menuUsuarios = listMenu;
                 }
                 user.usuario_Empleado = usuario.Empleado;
+                user.logo = usuario.Logo;
                 var token = GenerateToken(user);
                 user.token = token;
                 resultado = CryptographyUtils.CrearResultado(user);

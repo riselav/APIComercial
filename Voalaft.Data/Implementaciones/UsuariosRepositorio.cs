@@ -11,7 +11,8 @@ using Voalaft.Data.Interfaces;
 using Voalaft.Utilerias;
 
 using SQLConnector;
-using Voalaft.Data.Entidades.Menu; // Asegúrate de que el namespace sea el correcto
+using Voalaft.Data.Entidades.Menu;
+using Conexion = Voalaft.Data.DB.Conexion; // Asegúrate de que el namespace sea el correcto
 
 namespace Voalaft.Data.Implementaciones
 {
@@ -191,8 +192,11 @@ namespace Voalaft.Data.Implementaciones
                 using (var con = _conexion.ObtenerSqlConexion())
                 {
                     con.Open();
-                    var cmd = new SqlCommand("SELECT nFolio,cUsuario,cPassword,bAdministrador,nEmpleado,bActivo" +
-                        ",cNombre,cApellidoPaterno,cApellidoMaterno FROM CAT_Usuarios (NOLOCK) where cUsuario=@Usuario", con);
+                    var cmd = new SqlCommand("SELECT u.nFolio,u.cUsuario,u.cPassword,u.bAdministrador,u.nEmpleado,u.bActivo " +
+                    ", u.cNombre, u.cApellidoPaterno, u.cApellidoMaterno, empresa.cLogo FROM CAT_Usuarios u(NOLOCK) " +
+                    "left join CAT_Empleados empleado(NOLOCK) on u.nEmpleado = empleado.nEmpleado " +
+                    "left join CAT_Empresas empresa(NOLOCK) on empleado.nEmpresa = empresa.nEmpresa " +
+                    "where cUsuario =@Usuario", con);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.Usuario;
                     using (var reader = await cmd.ExecuteReaderAsync())
@@ -210,7 +214,8 @@ namespace Voalaft.Data.Implementaciones
                                     Activo = ConvertUtils.ToBoolean(reader["bActivo"]),
                                     Nombre = ConvertUtils.ToString(reader["cNombre"]),
                                     ApellidoPaterno = ConvertUtils.ToString(reader["cApellidoPaterno"]),
-                                    ApellidoMaterno = ConvertUtils.ToString(reader["cApellidoMaterno"])
+                                    ApellidoMaterno = ConvertUtils.ToString(reader["cApellidoMaterno"]),
+                                    Logo = ConvertUtils.ToString(reader["cLogo"])
                                 };
                             break;
                         }

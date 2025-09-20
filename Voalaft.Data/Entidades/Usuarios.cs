@@ -13,5 +13,6 @@ namespace Voalaft.Data.Entidades
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public int operacionRestringida { get; set; }
+        public string Logo { get; set; }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BarcodeLib" Version="3.1.5" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
@@ -15,6 +16,252 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Voalaft.Utilerias\Voalaft.Utilerias.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DevExpress.BonusSkins.v23.1">
+      <HintPath>LibFacturacion\DevExpress.BonusSkins.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Charts.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v23.1">
+      <HintPath>LibFacturacion\DevExpress.CodeParser.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Data.Desktop.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Data.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v23.1">
+      <HintPath>LibFacturacion\DevExpress.DataAccess.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v23.1.UI">
+      <HintPath>LibFacturacion\DevExpress.DataAccess.v23.1.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataVisualization.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.DataVisualization.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Diagram.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Diagram.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dialogs.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Dialogs.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Drawing.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Drawing.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Images.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Map.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Map.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Mvvm.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Office.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Pdf.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v23.1.Drawing">
+      <HintPath>LibFacturacion\DevExpress.Pdf.v23.1.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.PivotGrid.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Printing.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.RichEdit.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v23.1.Export">
+      <HintPath>LibFacturacion\DevExpress.RichEdit.v23.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Sparkline.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.SpellChecker.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.Spreadsheet.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.TreeMap.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.TreeMap.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Utils.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v23.1.UI">
+      <HintPath>LibFacturacion\DevExpress.Utils.v23.1.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Resources.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Web.Resources.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Web.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v23.1">
+      <HintPath>LibFacturacion\DevExpress.Xpo.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraBars.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraCharts.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.1.Extensions">
+      <HintPath>LibFacturacion\DevExpress.XtraCharts.v23.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.1.UI">
+      <HintPath>LibFacturacion\DevExpress.XtraCharts.v23.1.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.1.Web">
+      <HintPath>LibFacturacion\DevExpress.XtraCharts.v23.1.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.1.Wizard">
+      <HintPath>LibFacturacion\DevExpress.XtraCharts.v23.1.Wizard.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraDiagram.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraDiagram.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraDialogs.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraDialogs.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraEditors.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGantt.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraGantt.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.XtraGauges.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.1.Presets">
+      <HintPath>LibFacturacion\DevExpress.XtraGauges.v23.1.Presets.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.1.Win">
+      <HintPath>LibFacturacion\DevExpress.XtraGauges.v23.1.Win.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraGrid.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraLayout.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraMap.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraMap.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraNavBar.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraPdfViewer.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraPivotGrid.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraPrinting.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraReports.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v23.1.Extensions">
+      <HintPath>LibFacturacion\DevExpress.XtraReports.v23.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraRichEdit.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1.Core">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1.Core.Desktop">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.Core.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1.Extensions">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1.Reporting">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.1.Reporting.Extensions">
+      <HintPath>LibFacturacion\DevExpress.XtraScheduler.v23.1.Reporting.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpellChecker.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraSpellChecker.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpreadsheet.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraSpreadsheet.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraTreeList.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraTreeMap.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v23.1.UI">
+      <HintPath>LibFacturacion\DevExpress.XtraTreeMap.v23.1.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraVerticalGrid.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraWizard.v23.1">
+      <HintPath>LibFacturacion\DevExpress.XtraWizard.v23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPCtlXLib">
+      <HintPath>LibFacturacion\DPFPCtlXLib.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPCtlXTypeLibNET">
+      <HintPath>LibFacturacion\DPFPCtlXTypeLibNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPCtlXWrapperNET">
+      <HintPath>LibFacturacion\DPFPCtlXWrapperNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPDevNET">
+      <HintPath>LibFacturacion\DPFPDevNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPEngNET">
+      <HintPath>LibFacturacion\DPFPEngNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPGuiNET">
+      <HintPath>LibFacturacion\DPFPGuiNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPShrNET">
+      <HintPath>LibFacturacion\DPFPShrNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPShrXTypeLibNET">
+      <HintPath>LibFacturacion\DPFPShrXTypeLibNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPVerNET">
+      <HintPath>LibFacturacion\DPFPVerNET.dll</HintPath>
+    </Reference>
+    <Reference Include="Fac_Timbrado_40">
+      <HintPath>LibFacturacion\Fac_Timbrado_40.dll</HintPath>
+    </Reference>
+    <Reference Include="FingerD">
+      <HintPath>LibFacturacion\FingerD.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>LibFacturacion\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder">
+      <HintPath>LibFacturacion\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLConnector">
+      <HintPath>LibFacturacion\SQLConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>LibFacturacion\System.Windows.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

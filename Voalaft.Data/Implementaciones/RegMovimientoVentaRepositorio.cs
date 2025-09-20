@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Fac_Timbrado_40;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Voalaft.Data.DB;
 using Voalaft.Data.Entidades;
 using Voalaft.Data.Entidades.ClasesParametros;
@@ -607,6 +609,7 @@ namespace Voalaft.Data.Implementaciones
         public async Task<List<ImpresionData>> TicketVenta(int nSucursal, long nVenta)
         {
             List<ImpresionData> impresion = [];
+            //TimbraFactura();
             try
             {
                 using (var con = _conexion.ObtenerSqlConexion())
@@ -630,7 +633,7 @@ namespace Voalaft.Data.Implementaciones
                                     nRenglon = ConvertUtils.ToInt32(reader["nRenglon"]),
                                     nRenglonConcepto = ConvertUtils.ToInt32(reader["nRenglonConcepto"]),
                                     nRenglonMod = ConvertUtils.ToInt32(reader["nRenglonMod"]),
-                                    cLinea = ConvertUtils.ToString(reader["cLinea"]),
+                                    cLinea = ConvertUtils.ToBoolean(reader["bCodBarra"]) ? BarcodeGenerator.GenerateBarcodeBase64(ConvertUtils.ToString(reader["cLinea"])) : ConvertUtils.ToString(reader["cLinea"]),
                                     bLetraGrande = ConvertUtils.ToBoolean(reader["bLetraGrande"]),
                                     bNegrita = ConvertUtils.ToBoolean(reader["bNegrita"]),
                                     bCodBarra = ConvertUtils.ToBoolean(reader["bCodBarra"])
@@ -656,6 +659,189 @@ namespace Voalaft.Data.Implementaciones
             }
 
             return impresion;
+        }
+
+        private async void TimbraFactura(SqlConnection externalConnection = null,
+                SqlTransaction externalTransaction = null)
+        {
+            try
+            {
+                bool shouldCloseConnection = false;
+                bool shouldCommitTransaction = false;
+
+                SqlConnection con = externalConnection;
+                SqlTransaction transaction = externalTransaction;
+
+                if (con == null)
+                {
+                    con = _conexion.ObtenerSqlConexion();
+                    await con.OpenAsync();
+                    shouldCloseConnection = true;
+                }
+
+                if (transaction == null)
+                {
+                    transaction = con.BeginTransaction();
+                    shouldCommitTransaction = true;
+                }
+
+                var vDLlTimbra = new Fac_Timbrado_40.CLS_CFDI();
+                var vOBJ_com = new Fac_Timbrado_40.CLS_COM();
+                var vOBJComprobante = new Fac_Timbrado_40.CLS_Comprobante();
+
+                //Fac_Timbrado_40.clsEmisores objemisor = Fac_Timbrado_40.clsEmisores.Obten(3);
+                Fac_Timbrado_40.clsEmisores objemisor = new clsEmisores(2);
+                //The type initializer for 'Fac_Timbrado_40.clsLeerCatalogosBD' threw an exception.
+                //Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = Fac_Timbrado_40.clsConfiguracionEmisor.Obten(objemisor.Folio);
+                Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = new clsConfiguracionEmisor(2);
+                objconfEmisor.NumeroCertificado = "00001000000518313647";
+
+                vOBJComprobante.Version = "4.0";
+                vOBJComprobante.Sucursal = 1;
+                vOBJComprobante.Serie = "A";
+                vOBJComprobante.Folio = "40";
+                vOBJComprobante.Fecha = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+                vOBJComprobante.FormaPago = "99";
+                vOBJComprobante.NoCertificado = objconfEmisor.NumeroCertificado;
+                vOBJComprobante.CondicionesDePago = "NA";
+                vOBJComprobante.SubTotal = "1.0";
+                vOBJComprobante.Moneda = "MXN";
+                vOBJComprobante.TipoCambio = "1";
+                vOBJComprobante.Total = "1.16";
+                vOBJComprobante.TipoDeComprobante = "I";
+                vOBJComprobante.Exportacion = "01";
+                vOBJComprobante.MetodoPago = "PPD";
+                vOBJComprobante.LugarExpedicion = objemisor.CodigoPostal;
+
+                vOBJComprobante.Emisor = new Fac_Timbrado_40.clsEmisores();
+                vOBJComprobante.Emisor.Folio = objemisor.Folio;
+                vOBJComprobante.Emisor.RFC = objemisor.RFC;
+                vOBJComprobante.Emisor.RazonSocial = objemisor.RazonSocial;
+                vOBJComprobante.Emisor.RegimenFiscal = objemisor.RegimenFiscal;
+
+                vOBJComprobante.Receptor = new Fac_Timbrado_40.CLS_Receptor();
+                vOBJComprobante.Receptor.Rfc = "GACA781221D27";
+                vOBJComprobante.Receptor.Nombre = "ANGEL GARCIA CISNEROS";
+                vOBJComprobante.Receptor.DomicilioFiscalReceptor = "80019";
+                vOBJComprobante.Receptor.RegimenFiscalReceptor = "612";
+                vOBJComprobante.Receptor.UsoCFDI = "G03";
+
+                vOBJComprobante.Cliente = 2;
+                vOBJComprobante.DomilicioReceptor = vOBJComprobante.Receptor.DomicilioCliente;
+                vOBJComprobante.LocalidadReceptor = vOBJComprobante.Receptor.LocalidadCliente;
+
+                var vConveptos = new Fac_Timbrado_40.CLS_Conceptos[1];
+                vConveptos[0] = new Fac_Timbrado_40.CLS_Conceptos();
+
+                vConveptos[0].ClaveProdServ = "01010101";
+                vConveptos[0].NoIdentificacion = "miclave";
+                vConveptos[0].Cantidad = "1";
+                vConveptos[0].ClaveUnidad = "F52";
+                vConveptos[0].Unidad = "TONELADA";
+                vConveptos[0].Descripcion = "ACERO";
+                vConveptos[0].ValorUnitario = "1.00";
+                vConveptos[0].Importe = "1.00";
+                vConveptos[0].ObjetoImp = "02";
+
+                var vOBJImpuestos = new Fac_Timbrado_40.CLS_Conceptos_Impuestos();
+
+                var vTraslados = new Fac_Timbrado_40.CLS_Conceptos_Impuestos_Traslados[1];
+                vTraslados[0] = new Fac_Timbrado_40.CLS_Conceptos_Impuestos_Traslados();
+
+                vTraslados[0].Base = "1.0";
+                vTraslados[0].Impuesto = "002";
+                vTraslados[0].TipoFactor = "Tasa";
+                vTraslados[0].TasaOCuota = "0.160000";
+                vTraslados[0].Importe = "0.16";
+
+                vOBJImpuestos.Traslados = vTraslados;
+                vConveptos[0].Impuestos = vOBJImpuestos;
+                vOBJComprobante.Conceptos = vConveptos;
+
+                var vImpuestos = new Fac_Timbrado_40.CLS_Impuestos();
+
+                vImpuestos.TotalImpuestosTrasladados = "0.16";
+
+                var vOBJTraslados = new Fac_Timbrado_40.CLS_Traslados[1];
+                vOBJTraslados[0] = new Fac_Timbrado_40.CLS_Traslados();
+
+                vOBJTraslados[0].Base = "1.0";
+                vOBJTraslados[0].Impuesto = "002";
+                vOBJTraslados[0].TipoFactor = "Tasa";
+                vOBJTraslados[0].TasaOCuota = "0.160000";
+                vOBJTraslados[0].Importe = "0.16";
+
+                vImpuestos.Traslados = vOBJTraslados;
+                vOBJComprobante.Impuestos = vImpuestos;
+                vOBJComprobante.Sistema = "GEMA";
+                vOBJComprobante.Domicilio = "REY MELCHOR 7515";
+                vOBJComprobante.Localidad = "LOMA DE RODRIGUERA";
+                vOBJComprobante.Municipio = "Culiacan";
+                vOBJComprobante.Estado = "SINALOA";
+                vOBJComprobante.Pais = "MEXICO";
+                vOBJComprobante.Comentarios = "RECIBO 045123";
+
+                vOBJComprobante.Correo = new string[] { "riselav87@gmail.com", "angeliasoftpro@gmail.com", "Juan_Pablo_CA@hotmail.com" };
+
+                vOBJComprobante.LogoBase64 = "";
+                //if (picLogo.Image != null)
+                //{
+                //    vOBJComprobante.LogoBase64 = clsGenerales.ImageToBase64(picLogo.Image, System.Drawing.Imaging.ImageFormat.Png);
+                //}
+
+                var conn = new SQLConnector.SQLConnector.SQLCONN("localhost\\SQLEXPRESS", "joel", "jrmap17", "Comercial");
+                
+            
+                string folioFactura = "";
+                var objRecibo = new clsComprobanteEmitido();
+                string prmJSON = "";
+
+                if (!CLS_CFDI.GuardaComprobante(ref vOBJComprobante, ref conn, ref objRecibo, ref prmJSON, true))
+                {
+                    if (conn.TieneTransaccionAbierta())
+                    {
+                        conn.DeshaceTransaccion();
+                    }
+                    // clsGenerales.MuestraMensaje("Error al guardar la factura", MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (conn.TieneTransaccionAbierta())
+                {
+                    conn.CierraTransaccion();
+                }
+                //clsGenerales.MuestraMensaje("Generación de factura exitosa", MessageBoxIcon.Information);
+                if (objRecibo != null)
+                {
+                }
+
+            }
+            catch (Exception ex)
+            {                
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) al insertar Movimiento de Caja")
+                {
+                    Metodo = "Lista",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+            finally
+            {
+                
+            }
+
+            
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            Fac_Timbrado_40.CLS_UTILERIAS.Genera_Archivo_Cer_Pem("C:\\Ruta", "C:\\OpenSSL-Win64\\bin\\openssl.exe", "txeNombreCer.Text.Trim()");
+            clsGenerales.MuestraMensaje("Archivo .cer.pem generado con éxito", MessageBoxIcon.Information);
         }
     }
 }
