@@ -34,8 +34,10 @@ namespace Voalaft.Data.Implementaciones
                 using (var con = _conexion.ObtenerSqlConexion())
                 {
                     con.Open();
+
                     SqlCommand cmd = new SqlCommand()
                     {
+                        CommandTimeout=0,
                         Connection = con,
                         CommandText = "RST_CON_ReporteIndicadores",
                         CommandType = CommandType.StoredProcedure,
