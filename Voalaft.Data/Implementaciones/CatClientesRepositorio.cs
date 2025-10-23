@@ -738,5 +738,79 @@ namespace Voalaft.Data.Implementaciones
             }
             return (long)nIDRFC;
         }
+
+        public async Task<List<CatClientes>> ConsultaClientesVenta(ParametrosConsultaClientes paramClientes)
+        {
+            List<CatClientes> clientes = [];
+            try
+            {
+                using (var con = _conexion.ObtenerSqlConexion())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = con,
+                        CommandText = "CM_Obtener_Clientes_venta",
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    cmd.Parameters.AddWithValue("@cFiltro", paramClientes.Filtro);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        int CiudadIndex = reader.GetOrdinal("ciudad");
+
+                        int RegimenIndex = reader.GetOrdinal("regimenFiscal");
+                        int RazonSocialIndex = reader.GetOrdinal("razonSocial");
+                        int RFCIndex = reader.GetOrdinal("rfc");
+
+                        while (await reader.ReadAsync())
+                        {
+                            var rfc = new CatRFC()
+                            {
+                                nIDRFC = ConvertUtils.ToInt64(reader["nIDRFC"]),
+                                cUso_CFDI = ConvertUtils.ToString(reader["cUso_CFDI"]),
+                                cRazonSocial = ConvertUtils.ToString(reader["razonSocial"]),
+                                cRegimenFiscal = ConvertUtils.ToString(reader["regimenFiscal"]),
+                                cRFC = ConvertUtils.ToString(reader["rfc"]),
+                            };                           
+
+
+                            var cte = new CatClientes()
+                            {
+                                nCliente = ConvertUtils.ToInt64(reader["codigoCliente"]),
+                                cNombreCompleto = ConvertUtils.ToString(reader["nombreComercial"]),
+
+                                cCalle = ConvertUtils.ToString(reader["calle"]),
+                                cColonia = ConvertUtils.ToString(reader["colonia"]),
+                                Municipio = ConvertUtils.ToString(reader["ciudad"]),
+                                Estado = ConvertUtils.ToString(reader["estado"]),
+                                cTelefono = ConvertUtils.ToString(reader["cTelefono"]),
+                                cCodigoPostal = ConvertUtils.ToString(reader["cCodigoPostal"]),
+                                Activo = ConvertUtils.ToBoolean(reader["activo"]),
+                                CatRFC = rfc
+                            };
+                            clientes.Add(
+                                cte
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
+                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+
+                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                throw new DataAccessException("Error(rp) No se pudo obtener la lista de los clientes de tablero")
+                {
+                    Metodo = "ConsultaClientesVenta",
+                    ErrorMessage = ex.Message,
+                    ErrorCode = 1
+                };
+            }
+
+            return clientes;
+        }
     }
 }

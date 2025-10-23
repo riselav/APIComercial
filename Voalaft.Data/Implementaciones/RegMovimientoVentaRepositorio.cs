@@ -16,6 +16,7 @@ using Voalaft.Data.Exceptions;
 using Voalaft.Data.Interfaces;
 using Voalaft.Utilerias;
 
+
 namespace Voalaft.Data.Implementaciones
 {
     public class RegMovimientoVentaRepositorio : IRegMovimientoVentaRepositorio
@@ -609,9 +610,10 @@ namespace Voalaft.Data.Implementaciones
         public async Task<List<ImpresionData>> TicketVenta(int nSucursal, long nVenta)
         {
             List<ImpresionData> impresion = [];
-            //TimbraFactura();
+            
             try
             {
+                //TimbraFactura();
                 using (var con = _conexion.ObtenerSqlConexion())
                 {
                     con.Open();
@@ -646,17 +648,17 @@ namespace Voalaft.Data.Implementaciones
             catch (Exception ex)
             {
                 string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
-                string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
-                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+        string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
+        int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
 
-                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+        _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
                 throw new DataAccessException("Error(rp) No se pudo obtener el ticket")
-                {
-                    Metodo = "TicketCorteCaja",
+        {
+            Metodo = "TicketCorteCaja",
                     ErrorMessage = ex.Message,
                     ErrorCode = 1
                 };
-            }
+    }
 
             return impresion;
         }
@@ -671,6 +673,8 @@ namespace Voalaft.Data.Implementaciones
 
                 SqlConnection con = externalConnection;
                 SqlTransaction transaction = externalTransaction;
+                //SqlConnection con = externalConnection;
+                //SqlTransaction transaction = externalTransaction;
 
                 if (con == null)
                 {
@@ -684,16 +688,20 @@ namespace Voalaft.Data.Implementaciones
                     transaction = con.BeginTransaction();
                     shouldCommitTransaction = true;
                 }
+                //System.Data.SqlClient.SqlConnection conSql = new System.Data.SqlClient.SqlConnection();
+                var conn = new SQLConnector.SQLConnector.SQLCONN("","","","");
+                var conecio = conn.InitConexionExterna(con , transaction);
 
                 var vDLlTimbra = new Fac_Timbrado_40.CLS_CFDI();
                 var vOBJ_com = new Fac_Timbrado_40.CLS_COM();
                 var vOBJComprobante = new Fac_Timbrado_40.CLS_Comprobante();
-
+                Fac_Timbrado_40.clsEmisores objemisor = Fac_Timbrado_40.clsLeerCatalogosBD.ObtenEmisor(2, ref conecio);
+                Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = Fac_Timbrado_40.clsLeerCatalogosBD.ObtenConfiguracionEmisor(objemisor.Folio, ref conecio);
                 //Fac_Timbrado_40.clsEmisores objemisor = Fac_Timbrado_40.clsEmisores.Obten(3);
-                Fac_Timbrado_40.clsEmisores objemisor = new clsEmisores(2);
+                //Fac_Timbrado_40.clsEmisores objemisor = new clsEmisores(2);
                 //The type initializer for 'Fac_Timbrado_40.clsLeerCatalogosBD' threw an exception.
                 //Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = Fac_Timbrado_40.clsConfiguracionEmisor.Obten(objemisor.Folio);
-                Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = new clsConfiguracionEmisor(2);
+                //Fac_Timbrado_40.clsConfiguracionEmisor objconfEmisor = new clsConfiguracionEmisor(2);
                 objconfEmisor.NumeroCertificado = "00001000000518313647";
 
                 vOBJComprobante.Version = "4.0";
@@ -783,20 +791,21 @@ namespace Voalaft.Data.Implementaciones
 
                 vOBJComprobante.Correo = new string[] { "riselav87@gmail.com", "angeliasoftpro@gmail.com", "Juan_Pablo_CA@hotmail.com" };
 
+
                 vOBJComprobante.LogoBase64 = "";
                 //if (picLogo.Image != null)
                 //{
                 //    vOBJComprobante.LogoBase64 = clsGenerales.ImageToBase64(picLogo.Image, System.Drawing.Imaging.ImageFormat.Png);
                 //}
 
-                var conn = new SQLConnector.SQLConnector.SQLCONN("localhost\\SQLEXPRESS", "joel", "jrmap17", "Comercial");
+                //var conn = new SQLConnector.SQLConnector.SQLCONN
                 
-            
+
                 string folioFactura = "";
                 var objRecibo = new clsComprobanteEmitido();
                 string prmJSON = "";
 
-                if (!CLS_CFDI.GuardaComprobante(ref vOBJComprobante, ref conn, ref objRecibo, ref prmJSON, true))
+                if (!CLS_CFDI.GuardaComprobanteWEB(ref vOBJComprobante, ref conn, ref objRecibo, ref prmJSON, true,true))
                 {
                     if (conn.TieneTransaccionAbierta())
                     {
@@ -820,9 +829,9 @@ namespace Voalaft.Data.Implementaciones
             {                
                 string className = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[0] : "";
                 string methodName = ex.StackTrace != null ? ex.StackTrace.Split('\n')[0].Trim().Split(' ')[1] : "";
-                int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
+                //int lineNumber = ex.StackTrace == null ? 1 : int.Parse(ex.StackTrace.Split('\n')[0].Trim().Split(':')[1]);
 
-                _logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
+                //_logger.LogError($"Error en {className}.{methodName} (línea {lineNumber}): {ex.Message}");
                 throw new DataAccessException("Error(rp) al insertar Movimiento de Caja")
                 {
                     Metodo = "Lista",

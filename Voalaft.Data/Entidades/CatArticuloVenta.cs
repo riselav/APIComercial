@@ -52,5 +52,7 @@ namespace Voalaft.Data.Entidades
         public decimal? Existencia { get; set; }
 
         public bool Activo { get; set; }
+        public int Linea { get; set; }
+        public string? LineaDescripcion { get; set; }
     }
 }

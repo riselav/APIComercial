@@ -43,6 +43,27 @@ namespace Voalaft.API.Controllers
             return resultado;
         }
 
+        [HttpPost("ObtenArticulosVentaV2")]
+        public async Task<ResultadoAPI> ObtenArticulosVentaV2(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var ParametrosObtenArticulosVenta = CryptographyUtils.DeserializarPeticion<ParametrosObtenArticulosVenta>(r);
+                List<CatArticuloVenta> articulos = await _articuloVentaServicio.ObtenArticulosVenta(ParametrosObtenArticulosVenta);
+                resultado = CryptographyUtils.CrearResultado(articulos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar las articulos");
+            }
+            finally { }
+
+            return resultado;
+        }
+
         [HttpPost("ObtenArticulosVenta2")]
         public async Task<List<CatArticuloVenta>> ObtenArticulosVenta2(ParametrosObtenArticulosVenta ParametrosObtenArticulosVenta)
         {

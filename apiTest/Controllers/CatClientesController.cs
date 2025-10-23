@@ -182,5 +182,26 @@ namespace Voalaft.API.Controllers
 
             return resultado;
         }
+
+        [HttpPost("ConsultaClientesVenta")]
+        public async Task<ResultadoAPI> ConsultaClientesVenta(PeticionAPI peticion)
+        {
+            ResultadoAPI resultado = null;
+            try
+            {
+                var r = CryptographyUtils.Desencriptar(peticion.contenido);
+                var Cliente = CryptographyUtils.DeserializarPeticion<ParametrosConsultaClientes>(r);
+                var cli = await _catClientesServicio.ConsultaClientesVenta(Cliente);
+                resultado = CryptographyUtils.CrearResultado(cli);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw new Exception("Error al consultar los clientes para venta");
+            }
+            finally { }
+
+            return resultado;
+        }
     }
 }

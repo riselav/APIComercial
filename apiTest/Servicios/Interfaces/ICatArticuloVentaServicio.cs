@@ -8,5 +8,6 @@ namespace Voalaft.API.Servicios.Interfaces
         //Task<List<CatArticuloVenta>> Lista();
     
         Task<List<CatArticuloVenta>> ObtenArticulosVenta(ParametrosObtenArticulosVenta parametrosObtenArticulosVenta);
+        Task<List<CatArticuloVenta>> ObtenArticulosVentaV2(ParametrosObtenArticulosVenta parametrosObtenArticulosVenta);
     }
 }

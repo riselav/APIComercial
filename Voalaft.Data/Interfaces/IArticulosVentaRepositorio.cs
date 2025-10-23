@@ -10,5 +10,6 @@ namespace Voalaft.Data.Interfaces
     public interface IArticulosVentaRepositorio
     {
         Task<List<CatArticuloVenta>> ObtenArticulosVenta(ParametrosObtenArticulosVenta parametrosObtenArticulosVenta);
+        Task<List<CatArticuloVenta>> ObtenArticulosVentaV2(ParametrosObtenArticulosVenta parametrosObtenArticulosVenta);
     }
 }

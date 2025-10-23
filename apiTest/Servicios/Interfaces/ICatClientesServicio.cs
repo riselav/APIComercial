@@ -16,5 +16,6 @@ namespace Voalaft.API.Servicios.Interfaces
         Task<ContactoCliente> EliminarContactoCliente(ContactoCliente contacto);
 
         Task<CatCorreoContactoRFC> EliminarCorreoCliente(CatCorreoContactoRFC correo);
+        Task<List<CatClientes>> ConsultaClientesVenta(ParametrosConsultaClientes paramClientes);
     }
 }

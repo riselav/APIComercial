@@ -11,5 +11,6 @@ namespace Voalaft.Data.Entidades
         public int Sucursal { get; set; }
         public int ListaPrecio { get; set; }
         public string? Criterio { get; set; }
+        public int Linea { get; set; }
     }
 }

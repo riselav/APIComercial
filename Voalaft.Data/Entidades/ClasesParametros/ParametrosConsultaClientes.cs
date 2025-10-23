@@ -10,7 +10,7 @@ namespace Voalaft.Data.Entidades.ClasesParametros
     {
         public long? RazonSocial { get; set; }
         public string? RFC { get; set; }
-
         public int? RegimenFiscal { get; set; }
+        public string? Filtro { get; set; }
     }
 }
