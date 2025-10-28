@@ -51,7 +51,7 @@ namespace Voalaft.API.Controllers
             {
                 var r = CryptographyUtils.Desencriptar(peticion.contenido);
                 var ParametrosObtenArticulosVenta = CryptographyUtils.DeserializarPeticion<ParametrosObtenArticulosVenta>(r);
-                List<CatArticuloVenta> articulos = await _articuloVentaServicio.ObtenArticulosVenta(ParametrosObtenArticulosVenta);
+                List<CatArticuloVenta> articulos = await _articuloVentaServicio.ObtenArticulosVentaV2(ParametrosObtenArticulosVenta);
                 resultado = CryptographyUtils.CrearResultado(articulos);
             }
             catch (Exception ex)

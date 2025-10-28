@@ -11,7 +11,7 @@ Create procedure VTA_ObtenArticulosVenta_SP_V2(
 AS
 BEGIN
     SET NOCOUNT ON;
-	-- EXEC VTA_ObtenArticulosVenta_SP_V2 1,1,'articuloprecio1'
+	-- EXEC VTA_ObtenArticulosVenta_SP_V2 1,1,''
 
     -- Tabla temporal para guardar resultados
     DECLARE @Resultados TABLE (
