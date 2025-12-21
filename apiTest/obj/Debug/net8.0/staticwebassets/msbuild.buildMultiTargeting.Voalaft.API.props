@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Voalaft.API.props" />
-</Project>
