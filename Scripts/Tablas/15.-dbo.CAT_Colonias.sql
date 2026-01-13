@@ -21,3 +21,15 @@ CREATE TABLE [dbo].[CAT_Colonias]
 	PRIMARY KEY CLUSTERED ([cColonia] ASC,[cCodigoPostal] ASC)
 END
 GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE name='IX_Colonias_CP_Colonia')
+	CREATE NONCLUSTERED INDEX IX_Colonias_CP_Colonia ON CAT_Colonias (cCodigoPostal, cColonia)
+	INCLUDE (cNombreAsentamiento);
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE name='IX_Colonias_Lookup')
+	CREATE NONCLUSTERED INDEX IX_Colonias_Lookup ON CAT_Colonias (cCodigoPostal)
+	INCLUDE (cColonia, cNombreAsentamiento);
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE name='IX_Colonias_Order')
+	CREATE NONCLUSTERED INDEX IX_Colonias_Order ON CAT_Colonias (cCodigoPostal, cNombreAsentamiento)
+	INCLUDE (cColonia);

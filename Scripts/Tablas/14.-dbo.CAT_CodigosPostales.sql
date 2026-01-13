@@ -23,3 +23,11 @@ CREATE TABLE [dbo].[CAT_CodigosPostales]
 	PRIMARY KEY CLUSTERED ([cCodigoPostal] ASC,[cEstado] ASC,[cMunicipio] ASC,[cLocalidad] ASC)
 END
 GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE name='IX_CodigosPostales_Estado_Municipio')
+	CREATE INDEX IX_CodigosPostales_Estado_Municipio ON CAT_CodigosPostales (cEstado, cMunicipio) 
+	INCLUDE (cCodigoPostal);
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE name='IX_CP_Driver')
+	CREATE NONCLUSTERED INDEX IX_CP_Driver ON CAT_CodigosPostales (cEstado, cMunicipio, cCodigoPostal)
+	INCLUDE (cLocalidad);
